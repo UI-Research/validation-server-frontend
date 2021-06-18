@@ -2,5 +2,19 @@
 # Services listed in this file will automatically be built and started when you bring
 # the project up.
 version: "3.7"
-services: {}
+services:
+  app:
+    build:
+      context: ./services/app
+      dockerfile: dev.DockerFile
+    environment:
+      # Force polling instead of watching to work around Docker osxfs issues.
+      CHOKIDAR_USEPOLLING: '1'
+      CHOKIDAR_INTERVAL: '1000'
+    ports:
+      - 3000:3000
+    volumes:
+      - ./services/app/pages:/app/pages:cached
+      - ./services/app/public:/app/public:cached
+      - ./services/app/styles:/app/styles:cached
 volumes: {}

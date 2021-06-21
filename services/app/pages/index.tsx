@@ -1,16 +1,25 @@
+import styled from '@emotion/styled';
 import Head from 'next/head';
+
+// Just an example of emotion working.
+const H1 = styled('h1')`
+  color: ${props => props.theme.palette.blue.base};
+`;
 
 export default function Home() {
   return (
     <div>
       <Head>
-        <title>validation-server-frontend</title>
-        <meta name="description" content="validation-server-frontend" />
+        <title>UI-Research/validation-server-frontend</title>
+        <meta
+          name="description"
+          content="UI-Research/validation-server-frontend"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <h1>UI-Research/validation-server-frontend</h1>
+        <H1>UI-Research/validation-server-frontend</H1>
 
         <div>
           Gravida voluptates eleifend adipisci? Diamlorem rutrum penatibus

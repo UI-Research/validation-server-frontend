@@ -10,7 +10,6 @@ RUN npm ci
 
 COPY tsconfig.json next.config.js \
      next-env.d.ts \
-     emotion.d.ts \
      ./
 
 EXPOSE 3000

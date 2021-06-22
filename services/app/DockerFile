@@ -13,6 +13,7 @@ COPY tsconfig.json next.config.js \
      ./
 
 # Copy sources
+COPY components ./components
 COPY pages ./pages
 COPY public ./public
 COPY styles ./styles

@@ -14,6 +14,7 @@ services:
     ports:
       - 3000:3000
     volumes:
+      - ./services/app/components:/app/components:cached
       - ./services/app/pages:/app/pages:cached
       - ./services/app/public:/app/public:cached
       - ./services/app/styles:/app/styles:cached

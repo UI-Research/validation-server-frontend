@@ -1,0 +1,42 @@
+FROM node:12-alpine AS build
+
+WORKDIR /app
+
+# Copy package manifests and install
+COPY package*.json ./
+RUN npm ci
+
+# Copy build configuration
+COPY tsconfig.json next.config.js \
+     next-env.d.ts \
+     ./
+
+# Copy sources
+COPY components ./components
+COPY pages ./pages
+COPY public ./public
+COPY styles ./styles
+
+# Build
+RUN npm run build
+
+FROM node:12-alpine
+
+# Use tini to ensure `npm start' receives signals from Docker/Kubernetes.
+RUN apk add --no-cache tini
+ENTRYPOINT [ "tini", "-g", "--" ]
+
+WORKDIR /app
+
+# Copy build artifacts
+COPY package*.json ./
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/.next ./.next
+COPY --from=build \
+  /app/next.config.js \
+  ./
+
+USER node
+
+# Set entrypoint to start command
+CMD [ "npm", "start" ]

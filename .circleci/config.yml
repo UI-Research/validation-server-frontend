@@ -1,0 +1,25 @@
+version: 2
+jobs:
+  build_stg:
+    machine:
+      enabled: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: pwd
+      - run:
+          name: Deploy Code Over SSH
+          command: |
+              rsync -avz --exclude '.git' -e "ssh -p 22"  ~/repo/ docker1@validation-server-stg.urban.org:validation-server.urban.org/validation-server-frontend/
+      - run:
+          name: Build Containers Over SSH
+          command: |
+              ssh docker1@validation-server-stg.urban.org -p 22 "cd validation-server.urban.org && ls -lsat && docker-compose build app && docker-compose up -d app"
+workflows:
+  version: 2
+  build_stg:
+    jobs:
+      - build_stg:
+          filters:
+            branches:
+              only: staging

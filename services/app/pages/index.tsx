@@ -1,8 +1,8 @@
 import PageTemplate from '../components/PageTemplate';
 
-const title = 'UI-Research/validation-server-frontend';
+const title = 'Home';
 
-export default function Home() {
+function HomePage(): JSX.Element {
   return (
     <PageTemplate title={title}>
       <h1>{title}</h1>
@@ -135,3 +135,5 @@ export default function Home() {
     </PageTemplate>
   );
 }
+
+export default HomePage;

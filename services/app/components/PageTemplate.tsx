@@ -16,13 +16,8 @@ const PageTemplate: React.FC<PageTemplateProps> = ({
 }) => (
   <React.Fragment>
     <Head>
-      <title>{title}</title>
+      <title>{title} | UI-Research/validation-server-frontend</title>
       <meta name="description" content={description} />
-      <link rel="icon" href="/favicon.ico" />
-      <meta
-        name="viewport"
-        content="minimum-scale=1, initial-scale=1, width=device-width"
-      />
     </Head>
     <Header />
     {/* Need to do a check or else Component will complain. */}

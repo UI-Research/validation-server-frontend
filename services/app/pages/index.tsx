@@ -1,10 +1,11 @@
 import PageTemplate from '../components/PageTemplate';
+import StepsNav from '../components/StepsNav/StepsNav';
 
 const title = 'Home';
 
 function HomePage(): JSX.Element {
   return (
-    <PageTemplate title={title}>
+    <PageTemplate title={title} topContent={<StepsNav />}>
       <h1>{title}</h1>
       <div>
         <p>

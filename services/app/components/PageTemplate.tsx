@@ -18,6 +18,10 @@ const PageTemplate: React.FC<PageTemplateProps> = ({
     <Head>
       <title>{title} | UI-Research/validation-server-frontend</title>
       <meta name="description" content={description} />
+      <meta
+        name="viewport"
+        content="minimum-scale=1, initial-scale=1, width=device-width"
+      />
     </Head>
     <Header />
     {/* Need to do a check or else Component will complain. */}

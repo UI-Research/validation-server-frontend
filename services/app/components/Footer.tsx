@@ -17,7 +17,10 @@ function Footer(): JSX.Element {
   const classes = useStyles();
   return (
     <footer className={classes.footer}>
-      <div>&copy; Urban Institute, Brookings Institution, and individual authors, {year}.</div>
+      <div>
+        &copy; Urban Institute, Brookings Institution, and individual authors,{' '}
+        {year}.
+      </div>
     </footer>
   );
 }

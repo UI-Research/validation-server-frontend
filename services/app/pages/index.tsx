@@ -9,8 +9,8 @@ function HomePage(): JSX.Element {
       <h1>{title}</h1>
       <div>
         <p>
-          TEST Alias adipisci, dictum dictumst in aliquam facere velit? Iste purus
-          lectus delectus et, facilis tincidunt facere exercitation error.
+          TEST Alias adipisci, dictum dictumst in aliquam facere velit? Iste
+          purus lectus delectus et, facilis tincidunt facere exercitation error.
           Proident mollis itaque ullamco odit. Sapiente hac, mauris voluptas
           excepturi magna nibh. Culpa, convallis egestas sollicitudin? Conubia?
           Cupidatat! Dolor nulla lacus, qui, nostrum aspernatur, mollit eros.

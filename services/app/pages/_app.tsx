@@ -1,10 +1,11 @@
 import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import type { AppProps } from 'next/app';
-import React from 'react';
+import React, { useState } from 'react';
 import theme from '../styles/material-ui/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [key, setKey] = useState(0);
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -12,9 +13,16 @@ function MyApp({ Component, pageProps }: AppProps) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
+  // Refresh the app so client side styles take effect.
+  // TODO: Figure out why server side styles are mismatched from client.
+  // We get the "Prop `className` did not match." error for StepItem,
+  // Probably due to the use of custom props in makeStyles.
+  React.useEffect(() => {
+    setKey(1);
+  }, []);
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider key={key} theme={theme}>
       <CssBaseline />
       <Component {...pageProps} />
     </ThemeProvider>

@@ -1,6 +1,30 @@
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import React, { useState } from 'react';
 import StepItem from './StepItem';
+
+interface Step {
+  id: string;
+  title?: string;
+  description?: string;
+}
+const steps: Step[] = [
+  {
+    id: '1',
+    title: 'Step 1',
+    description: 'Upload & Explore',
+  },
+  {
+    id: '2',
+    title: 'Step 2',
+    description: 'Review & Refine',
+  },
+  {
+    id: '3',
+    title: 'Step 3',
+    description: 'Request & Release',
+  },
+];
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,14 +38,30 @@ interface StepsNavProps {
 }
 
 function StepsNav({}: StepsNavProps): JSX.Element {
+  const [activeStep, setActiveStep] = useState(steps[0].id);
   const classes = useStyles();
+
+  const handleClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    id: string,
+  ) => {
+    e.preventDefault();
+    setActiveStep(id);
+  };
+
   return (
     <div className={classes.root}>
       <Grid container={true} spacing={5}>
-        <StepItem title="Step 1" description="Upload &amp; Explore" />
-        <StepItem title="Step 2" description="Review &amp; Refine" />
-        <StepItem title="Step 3" description="Request &amp; Release" />
-        <StepItem description="Saved and History" />
+        {steps.map(step => (
+          <StepItem
+            key={step.id}
+            id={step.id}
+            title={step.title}
+            description={step.description}
+            onClick={e => handleClick(e, step.id)}
+            isActive={activeStep === step.id}
+          />
+        ))}
       </Grid>
     </div>
   );

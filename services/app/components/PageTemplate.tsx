@@ -45,21 +45,19 @@ const PageTemplate: React.FC<PageTemplateProps> = ({
       <main>
         <Container>
           {topContent && (
-            <Paper className={classes.topContent}>
-              {topContent}
-            </Paper>
+            <Paper className={classes.topContent}>{topContent}</Paper>
           )}
           {/* Need to do a check or else Component will complain. */}
           {children ? (
-            <Paper className={classes.content}>
-              {children}
-            </Paper>
-          ) : false}
+            <Paper className={classes.content}>{children}</Paper>
+          ) : (
+            false
+          )}
         </Container>
       </main>
       <Footer />
     </React.Fragment>
   );
-}
+};
 
 export default PageTemplate;

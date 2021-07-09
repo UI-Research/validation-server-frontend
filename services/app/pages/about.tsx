@@ -1,13 +1,15 @@
 import PageTemplate from '../components/PageTemplate';
+import Paragraph from '../components/Paragraph';
+import SectionTitle from '../components/SectionTitle';
 
 const title = 'About';
 
 function AboutPage(): JSX.Element {
   return (
     <PageTemplate title={title}>
-      <h1>{title}</h1>
+      <SectionTitle>{title}</SectionTitle>
       <div>
-        <p>
+        <Paragraph>
           Molestiae potenti aptent venenatis. Est blandit aute anim adipiscing
           laboris eos luctus harum quae molestie tempora, dapibus wisi velit
           harum? Inceptos potenti exercitation consequatur magnam, semper
@@ -15,8 +17,8 @@ function AboutPage(): JSX.Element {
           porttitor, parturient unde id. Itaque, cum faucibus magni harum, do
           voluptas pulvinar ad lectus saepe laboris tempora sapien lobortis nunc
           doloremque, voluptas viverra totam dicta.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Vivamus alias? Consectetuer aliquam, mattis felis mollitia, parturient
           dignissimos! Dui commodo harum porta gravida! Turpis justo modi ipsum
           commodo ad eum? Facilisis volutpat congue, gravida, dictum purus
@@ -24,8 +26,8 @@ function AboutPage(): JSX.Element {
           accusamus, repudiandae mauris duis, proident, venenatis eros! Pariatur
           elit augue sodales magnam beatae velit quod omnis vestibulum lectus
           nisl! Sollicitudin inventore hic laoreet quibusdam ipsam.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Ea erat platea, do dolorem mi sagittis suscipit maecenas? Nascetur
           impedit, possimus dolorum vivamus magnis atque accusamus, harum
           hendrerit! Quis adipiscing minim assumenda aut veritatis illo, error,
@@ -33,8 +35,8 @@ function AboutPage(): JSX.Element {
           adipiscing a explicabo, nec quasi dictumst accumsan natus, aute
           egestas, occaecat, officiis, dis consectetuer, sociis vehicula tenetur
           diam donec eos, nec est animi suscipit proident congue.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Per fusce nullam. Vitae autem aptent, dignissimos tenetur quos minim
           dolore eros cumque, hic conubia laboris doloribus, augue, eros fugiat
           dignissim iste sapiente, aptent, dapibus aliquam laborum! Sociis? Est
@@ -42,8 +44,8 @@ function AboutPage(): JSX.Element {
           malesuada. Nascetur orci aliquip primis iaculis hac voluptatum
           reiciendis elit minim vero parturient a vero exercitation rerum
           proident? Montes tempore praesent.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Tempora ab orci irure egestas, aspernatur elit aspernatur, quam?
           Possimus quas hendrerit sed cumque iste condimentum, vulputate,
           quisque consequat suscipit taciti ipsa accusantium urna. Fuga viverra?
@@ -51,8 +53,8 @@ function AboutPage(): JSX.Element {
           doloribus, possimus voluptates perspiciatis? Porro quod molestie
           dolorem porro facere? Orci porttitor eros. Rhoncus nec! Cras quam quas
           sunt, tristique placeat aliquip nunc purus labore.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Fugit elit donec erat mollis dui lacinia eum. Quidem facilisi magnam
           voluptas, nisi faucibus, nonummy doloribus lacus itaque arcu expedita
           architecto. Sociosqu sagittis, anim sollicitudin, netus fusce,
@@ -60,8 +62,8 @@ function AboutPage(): JSX.Element {
           ultrices tortor. Lectus commodi, sociis? Blandit, officia, sit erat
           mollitia tristique. Esse, suspendisse etiam, rem iusto eos pretium
           distinctio doloribus, explicabo anim id deserunt netus sunt.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Nisi vel sociis accusamus eveniet nostrum at proin, quasi nihil
           excepteur vivamus hic! Quam sit, hic? Laudantium platea exercitationem
           voluptates dolore deleniti optio rutrum, ab phasellus cubilia platea,
@@ -69,8 +71,8 @@ function AboutPage(): JSX.Element {
           reprehenderit at egestas autem suscipit? Metus excepturi laboriosam
           leo, molestiae tempus! Vehicula debitis viverra pariatur iste
           cupiditate. Eget cupiditate, at, modi praesentium do.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Lacinia morbi ex ipsa voluptatem? Iste! Odit convallis eros rerum,
           molestie convallis? Aliquam parturient voluptas ad mollitia iusto
           vitae omnis tristique nec ullam semper justo officiis nec feugiat!
@@ -78,8 +80,8 @@ function AboutPage(): JSX.Element {
           Velit magnis lacinia viverra. Vehicula. Vestibulum occaecati totam
           facere erat lorem ligula, eaque porta eleifend justo, incididunt
           corporis sodales? Do mollit.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Phasellus pariatur harum cillum sequi anim quaerat eget, neque
           occaecat gravida facere, auctor, harum explicabo. Eget cras pretium?
           Justo sollicitudin quo nisi? Vulputate? Aute! Unde libero? Orci, ab,
@@ -87,8 +89,8 @@ function AboutPage(): JSX.Element {
           beatae, arcu pretium? Nulla, esse modi voluptates, feugiat, inceptos
           in aenean auctor risus sapien reprehenderit iure est scelerisque
           aspernatur eros aenean quasi.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Iusto laoreet sapien risus orci torquent elit faucibus ut? Ultrices
           ipsam maiores error nostrum cras blanditiis! Orci itaque? Assumenda,
           delectus. Ea placerat alias quibusdam eum aspernatur tellus fermentum
@@ -96,8 +98,8 @@ function AboutPage(): JSX.Element {
           inventore ullam quisquam. Nec magna mollitia magni accumsan, lacinia
           atque vitae? Ut id expedita nobis penatibus posuere quod lectus wisi
           natoque mauris eveniet.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Iste dictumst aliquid aliquip, ultricies duis asperiores, est
           accusamus, dignissim maiores pellentesque irure! Posuere earum
           voluptatum nesciunt distinctio massa morbi voluptatum ac
@@ -106,8 +108,8 @@ function AboutPage(): JSX.Element {
           morbi eveniet voluptate natoque. Nonummy, dolorum perferendis!
           Ullamcorper doloremque! Mollit laudantium similique atque ab
           adipisicing unde, cumque, gravida, consequat.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Lacinia consequuntur dictumst. Tellus sunt rutrum atque, habitasse.
           Excepturi. Quidem facilis parturient elementum ligula doloremque cum
           laudantium fugit feugiat auctor nonummy porta vehicula. Dui? A
@@ -116,7 +118,7 @@ function AboutPage(): JSX.Element {
           deleniti, senectus. Ullam maecenas elit pariatur. Atque, nostra
           gravida inceptos error eveniet hac commodo reprehenderit, phasellus
           suscipit magna.
-        </p>
+        </Paragraph>
       </div>
     </PageTemplate>
   );

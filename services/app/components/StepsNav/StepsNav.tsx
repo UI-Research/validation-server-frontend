@@ -1,30 +1,8 @@
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import React, { useState } from 'react';
+import React from 'react';
+import { steps } from '../Steps/steps';
 import StepItem from './StepItem';
-
-interface Step {
-  id: string;
-  title?: string;
-  description?: string;
-}
-const steps: Step[] = [
-  {
-    id: '1',
-    title: 'Step 1',
-    description: 'Upload & Explore',
-  },
-  {
-    id: '2',
-    title: 'Step 2',
-    description: 'Review & Refine',
-  },
-  {
-    id: '3',
-    title: 'Step 3',
-    description: 'Request & Release',
-  },
-];
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,11 +12,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface StepsNavProps {
-  // TODO
+  activeStep: string;
+  onStepClick: (id: string) => void;
 }
 
-function StepsNav({}: StepsNavProps): JSX.Element {
-  const [activeStep, setActiveStep] = useState(steps[0].id);
+function StepsNav({ activeStep, onStepClick }: StepsNavProps): JSX.Element {
   const classes = useStyles();
 
   const handleClick = (
@@ -46,7 +24,7 @@ function StepsNav({}: StepsNavProps): JSX.Element {
     id: string,
   ) => {
     e.preventDefault();
-    setActiveStep(id);
+    onStepClick(id);
   };
 
   return (

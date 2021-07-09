@@ -1,13 +1,15 @@
 import PageTemplate from '../components/PageTemplate';
+import Paragraph from '../components/Paragraph';
+import SectionTitle from '../components/SectionTitle';
 
 const title = 'Help';
 
 function HelpPage(): JSX.Element {
   return (
     <PageTemplate title={title}>
-      <h1>{title}</h1>
+      <SectionTitle>{title}</SectionTitle>
       <div>
-        <p>
+        <Paragraph>
           Eleifend accusantium class vehicula, quis dapibus voluptatum hymenaeos
           mus turpis. Perferendis saepe! Tincidunt? Ullam sem officiis?
           Voluptatem saepe? Officia aut aspernatur! Dictumst provident? Felis
@@ -16,8 +18,8 @@ function HelpPage(): JSX.Element {
           totam. Libero pharetra, doloribus voluptates molestias voluptate ac
           curae, dolorem! Mollit, proident class. Torquent ultricies, ratione
           pariatur? Ac orci? Sint odit.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Voluptates senectus natus vero! Nisl magna sint congue officia
           feugiat, laboris facilisis. Lobortis adipisci vehicula iure nisi!
           Aliqua quisque nisi incididunt, vel nobis animi. Fringilla perferendis
@@ -25,8 +27,8 @@ function HelpPage(): JSX.Element {
           neque. Adipisci veritatis sociosqu, quae ipsum libero? Malesuada
           soluta bibendum! Primis! Tempus numquam, pellentesque orci luctus,
           nostrum dicta delectus nascetur earum, maecenas neque nam! Irure.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Harum sint incidunt fugiat dis malesuada? Morbi reprehenderit hac rem,
           quaerat eos? Taciti provident, itaque facilisis penatibus torquent
           incididunt, eos, doloremque vehicula lobortis! Non repellendus congue?
@@ -35,8 +37,8 @@ function HelpPage(): JSX.Element {
           sint, sapiente. Congue eleifend adipisci, magnam delectus montes
           adipisicing, optio libero. Vel. Temporibus facilisis, faucibus
           hendrerit debitis.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Recusandae anim sem do natus nullam dolores gravida vivamus saepe
           proin adipisci consequuntur platea, platea eget. Pellentesque
           temporibus! Dolore aliquip taciti venenatis minim ac, duis distinctio
@@ -44,8 +46,8 @@ function HelpPage(): JSX.Element {
           Ante impedit dolores primis officia, fuga. Ut reiciendis risus eget!
           Cubilia facilis! Dolore etiam ratione minus lacinia anim! Venenatis,
           incididunt? Omnis alias a massa.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Omnis eiusmod luctus eu nobis iaculis hic ea consequatur, parturient,
           ridiculus adipiscing aperiam, purus arcu, hendrerit suscipit proident
           suscipit voluptatem? Dolore perspiciatis minim morbi inventore ante?
@@ -53,8 +55,8 @@ function HelpPage(): JSX.Element {
           pellentesque dicta, mi reiciendis curae fugit! Dolorem quasi!
           Accusamus soluta modi accusamus, rem id, interdum aliquid corrupti
           ultrices dapibus odit, varius voluptas, itaque. Ligula lacus molestie.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Massa sollicitudin impedit deleniti nascetur delectus sequi dolore
           vestibulum? Vitae, ultricies eaque, tenetur! Elit blandit? Optio,
           penatibus voluptatem sociosqu error voluptates lectus quia praesent
@@ -62,8 +64,8 @@ function HelpPage(): JSX.Element {
           senectus dignissim! Dictum, rem illo fames? Aliqua quo neque! Do eius
           nullam dolorum habitasse. Eget? Tellus molestie, aliquam ad? Duis
           sagittis dictumst quibusdam expedita penatibus dignissimos delectus.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Cumque reiciendis cupiditate rerum suscipit? Fugiat rem alias ea
           laudantium aliqua laoreet, minima reprehenderit, netus! Asperiores
           aliquid ornare consequuntur accumsan, eu ullamcorper laboris
@@ -71,8 +73,8 @@ function HelpPage(): JSX.Element {
           fuga habitasse quia, facere diam aliquip? Doloribus! Cubilia facere
           eius pariatur euismod libero, quisquam repellendus facilisi tempor
           placeat nec mollit, harum sem quam fames. Ultrices porta rutrum enim.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Eum perspiciatis proin veniam natus, aenean quam inventore, ad,
           provident saepe fugiat congue, asperiores diam! Sodales eros mi
           dolores sit architecto sem parturient animi primis eligendi, culpa in
@@ -80,8 +82,8 @@ function HelpPage(): JSX.Element {
           recusandae laboris provident ridiculus, adipiscing quam, at risus
           exercitationem ullam, sapiente ligula natoque porttitor autem quidem
           temporibus lorem pede euismod iusto porta.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Cillum massa aperiam aute, consectetur officiis taciti accusamus lacus
           aliquet? Dolore? Quis? Quisque earum, necessitatibus accusamus tempora
           nisi, possimus ridiculus voluptatem cras odio quod euismod lectus eum
@@ -89,8 +91,8 @@ function HelpPage(): JSX.Element {
           provident felis pede, curae quia wisi taciti! Natoque volutpat,
           pharetra anim? Mollit voluptas? Habitant cubilia porro nulla, quisque
           fringilla? Harum accusamus, corrupti tempora.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Laboriosam. Nostrud occaecat duis velit integer. Natoque! Ipsam non a
           ipsum voluptatem beatae aliqua quam viverra! Aptent, wisi nostra
           aptent exercitation laudantium eget blanditiis, possimus, per iusto
@@ -98,8 +100,8 @@ function HelpPage(): JSX.Element {
           metus anim ipsam facilis itaque wisi! Ipsam commodo imperdiet ligula!
           Fusce, modi duis libero. Erat totam mi at doloribus metus maecenas
           quasi. Ultrices, aenean pellentesque maiores.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Praesent scelerisque harum fermentum aperiam fermentum! Libero
           doloribus accusamus! Etiam, dolor quia lobortis irure velit posuere
           interdum! Odio molestias commodo perspiciatis aperiam auctor habitant
@@ -107,8 +109,8 @@ function HelpPage(): JSX.Element {
           quisquam mollitia ullamco, mi proident officia do itaque sem. Earum
           gravida corporis, exercitationem posuere cupiditate autem consequatur.
           Quo rem primis, ipsam! Tristique debitis, culpa vulputate quia tellus.
-        </p>
-        <p>
+        </Paragraph>
+        <Paragraph>
           Suspendisse taciti euismod ornare iaculis etiam ut lorem totam cubilia
           morbi? Laborum, perferendis iure libero! Id sequi nostrum tempora
           commodi aliquam imperdiet dolorum tenetur, integer! Magni? Quasi
@@ -116,7 +118,7 @@ function HelpPage(): JSX.Element {
           doloribus incidunt dignissimos adipisci? Metus porta! Etiam. Corporis
           facilisi vivamus ab. Auctor et similique non ex! Perferendis id
           nullam, ullamco vestibulum odio augue tempus augue.
-        </p>
+        </Paragraph>
       </div>
     </PageTemplate>
   );

@@ -2,11 +2,19 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Grid,
+  Typography,
 } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
 import { ReactNode } from 'react';
+import BarChart from '../BarChart';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
+
+const available = 610;
+const starting = 1000;
+const cost = 3;
+const chartWidth = 600;
 
 const SampleDetail = () => (
   <div>
@@ -27,6 +35,29 @@ const SampleDetail = () => (
       summarized, showing the root mean square error (RMSE) between the
       confidential data and the posted data.
     </Paragraph>
+    <div>
+      <strong>Privacy Cost for Review &amp; Refinement of Analyses</strong>
+    </div>
+    <div style={{ width: chartWidth }}>
+      <Grid container={true}>
+        <Grid item={true} xs={true}>
+          <Typography align="left">
+            Cost for request: {cost.toLocaleString()}
+          </Typography>
+        </Grid>
+        <Grid item={true} xs={true}>
+          <Typography align="right">
+            Available budget: {available.toLocaleString()}
+          </Typography>
+        </Grid>
+      </Grid>
+      <BarChart
+        width={chartWidth}
+        max={starting}
+        value={available}
+        secondaryValue={cost}
+      />
+    </div>
   </div>
 );
 

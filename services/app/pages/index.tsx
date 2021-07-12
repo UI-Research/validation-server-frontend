@@ -1,10 +1,11 @@
 import PageTemplate from '../components/PageTemplate';
+import StepsNav from '../components/StepsNav/StepsNav';
 
-const title = 'UI-Research/validation-server-frontend';
+const title = 'Home';
 
-export default function Home() {
+function HomePage(): JSX.Element {
   return (
-    <PageTemplate title={title}>
+    <PageTemplate title={title} topContent={<StepsNav />}>
       <h1>{title}</h1>
       <div>
         <p>
@@ -135,3 +136,5 @@ export default function Home() {
     </PageTemplate>
   );
 }
+
+export default HomePage;

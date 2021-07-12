@@ -20,7 +20,11 @@ function Header(): JSX.Element {
     <AppBar color="default" position="static">
       <Toolbar>
         <Typography variant="h6" color="inherit" className={classes.title}>
-          Tax Policy Center, Urban Institute &amp; Brookings Institution
+          <Link href="/" passHref={true}>
+            <a>
+              Tax Policy Center, Urban Institute &amp; Brookings Institution
+            </a>
+          </Link>
         </Typography>
         <nav>
           <HeaderLink href="/data" label="Data" />

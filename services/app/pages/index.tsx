@@ -2,15 +2,39 @@ import { useState } from 'react';
 import PageTemplate from '../components/PageTemplate';
 import { steps } from '../components/Steps/steps';
 import StepsContent from '../components/Steps/StepsContent';
-import StepsNav from '../components/StepsNav/StepsNav';
+import StepsNav, { StepData } from '../components/StepsNav/StepsNav';
 
 const title = 'Home';
 
+const defaultActiveStep = steps[0].id;
+const defaultStepData: StepData[] = steps.map(step => ({
+  ...step,
+  locked: step.id === defaultActiveStep ? undefined : true,
+}));
+
+interface FullStepData {
+  steps: StepData[];
+  activeStep: string;
+}
+
 function HomePage(): JSX.Element {
-  const [activeStep, setActiveStep] = useState(steps[0].id);
+  const [stepData, setStepData] = useState<FullStepData>({
+    steps: defaultStepData,
+    activeStep: defaultActiveStep,
+  });
 
   const handleSetStep = (id: string) => {
-    setActiveStep(id);
+    if (id === stepData.activeStep) {
+      // If the currently active step was clicked, do not do anything.
+      return;
+    }
+    setStepData(state => ({
+      steps: state.steps.map(step => ({
+        ...step,
+        locked: step.locked === undefined ? undefined : false,
+      })),
+      activeStep: id,
+    }));
     // TODO: scroll back to the top of the content on step update.
   };
 
@@ -18,10 +42,17 @@ function HomePage(): JSX.Element {
     <PageTemplate
       title={title}
       topContent={
-        <StepsNav activeStep={activeStep} onStepClick={setActiveStep} />
+        <StepsNav
+          activeStep={stepData.activeStep}
+          steps={stepData.steps}
+          onStepClick={handleSetStep}
+        />
       }
     >
-      <StepsContent activeStep={activeStep} onSetStep={handleSetStep} />
+      <StepsContent
+        activeStep={stepData.activeStep}
+        onSetStep={handleSetStep}
+      />
     </PageTemplate>
   );
 }

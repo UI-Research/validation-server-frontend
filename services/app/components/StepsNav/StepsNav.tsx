@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import React from 'react';
-import { steps } from '../Steps/steps';
+import React, { ReactNode } from 'react';
+import { Step } from '../Steps/steps';
 import StepItem from './StepItem';
 
 const useStyles = makeStyles(theme => ({
@@ -11,20 +11,31 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+export interface StepData extends Step {
+  locked?: boolean;
+}
+
 interface StepsNavProps {
   activeStep: string;
+  steps: StepData[];
   onStepClick: (id: string) => void;
 }
 
-function StepsNav({ activeStep, onStepClick }: StepsNavProps): JSX.Element {
+function StepsNav({
+  activeStep,
+  steps,
+  onStepClick,
+}: StepsNavProps): JSX.Element {
   const classes = useStyles();
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    id: string,
+    step: StepData,
   ) => {
     e.preventDefault();
-    onStepClick(id);
+    if (!step.locked) {
+      onStepClick(step.id);
+    }
   };
 
   return (
@@ -36,8 +47,9 @@ function StepsNav({ activeStep, onStepClick }: StepsNavProps): JSX.Element {
             id={step.id}
             title={step.title}
             description={step.description}
-            onClick={e => handleClick(e, step.id)}
+            onClick={e => handleClick(e, step)}
             isActive={activeStep === step.id}
+            isLocked={step.locked}
           />
         ))}
       </Grid>

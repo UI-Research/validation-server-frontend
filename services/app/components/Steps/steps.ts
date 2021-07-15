@@ -1,6 +1,6 @@
 export interface Step {
   id: string;
-  title?: string;
+  title: string;
   description?: string;
 }
 const steps: Step[] = [

@@ -1,5 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import React from 'react';
+import { steps } from '../Steps/steps';
 import StepItem from './StepItem';
 
 const useStyles = makeStyles(theme => ({
@@ -10,18 +12,34 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface StepsNavProps {
-  // TODO
+  activeStep: string;
+  onStepClick: (id: string) => void;
 }
 
-function StepsNav({}: StepsNavProps): JSX.Element {
+function StepsNav({ activeStep, onStepClick }: StepsNavProps): JSX.Element {
   const classes = useStyles();
+
+  const handleClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    id: string,
+  ) => {
+    e.preventDefault();
+    onStepClick(id);
+  };
+
   return (
     <div className={classes.root}>
       <Grid container={true} spacing={5}>
-        <StepItem title="Step 1" description="Upload &amp; Explore" />
-        <StepItem title="Step 2" description="Review &amp; Refine" />
-        <StepItem title="Step 3" description="Request &amp; Release" />
-        <StepItem description="Saved and History" />
+        {steps.map(step => (
+          <StepItem
+            key={step.id}
+            id={step.id}
+            title={step.title}
+            description={step.description}
+            onClick={e => handleClick(e, step.id)}
+            isActive={activeStep === step.id}
+          />
+        ))}
       </Grid>
     </div>
   );

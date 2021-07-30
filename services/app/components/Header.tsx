@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import MuiLink from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
 
 const useStyles = makeStyles(theme => ({
@@ -12,6 +11,9 @@ const useStyles = makeStyles(theme => ({
   link: {
     margin: theme.spacing(1, 1.5),
   },
+  logo: {
+    margin: theme.spacing(3),
+  },
 }));
 
 function Header(): JSX.Element {
@@ -19,13 +21,19 @@ function Header(): JSX.Element {
   return (
     <AppBar color="default" position="static">
       <Toolbar>
-        <Typography variant="h6" color="inherit" className={classes.title}>
+        <div className={classes.title}>
           <Link href="/" passHref={true}>
-            <a>
-              Tax Policy Center, Urban Institute &amp; Brookings Institution
+            <a title="Home">
+              <img
+                className={classes.logo}
+                src="/assets/tpc-logo-screen.svg"
+                alt="Tax Policy Center, Urban Institute &amp; Brookings Institution"
+                width={288}
+                height={89}
+              />
             </a>
           </Link>
-        </Typography>
+        </div>
         <nav>
           <HeaderLink href="/data" label="Data" />
           <HeaderLink href="/help" label="Help" />
@@ -44,7 +52,7 @@ function HeaderLink({ href, label }: HeaderLinkProps): JSX.Element {
   const classes = useStyles();
   return (
     <Link href={href} passHref={true}>
-      <MuiLink color="inherit" className={classes.link}>
+      <MuiLink color="inherit" className={classes.link} title={label}>
         {label}
       </MuiLink>
     </Link>

@@ -18,4 +18,5 @@ services:
       - ./services/app/pages:/app/pages:cached
       - ./services/app/public:/app/public:cached
       - ./services/app/styles:/app/styles:cached
+      - ./services/app/util:/app/util:cached
 volumes: {}

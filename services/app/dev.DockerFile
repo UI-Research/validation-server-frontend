@@ -9,6 +9,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY tsconfig.json next.config.js \
+     .env* \
      next-env.d.ts \
      ./
 

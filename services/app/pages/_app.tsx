@@ -2,7 +2,23 @@ import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import type { AppProps } from 'next/app';
 import React, { useState } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ApiContextProvider } from '../components/context/ApiContext';
 import theme from '../styles/material-ui/theme';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Do not retry query on failed fetch.
+      retry: false,
+      // Do not refetch on window focus.
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+// TODO: Not hard code the researcher ID.
+const researcherId = 2;
+const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [key, setKey] = useState(0);
@@ -22,10 +38,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <ThemeProvider key={key} theme={theme}>
-      <CssBaseline />
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ApiContextProvider researcherId={researcherId} token={token || ''}>
+        <ThemeProvider key={key} theme={theme}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </ApiContextProvider>
+    </QueryClientProvider>
   );
 }
 export default MyApp;

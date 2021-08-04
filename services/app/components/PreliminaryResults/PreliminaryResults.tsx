@@ -1,15 +1,12 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Grid,
-  Typography,
-} from '@material-ui/core';
-import { ExpandMore } from '@material-ui/icons';
-import { ReactNode } from 'react';
+import { Grid, Typography } from '@material-ui/core';
+import { Fragment, ReactNode } from 'react';
+import Accordion from '../Accordion';
 import BarChart from '../BarChart';
+import Check from '../Icons/Check';
+import Warning from '../Icons/Warning';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
+import PreliminarySummaryContent from './PreliminarySummaryContent';
 
 const available = 610;
 const starting = 1000;
@@ -64,17 +61,20 @@ const SampleDetail = () => (
 interface ResultItem {
   id: string;
   title: string;
+  icon: 'check' | 'warning';
   details: ReactNode;
 }
 const results: ResultItem[] = [
   {
     id: '1',
     title: 'plot_private 1',
+    icon: 'check',
     details: <SampleDetail />,
   },
   {
     id: '2',
     title: 'Error PCA 1',
+    icon: 'warning',
     details: (
       <div>
         <div>
@@ -93,6 +93,7 @@ const results: ResultItem[] = [
   {
     id: '3',
     title: 'tabulation_private 2',
+    icon: 'check',
     details: <SampleDetail />,
   },
 ];
@@ -113,15 +114,17 @@ function PreliminaryResults({}: PreliminaryResultsProps): JSX.Element {
       </Paragraph>
       <div>
         {results.map(result => (
-          <Accordion key={result.id}>
-            <AccordionSummary
-              expandIcon={<ExpandMore />}
-              aria-controls={`${result.id}-content`}
-              id={`${result.id}-header`}
-            >
-              {result.title}
-            </AccordionSummary>
-            <AccordionDetails>{result.details}</AccordionDetails>
+          <Accordion
+            key={result.id}
+            id={result.id}
+            summaryContent={
+              <PreliminarySummaryContent
+                iconType={result.icon}
+                text={result.title}
+              />
+            }
+          >
+            {result.details}
           </Accordion>
         ))}
       </div>

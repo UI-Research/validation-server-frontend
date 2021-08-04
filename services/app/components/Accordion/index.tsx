@@ -23,13 +23,24 @@ const useStyles = makeStyles(theme => ({
     borderBottomWidth: '1px',
     borderRadius: '4px',
     marginBottom: '-1px',
+    // Undo default expanded styling.
+    '&.Mui-expanded': {
+      minHeight: 'inherit',
+    },
+  },
+  summaryContent: {
+    margin: 0,
+    borderRightColor: theme.palette.grey[600],
+    borderRightStyle: 'solid',
+    borderRightWidth: '1px',
+    // Undo default expanded styling.
+    '&.Mui-expanded': {
+      margin: 0,
+    },
   },
   summaryExpanded: {
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
-  },
-  checkIcon: {
-    color: theme.palette.success.dark,
   },
 }));
 
@@ -47,13 +58,16 @@ const Accordion: React.FC<AccordionProps> = ({
   return (
     <MuiAccordion className={classes.wrapper} elevation={0}>
       <AccordionSummary
-        classes={{ expanded: classes.summaryExpanded }}
+        classes={{
+          content: classes.summaryContent,
+          expanded: classes.summaryExpanded,
+        }}
         className={classes.summary}
         expandIcon={<ExpandMore />}
         aria-controls={`${id}-content`}
         id={`${id}-header`}
       >
-        <Grid container={true}>{summaryContent}</Grid>
+        {summaryContent}
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
     </MuiAccordion>

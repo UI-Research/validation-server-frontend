@@ -1,4 +1,4 @@
-import { Container, Grid, IconButton, Typography } from '@material-ui/core';
+import { Grid, IconButton, Typography } from '@material-ui/core';
 import { AddShoppingCart, MoreVert } from '@material-ui/icons';
 import Accordion from '../Accordion';
 import CodeBlock from '../CodeBlock';

@@ -2,6 +2,7 @@ import { Grid, Typography } from '@material-ui/core';
 import { ReactNode } from 'react';
 import Accordion from '../Accordion';
 import BarChart from '../BarChart';
+import CodeBlock from '../CodeBlock';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 import PreliminarySummaryContent from './PreliminarySummaryContent';
@@ -79,7 +80,7 @@ const results: ResultItem[] = [
           <strong>Command:</strong>
         </div>
         <div>
-          <pre>PCA(synthdata, row.w = "s006")</pre>
+          <CodeBlock code={'PCA(synthdata, row.w = "s006")'} />
         </div>
         <div>
           <strong>Issue:</strong> Command not allowed in this system. Please see

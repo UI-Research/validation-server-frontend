@@ -10,7 +10,7 @@ import React, { ReactNode, useState } from 'react';
 import Check from '../Icons/Check';
 import Warning from '../Icons/Warning';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     width: '100%',

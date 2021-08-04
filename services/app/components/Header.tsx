@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import MuiLink from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +25,7 @@ function Header(): JSX.Element {
         <div className={classes.title}>
           <Link href="/" passHref={true}>
             <a title="Home">
-              <img
+              <Image
                 className={classes.logo}
                 src="/assets/tpc-logo-screen.svg"
                 alt="Tax Policy Center, Urban Institute &amp; Brookings Institution"

@@ -1,9 +1,7 @@
 import { Grid, Typography } from '@material-ui/core';
-import { Fragment, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import Accordion from '../Accordion';
 import BarChart from '../BarChart';
-import Check from '../Icons/Check';
-import Warning from '../Icons/Warning';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 import PreliminarySummaryContent from './PreliminarySummaryContent';

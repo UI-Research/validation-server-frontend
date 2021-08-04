@@ -6,7 +6,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
     borderRightColor: theme.palette.grey[600],
     borderRightStyle: 'solid',
     borderRightWidth: '1px',
+    minHeight: '48px',
     // Undo default expanded styling.
     '&.Mui-expanded': {
       margin: 0,
@@ -67,7 +68,17 @@ const Accordion: React.FC<AccordionProps> = ({
         aria-controls={`${id}-content`}
         id={`${id}-header`}
       >
-        {summaryContent}
+        {/*
+          If the summary content is a string,
+          then place it in a center align Grid so that is is vertically centered.
+        */}
+        {typeof summaryContent === 'string' ? (
+          <Grid container={true} alignItems="center">
+            {summaryContent}
+          </Grid>
+        ) : (
+          summaryContent
+        )}
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
     </MuiAccordion>

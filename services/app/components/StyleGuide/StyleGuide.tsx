@@ -3,6 +3,7 @@ import CodeBlock from '../CodeBlock';
 import Paragraph from '../Paragraph';
 import SpreadsheetTableExample from './SpreadsheetTableExample';
 import TableExample from './TableExample';
+import UIButton from '../UIButton';
 
 function StyleGuide(): JSX.Element {
   return (
@@ -86,6 +87,8 @@ function StyleGuide(): JSX.Element {
           maxHeight={145}
         />
       </div>
+      <Typography variant="h5">Buttons</Typography>
+      <UIButton title="Button Example" icon="PlaylistAdd" />
     </div>
   );
 }

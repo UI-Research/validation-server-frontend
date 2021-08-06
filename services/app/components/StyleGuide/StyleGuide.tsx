@@ -88,7 +88,19 @@ function StyleGuide(): JSX.Element {
         />
       </div>
       <Typography variant="h5">Buttons</Typography>
-      <UIButton title="Button Example" icon="PlaylistAdd" />
+      <Typography variant="h6">Upload</Typography>
+      <UIButton title="Upload File" icon="Publish" />
+      <Typography variant="h6">Add to List</Typography>
+      <UIButton
+        title="Add to Review &amp; Refinement Queue"
+        icon="PlaylistAdd"
+      />
+      <Typography variant="h6">More</Typography>
+      <UIButton title="More Actions" icon="MoreVert" />
+      <Typography variant="h6">Add</Typography>
+      <UIButton title="Add New Version" icon="Add" />
+      <Typography variant="h6">Add to Final</Typography>
+      <UIButton title="Add to Final Request Queue" icon="AddShoppingCart" />
     </div>
   );
 }

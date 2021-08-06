@@ -1,8 +1,13 @@
 import { Button } from '@material-ui/core';
-import { Publish, PlaylistAdd } from '@material-ui/icons';
+import {
+  Publish,
+  PlaylistAdd,
+  MoreVert,
+  AddShoppingCart,
+  Add,
+} from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import clsx, { ClassDictionary } from 'clsx';
 
 const styles = {
   button: {
@@ -10,8 +15,9 @@ const styles = {
     border: 0,
     borderRadius: 0,
     color: 'white',
-    height: 48,
-    padding: '0 30px',
+    padding: '15px 10px',
+    fontSize: '14px',
+    lineHeight: '1rem',
     boxShadow: 'none',
     '&:hover': {
       background: '#0a4c6a'
@@ -19,14 +25,20 @@ const styles = {
   },
 };
 
-function UIButton(props: any): JSX.Element {
+interface UIButtonProps {
+  title: string;
+  icon?: string;
+  classes: ClassDictionary;
+}
+
+function UIButton(props: UIButtonProps): JSX.Element {
   const { classes, title, icon } = props;
 
   return (
     <Button
       variant="contained"
       className={clsx(classes.button)}
-      endIcon={getIcon(icon)}
+      endIcon={icon && getIcon(icon)}
     >
       {title}
     </Button>
@@ -39,6 +51,12 @@ function getIcon(icon: string) {
       return <Publish />;
     case 'PlaylistAdd':
       return <PlaylistAdd />;
+    case 'MoreVert':
+      return <MoreVert />;
+    case 'AddShoppingCart':
+      return <AddShoppingCart />;
+    case 'Add':
+      return <Add />;
     default:
       return null;
   }

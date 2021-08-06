@@ -101,6 +101,10 @@ function StyleGuide(): JSX.Element {
       <UIButton title="Add New Version" icon="Add" />
       <Typography variant="h6">Add to Final</Typography>
       <UIButton title="Add to Final Request Queue" icon="AddShoppingCart" />
+      <Typography variant="h6">Next (disabled)</Typography>
+      <UIButton title="Next" icon="ChevronRight" disabled={true} />
+      <Typography variant="h6">Next</Typography>
+      <UIButton title="Next" icon="ChevronRight" />
     </div>
   );
 }

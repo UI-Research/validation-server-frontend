@@ -1,10 +1,11 @@
-import { Button } from '@material-ui/core';
+import { Button, ButtonProps } from '@material-ui/core';
 import {
   Publish,
   PlaylistAdd,
   MoreVert,
   AddShoppingCart,
   Add,
+  ChevronRight,
 } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import clsx, { ClassDictionary } from 'clsx';
@@ -25,20 +26,27 @@ const styles = {
   },
 };
 
-interface UIButtonProps {
+interface UIButtonProps extends ButtonProps {
   title: string;
-  icon?: string;
+  icon?:
+    | 'Publish'
+    | 'PlaylistAdd'
+    | 'MoreVert'
+    | 'Add'
+    | 'AddShoppingCart'
+    | 'ChevronRight';
   classes: ClassDictionary;
 }
 
 function UIButton(props: UIButtonProps): JSX.Element {
-  const { classes, title, icon } = props;
+  const { classes, title, icon, disabled } = props;
 
   return (
     <Button
       variant="contained"
       className={clsx(classes.button)}
       endIcon={icon && getIcon(icon)}
+      disabled={disabled}
     >
       {title}
     </Button>
@@ -57,6 +65,8 @@ function getIcon(icon: string) {
       return <AddShoppingCart />;
     case 'Add':
       return <Add />;
+    case 'ChevronRight':
+      return <ChevronRight />;
     default:
       return null;
   }

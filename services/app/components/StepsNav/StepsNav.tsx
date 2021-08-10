@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Step } from '../Steps/steps';
 import StepItem from './StepItem';
 

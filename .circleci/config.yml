@@ -14,7 +14,7 @@ jobs:
       - run:
           name: Build Containers Over SSH
           command: |
-              ssh docker1@validation-server-stg.urban.org -p 22 "cd validation-server.urban.org && ls -lsat && docker-compose build app && docker-compose up -d app"
+              ssh docker1@validation-server-stg.urban.org -p 22 "cd validation-server.urban.org && ls -lsat && docker-compose build --no-cache app && docker-compose up -d app && docker system prune --force"
 workflows:
   version: 2
   build_stg:

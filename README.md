@@ -5,6 +5,12 @@ To run, you need the [forumone-cli library](https://github.com/forumone/forumone
 npm install -g forumone-cli
 ```
 
+The app requires an API token from the validation server to work. Once you have it, do:
+```
+cp services/app/.env.example services/app/.env
+```
+Then paste your token as the value for `NEXT_PUBLIC_API_TOKEN` in `services/app/.env`.
+
 To initialize and run the app:
 
 1. `f1 build`

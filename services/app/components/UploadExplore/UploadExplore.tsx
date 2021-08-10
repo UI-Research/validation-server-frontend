@@ -5,6 +5,7 @@ import Paragraph from '../Paragraph';
 import PreliminaryResults from '../PreliminaryResults/PreliminaryResults';
 import SectionTitle from '../SectionTitle';
 import UploadSection from './UploadSection';
+import UIButton from '../UIButton';
 
 interface UploadExploreProps {
   onNextClick: () => void;
@@ -58,9 +59,7 @@ function UploadExplore({ onNextClick }: UploadExploreProps): JSX.Element {
             </Paragraph>
           </Grid>
           <Grid item={true} xs={4}>
-            <Button variant="contained" color="primary" onClick={onNextClick}>
-              Next
-            </Button>
+            <UIButton title="Next" icon="ChevronRight" onClick={onNextClick} />
           </Grid>
         </Grid>
       </div>

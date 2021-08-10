@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import { Publish } from '@material-ui/icons';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
-
+import UIButton from '../UIButton';
 interface UploadSectionProps {
   // TODO
 }
@@ -18,9 +18,7 @@ function UploadSection({}: UploadSectionProps): JSX.Element {
         commands, which may take a few minutes. Results for each command will
         appear below as the system completes the processing.
       </Paragraph>
-      <Button variant="contained" color="primary" endIcon={<Publish />}>
-        Upload a file
-      </Button>
+      <UIButton title="Upload a file" icon="Publish" />
     </div>
   );
 }

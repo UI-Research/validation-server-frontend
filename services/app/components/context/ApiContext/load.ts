@@ -18,6 +18,13 @@ async function load(endpoint: string, token: string) {
       Authorization: `Token ${token}`,
     },
   });
+
+  if (!response.ok) {
+    throw new Error(
+      `${response.status} ${response.statusText}. Check your token.`,
+    );
+  }
+
   const resJson = response.json();
   return resJson;
 }

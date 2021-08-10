@@ -14,6 +14,10 @@ const queryClient = new QueryClient({
       // Do not refetch on window focus.
       refetchOnWindowFocus: false,
     },
+    mutations: {
+      // Do not retry query on failed fetch.
+      retry: false,
+    },
   },
 });
 // TODO: Not hard code the researcher ID.

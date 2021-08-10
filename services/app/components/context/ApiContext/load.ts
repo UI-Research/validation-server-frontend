@@ -8,11 +8,12 @@ import basePath from './basePath';
  * @example
  * ```ts
  * const researcherId = 2;
+ * const token = 'abc123';
  * const endpoint = `/public-use-budget/${researcherId}`;
- * const result = await load(endpoint);
+ * const result = await load(endpoint, token);
  * ```
  */
-async function load(endpoint: string, token: string) {
+async function load<T = any>(endpoint: string, token: string): Promise<T> {
   const response = await fetch(`${basePath}${endpoint}`, {
     headers: {
       Authorization: `Token ${token}`,

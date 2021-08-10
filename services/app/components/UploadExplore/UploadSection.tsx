@@ -48,7 +48,6 @@ function UploadSection({}: UploadSectionProps): JSX.Element {
       // queryClient.invalidateQueries('create');
     },
   });
-  console.log(result);
 
   const handleClick = () => {
     console.log('handleClick');

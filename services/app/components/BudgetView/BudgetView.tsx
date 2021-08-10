@@ -65,9 +65,10 @@ function BudgetFigureContainer({
   type,
 }: BudgetFigureContainerProps): JSX.Element {
   const { researcherId, token } = useContext(ApiContext);
-  const { data, isError, isLoading } = useQuery<BudgetDataResponse>(type, () =>
-    load(`/${type}/${researcherId}/`, token),
+  const { data, isError, isLoading } = useQuery(type, () =>
+    load<BudgetDataResponse>(`/${type}/${researcherId}/`, token),
   );
+
   if (isError) {
     return (
       <Grid container={true} spacing={2} justify="center">

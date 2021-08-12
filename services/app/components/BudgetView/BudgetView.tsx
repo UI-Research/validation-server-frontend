@@ -1,9 +1,9 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core';
 import ErrorIcon from '@material-ui/icons/Error';
-import { useContext } from 'react';
-import { useQuery } from 'react-query';
-import ApiContext from '../context/ApiContext';
-import load from '../context/ApiContext/load';
+import {
+  BudgetType,
+  useBudgetQuery,
+} from '../context/ApiContext/queries/budget';
 import LoadingIndicator from '../LoadingIndicator';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
@@ -59,15 +59,12 @@ function BudgetView({}: BudgetViewProps): JSX.Element {
 }
 
 interface BudgetFigureContainerProps {
-  type: 'public-use-budget' | 'review-and-refinement-budget';
+  type: BudgetType;
 }
 function BudgetFigureContainer({
   type,
 }: BudgetFigureContainerProps): JSX.Element {
-  const { researcherId, token } = useContext(ApiContext);
-  const { data, isError, isLoading } = useQuery(type, () =>
-    load<BudgetDataResponse>(`/${type}/${researcherId}/`, token),
-  );
+  const { data, isError, isLoading } = useBudgetQuery(type);
 
   if (isError) {
     return (

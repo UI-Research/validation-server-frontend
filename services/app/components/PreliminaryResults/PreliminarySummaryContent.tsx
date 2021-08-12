@@ -9,6 +9,7 @@ import { MoreVert, PlaylistAdd } from '@material-ui/icons';
 import React, { ReactNode, useState } from 'react';
 import Check from '../Icons/Check';
 import Warning from '../Icons/Warning';
+import MoreMenu from '../MoreMenu';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -35,10 +36,6 @@ function PreliminarySummaryContent({
   };
   const handleMenuClose = () => {
     setMenuAnchorEl(null);
-  };
-  const handleMenuItemClick = (event: React.MouseEvent<HTMLLIElement>) => {
-    event.stopPropagation();
-    handleMenuClose();
   };
   return (
     <div className={classes.root}>
@@ -68,33 +65,10 @@ function PreliminarySummaryContent({
               >
                 <MoreVert />
               </IconButton>
-              <Menu
-                id="more-menu"
-                anchorEl={menuAnchorEl}
-                keepMounted={true}
-                open={Boolean(menuAnchorEl)}
-                onClose={(event, reason) => {
-                  // For backdrop clicks, stop propagation (if event has it).
-                  // Else, the accordion with think it was clicked and toggle.
-                  if (reason === 'backdropClick') {
-                    if (typeof (event as any).stopPropagation === 'function') {
-                      (
-                        event as React.MouseEvent<HTMLElement>
-                      ).stopPropagation();
-                    }
-                  }
-                  handleMenuClose();
-                }}
-              >
-                {/* TODO: Handle menu item clicks. */}
-                <MenuItem onClick={handleMenuItemClick}>
-                  Save for Later
-                </MenuItem>
-                <MenuItem onClick={handleMenuItemClick}>
-                  Remove from List
-                </MenuItem>
-                <MenuItem onClick={handleMenuItemClick}>Rename</MenuItem>
-              </Menu>
+              <MoreMenu
+                menuAnchorEl={menuAnchorEl}
+                onMenuClose={handleMenuClose}
+              />
             </Grid>
           </Grid>
         </Grid>

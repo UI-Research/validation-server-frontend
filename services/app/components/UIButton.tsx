@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, ButtonProps, makeStyles } from '@material-ui/core';
 import {
   Publish,
   PlaylistAdd,
@@ -6,10 +6,8 @@ import {
   AddShoppingCart,
   Add,
 } from '@material-ui/icons';
-import { withStyles } from '@material-ui/core/styles';
-import clsx, { ClassDictionary } from 'clsx';
 
-const styles = {
+const useStyles = makeStyles(() => ({
   button: {
     background: '#1696d2',
     border: 0,
@@ -20,24 +18,27 @@ const styles = {
     lineHeight: '1rem',
     boxShadow: 'none',
     '&:hover': {
-      background: '#0a4c6a'
+      background: '#0a4c6a',
     },
   },
-};
+}));
 
-interface UIButtonProps {
+type Icon = 'Publish' | 'PlaylistAdd' | 'MoreVert' | 'AddShoppingCart' | 'Add';
+
+interface UIButtonProps
+  extends Omit<ButtonProps, 'endIcon' | 'variant' | 'className'> {
   title: string;
-  icon?: string;
-  classes: ClassDictionary;
+  icon?: Icon;
 }
 
-function UIButton(props: UIButtonProps): JSX.Element {
-  const { classes, title, icon } = props;
+function UIButton({ title, icon, ...props }: UIButtonProps): JSX.Element {
+  const classes = useStyles();
 
   return (
     <Button
+      {...props}
       variant="contained"
-      className={clsx(classes.button)}
+      className={classes.button}
       endIcon={icon && getIcon(icon)}
     >
       {title}
@@ -45,7 +46,7 @@ function UIButton(props: UIButtonProps): JSX.Element {
   );
 }
 
-function getIcon(icon: string) {
+function getIcon(icon: Icon) {
   switch (icon) {
     case 'Publish':
       return <Publish />;
@@ -62,4 +63,4 @@ function getIcon(icon: string) {
   }
 }
 
-export default withStyles(styles)(UIButton);
+export default UIButton;

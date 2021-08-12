@@ -1,10 +1,7 @@
 import { Button } from '@material-ui/core';
 import { Publish } from '@material-ui/icons';
-import { useContext } from 'react';
-import { useMutation } from 'react-query';
 import { sanitizedCommandInput } from '../../util/example-data/sql-commands';
-import ApiContext from '../context/ApiContext';
-import post from '../context/ApiContext/post';
+import { useCommandMutation } from '../context/ApiContext/queries/command';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 
@@ -28,29 +25,11 @@ interface UploadSectionProps {
   // TODO
 }
 function UploadSection({}: UploadSectionProps): JSX.Element {
-  const { token } = useContext(ApiContext);
-  const postCommand = async (data: CommandPayload) => {
-    const response = await post('/command/', token, data);
-    return response;
-  };
-  const result = useMutation(postCommand, {
-    onSuccess: data => {
-      console.log('onSuccess');
-      console.log(data);
-    },
-    onError: error => {
-      console.log('onError');
-      console.error(error);
-    },
-    onSettled: () => {
-      console.log('onSettled');
-      // Invalidate some query.
-      // queryClient.invalidateQueries('create');
-    },
-  });
+  const result = useCommandMutation();
 
   const handleClick = () => {
-    console.log('handleClick');
+    // TODO: Handle file upload stuff.
+    // For now, just use a test payload and send that to the API.
     const payload = testPayload;
     result.mutate(payload);
   };
@@ -71,6 +50,7 @@ function UploadSection({}: UploadSectionProps): JSX.Element {
         color="primary"
         endIcon={<Publish />}
         onClick={handleClick}
+        disabled={result.isLoading}
       >
         Upload a file
       </Button>

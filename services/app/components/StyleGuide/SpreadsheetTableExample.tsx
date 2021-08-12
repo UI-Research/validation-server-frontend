@@ -14,7 +14,6 @@ function SpreadsheetTableExample(): JSX.Element {
         [10, 4, 2, 4727],
         [10, 4, 3, 81590],
       ]}
-      getRowId={(_, i) => String(i)}
     />
   );
 }

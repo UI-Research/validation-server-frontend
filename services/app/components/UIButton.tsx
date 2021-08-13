@@ -5,6 +5,7 @@ import {
   MoreVert,
   AddShoppingCart,
   Add,
+  ChevronRight,
 } from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
@@ -23,7 +24,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type Icon = 'Publish' | 'PlaylistAdd' | 'MoreVert' | 'AddShoppingCart' | 'Add';
+type Icon =
+  | 'Publish'
+  | 'PlaylistAdd'
+  | 'MoreVert'
+  | 'AddShoppingCart'
+  | 'Add'
+  | 'ChevronRight';
 
 interface UIButtonProps
   extends Omit<ButtonProps, 'endIcon' | 'variant' | 'className'> {
@@ -58,6 +65,8 @@ function getIcon(icon: Icon) {
       return <AddShoppingCart />;
     case 'Add':
       return <Add />;
+    case 'ChevronRight':
+      return <ChevronRight />;
     default:
       return null;
   }

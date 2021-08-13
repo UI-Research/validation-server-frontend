@@ -1,9 +1,8 @@
-import { Button } from '@material-ui/core';
-import { Publish } from '@material-ui/icons';
 import { sanitizedCommandInput } from '../../util/example-data/sql-commands';
 import { useCommandPost } from '../context/ApiContext/queries/command';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
+import UIButton from '../UIButton';
 
 interface CommandPayload {
   command_type: number;
@@ -45,15 +44,12 @@ function UploadSection({}: UploadSectionProps): JSX.Element {
         commands, which may take a few minutes. Results for each command will
         appear below as the system completes the processing.
       </Paragraph>
-      <Button
-        variant="contained"
-        color="primary"
-        endIcon={<Publish />}
+      <UIButton
+        title="Upload a file"
+        icon="Publish"
         onClick={handleClick}
         disabled={result.isLoading}
-      >
-        Upload a file
-      </Button>
+      />
     </div>
   );
 }

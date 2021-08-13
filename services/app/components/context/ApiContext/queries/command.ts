@@ -7,6 +7,7 @@ import {
 } from 'react-query';
 import ApiContext from '..';
 import load from '../load';
+import patch from '../patch';
 import post from '../post';
 
 export interface CommandResponseResult {
@@ -24,7 +25,7 @@ export interface CommandResponse {
   count: number;
   results: CommandResponseResult[];
 }
-
+// COMMAND GET QUERY
 function useCommandQuery(): UseQueryResult<CommandResponse> {
   const { token } = useContext(ApiContext);
   const result = useQuery('command', () =>
@@ -33,7 +34,8 @@ function useCommandQuery(): UseQueryResult<CommandResponse> {
   return result;
 }
 
-export interface CommandPayload {
+// COMMAND POST QUERY
+export interface CommandPostPayload {
   command_type: number;
   command_name: string;
   sanitized_command_input: {
@@ -42,12 +44,15 @@ export interface CommandPayload {
     transformation_query: string;
   };
 }
-
-function useCommandMutation() {
+interface CommandPostOptions {
+  onSuccess?: (data: CommandResponseResult) => void;
+  onError?: (error: unknown) => void;
+}
+function useCommandPost(opts: CommandPostOptions = {}) {
   const { token } = useContext(ApiContext);
   const queryClient = useQueryClient();
   const postCommand = async (
-    data: CommandPayload,
+    data: CommandPostPayload,
   ): Promise<CommandResponseResult> => {
     const response = await post<CommandResponseResult>(
       '/command/',
@@ -58,15 +63,16 @@ function useCommandMutation() {
   };
   const result = useMutation(postCommand, {
     onSuccess: data => {
-      console.log('onSuccess');
-      console.log(data);
+      if (opts.onSuccess) {
+        opts.onSuccess(data);
+      }
     },
     onError: error => {
-      console.log('onError');
-      console.error(error);
+      if (opts.onError) {
+        opts.onError(error);
+      }
     },
     onSettled: () => {
-      console.log('onSettled');
       // Invalidate the command query.
       queryClient.invalidateQueries('command');
     },
@@ -74,4 +80,45 @@ function useCommandMutation() {
   return result;
 }
 
-export { useCommandMutation, useCommandQuery };
+// COMMAND PATCH QUERY
+interface CommandPatchPayload {
+  command_id: number;
+  command_name: string;
+}
+interface CommandPatchOptions {
+  onSuccess?: (data: CommandResponseResult) => void;
+  onError?: (error: unknown) => void;
+}
+function useCommandPatch(opts: CommandPatchOptions = {}) {
+  const { token } = useContext(ApiContext);
+  const queryClient = useQueryClient();
+  const patchCommand = async (
+    data: CommandPatchPayload,
+  ): Promise<CommandResponseResult> => {
+    const response = await patch<CommandResponseResult>(
+      `/command/${data.command_id}/`,
+      token,
+      { command_name: data.command_name },
+    );
+    return response;
+  };
+  const result = useMutation(patchCommand, {
+    onSuccess: data => {
+      if (opts.onSuccess) {
+        opts.onSuccess(data);
+      }
+    },
+    onError: error => {
+      if (opts.onError) {
+        opts.onError(error);
+      }
+    },
+    onSettled: () => {
+      // Invalidate the command query.
+      queryClient.invalidateQueries('command');
+    },
+  });
+  return result;
+}
+
+export { useCommandPatch, useCommandPost, useCommandQuery };

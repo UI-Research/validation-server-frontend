@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { Publish } from '@material-ui/icons';
 import { sanitizedCommandInput } from '../../util/example-data/sql-commands';
-import { useCommandMutation } from '../context/ApiContext/queries/command';
+import { useCommandPost } from '../context/ApiContext/queries/command';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 
@@ -25,7 +25,7 @@ interface UploadSectionProps {
   // TODO
 }
 function UploadSection({}: UploadSectionProps): JSX.Element {
-  const result = useCommandMutation();
+  const result = useCommandPost();
 
   const handleClick = () => {
     // TODO: Handle file upload stuff.

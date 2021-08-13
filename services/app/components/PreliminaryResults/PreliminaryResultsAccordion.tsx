@@ -3,6 +3,7 @@ import { Fragment, useState } from 'react';
 import Accordion from '../Accordion';
 import BarChart from '../BarChart';
 import CodeBlock from '../CodeBlock';
+import CommandRenameDialog from '../CommandRenameDialog';
 import { CommandResponseResult } from '../context/ApiContext/queries/command';
 import { SyntheticDataResult } from '../context/ApiContext/queries/syntheticDataResult';
 import MoreMenu from '../MoreMenu';
@@ -30,6 +31,7 @@ function PreliminaryResultsAccordion({
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
     null,
   );
+  const [showDialog, setShowDialog] = useState(false);
   const handleMoreButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
@@ -38,6 +40,12 @@ function PreliminaryResultsAccordion({
   };
   const handleMenuClose = () => {
     setMenuAnchorEl(null);
+  };
+  const handleRenameClick = () => {
+    setShowDialog(true);
+  };
+  const handleDialogClose = () => {
+    setShowDialog(false);
   };
 
   const command = commands.find(c => c.command_id === resultItem.command_id);
@@ -56,7 +64,11 @@ function PreliminaryResultsAccordion({
     <Accordion
       id={String(resultItem.run_id)}
       summaryContent={
-        <PreliminarySummaryContent iconType={icon} text={title} />
+        <PreliminarySummaryContent
+          iconType={icon}
+          text={title}
+          onRenameClick={handleRenameClick}
+        />
       }
     >
       <div>
@@ -135,6 +147,7 @@ function PreliminaryResultsAccordion({
                       <MoreMenu
                         menuAnchorEl={menuAnchorEl}
                         onMenuClose={handleMenuClose}
+                        onRenameClick={handleRenameClick}
                       />
                     </Grid>
                   </Grid>
@@ -157,6 +170,11 @@ function PreliminaryResultsAccordion({
           </div>
         )}
       </div>
+      <CommandRenameDialog
+        command={command}
+        onDialogClose={handleDialogClose}
+        showDialog={showDialog}
+      />
     </Accordion>
   );
 }

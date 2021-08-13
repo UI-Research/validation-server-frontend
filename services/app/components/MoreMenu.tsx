@@ -3,13 +3,17 @@ import { Menu, MenuItem } from '@material-ui/core';
 interface MoreMenuProps {
   menuAnchorEl: HTMLElement | null;
   onMenuClose: () => void;
+  onRenameClick: () => void;
 }
-function MoreMenu({ menuAnchorEl, onMenuClose }: MoreMenuProps): JSX.Element {
-  // TODO: Properly setup clicks to API.
-  const handleSaveClick = (event: React.MouseEvent<HTMLLIElement>) => {
-    event.stopPropagation();
-    onMenuClose();
-  };
+function MoreMenu({
+  menuAnchorEl,
+  onMenuClose,
+  onRenameClick,
+}: MoreMenuProps): JSX.Element {
+  // const handleSaveClick = (event: React.MouseEvent<HTMLLIElement>) => {
+  //   event.stopPropagation();
+  //   onMenuClose();
+  // };
   const handleRemoveClick = (event: React.MouseEvent<HTMLLIElement>) => {
     event.stopPropagation();
     onMenuClose();
@@ -17,6 +21,7 @@ function MoreMenu({ menuAnchorEl, onMenuClose }: MoreMenuProps): JSX.Element {
   const handleRenameClick = (event: React.MouseEvent<HTMLLIElement>) => {
     event.stopPropagation();
     onMenuClose();
+    onRenameClick();
   };
   return (
     <Menu
@@ -35,7 +40,7 @@ function MoreMenu({ menuAnchorEl, onMenuClose }: MoreMenuProps): JSX.Element {
         onMenuClose();
       }}
     >
-      <MenuItem onClick={handleSaveClick}>Save for Later</MenuItem>
+      {/* <MenuItem onClick={handleSaveClick}>Save for Later</MenuItem> */}
       <MenuItem onClick={handleRemoveClick}>Remove from List</MenuItem>
       <MenuItem onClick={handleRenameClick}>Rename</MenuItem>
     </Menu>

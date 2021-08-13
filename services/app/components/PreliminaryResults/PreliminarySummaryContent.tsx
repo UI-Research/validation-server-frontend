@@ -21,10 +21,12 @@ const useStyles = makeStyles(() => ({
 interface PreliminarySummaryContentProps {
   iconType: 'check' | 'warning';
   text: string | ReactNode;
+  onRenameClick: () => void;
 }
 function PreliminarySummaryContent({
   iconType,
   text,
+  onRenameClick,
 }: PreliminarySummaryContentProps): JSX.Element {
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
     null,
@@ -68,6 +70,7 @@ function PreliminarySummaryContent({
               <MoreMenu
                 menuAnchorEl={menuAnchorEl}
                 onMenuClose={handleMenuClose}
+                onRenameClick={onRenameClick}
               />
             </Grid>
           </Grid>

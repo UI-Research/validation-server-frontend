@@ -4,7 +4,10 @@ import Accordion from '../Accordion';
 import BarChart from '../BarChart';
 import CodeBlock from '../CodeBlock';
 import CommandRenameDialog from '../CommandRenameDialog';
-import { CommandResponseResult } from '../context/ApiContext/queries/command';
+import {
+  CommandResponseResult,
+  useCommandDelete,
+} from '../context/ApiContext/queries/command';
 import { SyntheticDataResult } from '../context/ApiContext/queries/syntheticDataResult';
 import MoreMenu from '../MoreMenu';
 import Paragraph from '../Paragraph';
@@ -31,6 +34,8 @@ function PreliminaryResultsAccordion({
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
     null,
   );
+  // TODO: Handle any possible errors from the DELETE query.
+  const commandDeleteResult = useCommandDelete();
   const [showDialog, setShowDialog] = useState(false);
   const handleMoreButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -54,6 +59,10 @@ function PreliminaryResultsAccordion({
     return null;
   }
 
+  const handleRemoveClick = () => {
+    commandDeleteResult.mutate({ command_id: command.command_id });
+  };
+
   const resultData: Array<{ [key: string]: string | number }> | false =
     resultItem.result.ok && JSON.parse(resultItem.result.data);
   const cost = Number(resultItem.privacy_budget_used);
@@ -68,6 +77,7 @@ function PreliminaryResultsAccordion({
           iconType={icon}
           text={title}
           onRenameClick={handleRenameClick}
+          onRemoveClick={handleRemoveClick}
         />
       }
     >
@@ -148,6 +158,7 @@ function PreliminaryResultsAccordion({
                         menuAnchorEl={menuAnchorEl}
                         onMenuClose={handleMenuClose}
                         onRenameClick={handleRenameClick}
+                        onRemoveClick={handleRemoveClick}
                       />
                     </Grid>
                   </Grid>

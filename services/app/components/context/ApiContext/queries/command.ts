@@ -6,6 +6,7 @@ import {
   UseQueryResult,
 } from 'react-query';
 import ApiContext from '..';
+import deleteMethod from '../deleteMethod';
 import load from '../load';
 import patch from '../patch';
 import post from '../post';
@@ -73,8 +74,9 @@ function useCommandPost(opts: CommandPostOptions = {}) {
       }
     },
     onSettled: () => {
-      // Invalidate the command query.
+      // Invalidate the command and synthetic data results queries.
       queryClient.invalidateQueries('command');
+      queryClient.invalidateQueries('synthetic-data-result');
     },
   });
   return result;
@@ -114,11 +116,45 @@ function useCommandPatch(opts: CommandPatchOptions = {}) {
       }
     },
     onSettled: () => {
-      // Invalidate the command query.
+      // Invalidate the command and synthetic data results queries.
       queryClient.invalidateQueries('command');
+      queryClient.invalidateQueries('synthetic-data-result');
     },
   });
   return result;
 }
 
-export { useCommandPatch, useCommandPost, useCommandQuery };
+// COMMAND DELETE QUERY
+interface CommandDeletePayload {
+  command_id: number;
+}
+interface CommandDeleteOptions {
+  onSuccess?: () => void;
+  onError?: (error: unknown) => void;
+}
+function useCommandDelete(opts: CommandDeleteOptions = {}) {
+  const { token } = useContext(ApiContext);
+  const queryClient = useQueryClient();
+  const deleteCommand = async (data: CommandDeletePayload) =>
+    deleteMethod(`/command/${data.command_id}/`, token);
+  const result = useMutation(deleteCommand, {
+    onSuccess: () => {
+      if (opts.onSuccess) {
+        opts.onSuccess();
+      }
+    },
+    onError: error => {
+      if (opts.onError) {
+        opts.onError(error);
+      }
+    },
+    onSettled: () => {
+      // Invalidate the command and synthetic data results queries.
+      queryClient.invalidateQueries('command');
+      queryClient.invalidateQueries('synthetic-data-result');
+    },
+  });
+  return result;
+}
+
+export { useCommandDelete, useCommandPatch, useCommandPost, useCommandQuery };

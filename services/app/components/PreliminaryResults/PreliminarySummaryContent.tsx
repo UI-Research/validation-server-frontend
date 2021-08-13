@@ -22,11 +22,13 @@ interface PreliminarySummaryContentProps {
   iconType: 'check' | 'warning';
   text: string | ReactNode;
   onRenameClick: () => void;
+  onRemoveClick: () => void;
 }
 function PreliminarySummaryContent({
   iconType,
   text,
   onRenameClick,
+  onRemoveClick,
 }: PreliminarySummaryContentProps): JSX.Element {
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
     null,
@@ -71,6 +73,7 @@ function PreliminarySummaryContent({
                 menuAnchorEl={menuAnchorEl}
                 onMenuClose={handleMenuClose}
                 onRenameClick={onRenameClick}
+                onRemoveClick={onRemoveClick}
               />
             </Grid>
           </Grid>

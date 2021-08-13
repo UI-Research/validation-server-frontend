@@ -4,11 +4,13 @@ interface MoreMenuProps {
   menuAnchorEl: HTMLElement | null;
   onMenuClose: () => void;
   onRenameClick: () => void;
+  onRemoveClick: () => void;
 }
 function MoreMenu({
   menuAnchorEl,
   onMenuClose,
   onRenameClick,
+  onRemoveClick,
 }: MoreMenuProps): JSX.Element {
   // const handleSaveClick = (event: React.MouseEvent<HTMLLIElement>) => {
   //   event.stopPropagation();
@@ -17,6 +19,7 @@ function MoreMenu({
   const handleRemoveClick = (event: React.MouseEvent<HTMLLIElement>) => {
     event.stopPropagation();
     onMenuClose();
+    onRemoveClick();
   };
   const handleRenameClick = (event: React.MouseEvent<HTMLLIElement>) => {
     event.stopPropagation();

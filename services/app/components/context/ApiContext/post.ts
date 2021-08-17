@@ -1,5 +1,9 @@
 import basePath from './basePath';
 
+interface PostOptions {
+  okStatuses?: number[];
+}
+
 /**
  * POST data runner for the Validation Server API.
  * @param endpoint Endpoint string
@@ -18,6 +22,7 @@ async function post<T = any>(
   endpoint: string,
   token: string,
   data: Object,
+  opts?: PostOptions,
 ): Promise<T> {
   const response = await fetch(`${basePath}${endpoint}`, {
     method: 'POST',
@@ -28,7 +33,10 @@ async function post<T = any>(
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
+  // Check that the response is ok OR if the status is passable.
+  const isOkay = response.ok || opts?.okStatuses?.includes(response.status);
+
+  if (!isOkay) {
     throw new Error(`${response.status} ${response.statusText}`);
   }
 

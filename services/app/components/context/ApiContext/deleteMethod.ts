@@ -1,5 +1,9 @@
 import basePath from './basePath';
 
+interface DeleteOptions {
+  okStatuses?: number[];
+}
+
 /**
  * DELETE data runner for the Validation Server API.
  * @param endpoint Endpoint string
@@ -12,7 +16,11 @@ import basePath from './basePath';
  * const result = await delete(endpoint, token);
  * ```
  */
-async function deleteMethod(endpoint: string, token: string): Promise<void> {
+async function deleteMethod(
+  endpoint: string,
+  token: string,
+  opts?: DeleteOptions,
+): Promise<void> {
   const response = await fetch(`${basePath}${endpoint}`, {
     method: 'DELETE',
     headers: {
@@ -20,7 +28,10 @@ async function deleteMethod(endpoint: string, token: string): Promise<void> {
     },
   });
 
-  if (!response.ok) {
+  // Check that the response is ok OR if the status is passable.
+  const isOkay = response.ok || opts?.okStatuses?.includes(response.status);
+
+  if (!isOkay) {
     throw new Error(`${response.status} ${response.statusText}`);
   }
 

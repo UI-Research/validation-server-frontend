@@ -1,5 +1,9 @@
 import basePath from './basePath';
 
+interface PatchOptions {
+  okStatuses?: number[];
+}
+
 /**
  * PATCH data runner for the Validation Server API.
  * @param endpoint Endpoint string
@@ -18,6 +22,7 @@ async function patch<T = any>(
   endpoint: string,
   token: string,
   data: Object,
+  opts?: PatchOptions,
 ): Promise<T> {
   const response = await fetch(`${basePath}${endpoint}`, {
     method: 'PATCH',
@@ -28,7 +33,10 @@ async function patch<T = any>(
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
+  // Check that the response is ok OR if the status is passable.
+  const isOkay = response.ok || opts?.okStatuses?.includes(response.status);
+
+  if (!isOkay) {
     throw new Error(`${response.status} ${response.statusText}`);
   }
 

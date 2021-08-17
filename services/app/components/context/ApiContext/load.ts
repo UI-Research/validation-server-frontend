@@ -1,5 +1,9 @@
 import basePath from './basePath';
 
+interface LoadOptions {
+  okStatuses?: number[];
+}
+
 /**
  * Data loader for the Validation Server API.
  * @param endpoint Endpoint
@@ -13,17 +17,22 @@ import basePath from './basePath';
  * const result = await load(endpoint, token);
  * ```
  */
-async function load<T = any>(endpoint: string, token: string): Promise<T> {
+async function load<T = any>(
+  endpoint: string,
+  token: string,
+  opts?: LoadOptions,
+): Promise<T> {
   const response = await fetch(`${basePath}${endpoint}`, {
     headers: {
       Authorization: `Token ${token}`,
     },
   });
 
-  if (!response.ok) {
-    throw new Error(
-      `${response.status} ${response.statusText}. Check your token.`,
-    );
+  // Check that the response is ok OR if the status is passable.
+  const isOkay = response.ok || opts?.okStatuses?.includes(response.status);
+
+  if (!isOkay) {
+    throw new Error(`${response.status} ${response.statusText}`);
   }
 
   const resJson = response.json();

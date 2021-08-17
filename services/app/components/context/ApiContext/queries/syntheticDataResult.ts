@@ -10,6 +10,7 @@ export interface SyntheticDataResult {
   result: {
     ok: boolean;
     data: string;
+    error?: string;
   };
   privacy_budget_used: string;
 }

@@ -1,7 +1,5 @@
 import { Fragment } from 'react';
-import { useBudgetQuery } from '../context/ApiContext/queries/budget';
-import { useCommandQuery } from '../context/ApiContext/queries/command';
-import { useSyntheticDataResultsQuery } from '../context/ApiContext/queries/syntheticDataResult';
+import { useSyntheticData } from '../context/ApiContext/queries/syntheticData';
 import LoadingIndicator from '../LoadingIndicator';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
@@ -11,10 +9,8 @@ interface PreliminaryResultsProps {
   // TODO
 }
 function PreliminaryResults({}: PreliminaryResultsProps): JSX.Element {
-  const commandResults = useCommandQuery();
-  const syntheticResults = useSyntheticDataResultsQuery();
-  const refinementBudgetResult = useBudgetQuery('review-and-refinement-budget');
-  const publicBudgetResult = useBudgetQuery('public-use-budget');
+  const { data, isLoading, publicBudgetData, refinementBudgetData } =
+    useSyntheticData();
 
   return (
     <div>
@@ -28,28 +24,20 @@ function PreliminaryResults({}: PreliminaryResultsProps): JSX.Element {
       </Paragraph>
       <div>
         {/* Wait for everything to load. */}
-        {syntheticResults.isLoading ||
-        !syntheticResults.data ||
-        commandResults.isLoading ||
-        !commandResults.data ||
-        refinementBudgetResult.isLoading ||
-        !refinementBudgetResult.data ||
-        publicBudgetResult.isLoading ||
-        !publicBudgetResult.data ? (
+        {isLoading || !data || !publicBudgetData || !refinementBudgetData ? (
           <LoadingIndicator />
         ) : (
           <Fragment>
-            {syntheticResults.data.results.map(r => (
+            {data.map(r => (
               <PreliminaryResultsAccordion
                 key={r.run_id}
-                resultItem={r}
-                commands={commandResults.data.results}
-                availablePublic={publicBudgetResult.data.total_budget_available}
+                runItem={r}
+                availablePublic={publicBudgetData.total_budget_available}
                 availableRefinement={
-                  refinementBudgetResult.data.total_budget_available
+                  refinementBudgetData.total_budget_available
                 }
                 startingRefinement={Number(
-                  refinementBudgetResult.data.total_budget_allocated,
+                  refinementBudgetData.total_budget_allocated,
                 )}
               />
             ))}

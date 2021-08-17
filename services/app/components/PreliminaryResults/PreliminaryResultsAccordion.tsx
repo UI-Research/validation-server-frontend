@@ -4,11 +4,10 @@ import Accordion from '../Accordion';
 import BarChart from '../BarChart';
 import CodeBlock from '../CodeBlock';
 import CommandRenameDialog from '../CommandRenameDialog';
-import {
-  CommandResponseResult,
-  useCommandDelete,
-} from '../context/ApiContext/queries/command';
-import { SyntheticDataResult } from '../context/ApiContext/queries/syntheticDataResult';
+import { useCommandDelete } from '../context/ApiContext/queries/command';
+import { SyntheticRunData } from '../context/ApiContext/queries/syntheticData';
+import { useSyntheticDataResultQuery } from '../context/ApiContext/queries/syntheticDataResult';
+import LoadingIndicator from '../LoadingIndicator';
 import MoreMenu from '../MoreMenu';
 import Paragraph from '../Paragraph';
 import SpreadsheetTable from '../SpreadsheetTable';
@@ -17,16 +16,23 @@ import PreliminarySummaryContent from './PreliminarySummaryContent';
 
 const chartWidth = 600;
 
+function CommandNotAllowedMessage(): JSX.Element {
+  return (
+    <Fragment>
+      Command not allowed in this system. Please see list of{' '}
+      <a href="#">available commands</a>.
+    </Fragment>
+  );
+}
+
 interface PreliminaryResultsAccordionProps {
-  resultItem: SyntheticDataResult;
-  commands: CommandResponseResult[];
+  runItem: SyntheticRunData;
   availableRefinement: number;
   startingRefinement: number;
   availablePublic: number;
 }
 function PreliminaryResultsAccordion({
-  resultItem,
-  commands,
+  runItem,
   availablePublic,
   availableRefinement,
   startingRefinement,
@@ -37,6 +43,11 @@ function PreliminaryResultsAccordion({
   // TODO: Handle any possible errors from the DELETE query.
   const commandDeleteResult = useCommandDelete();
   const [showDialog, setShowDialog] = useState(false);
+  const { data: resultItem, isLoading } = useSyntheticDataResultQuery(
+    runItem.run_id,
+  );
+  const { command } = runItem;
+
   const handleMoreButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
@@ -53,15 +64,14 @@ function PreliminaryResultsAccordion({
     setShowDialog(false);
   };
 
-  const command = commands.find(c => c.command_id === resultItem.command_id);
-
-  if (!command) {
-    return null;
-  }
-
   const handleRemoveClick = () => {
     commandDeleteResult.mutate({ command_id: command.command_id });
   };
+
+  // Wait for data result item to finish loading.
+  if (isLoading || !resultItem) {
+    return <LoadingIndicator />;
+  }
 
   const resultData: Array<{ [key: string]: string | number }> | false =
     resultItem.result.ok && JSON.parse(resultItem.result.data);
@@ -176,8 +186,15 @@ function PreliminaryResultsAccordion({
         ) : (
           <div>
             {/* TODO: Properly parse error/issue and display. */}
-            <strong>Issue:</strong> Command not allowed in this system. Please
-            see list of <a href="#">available commands</a>.
+            <strong>Issue:</strong>{' '}
+            {resultItem.result.error &&
+            resultItem.result.error !==
+              // Use our custom "not allowed" message since it includes a link.
+              'Command not allowed in this system. Plese see list of available commands.' ? (
+              resultItem.result.error
+            ) : (
+              <CommandNotAllowedMessage />
+            )}
           </div>
         )}
       </div>

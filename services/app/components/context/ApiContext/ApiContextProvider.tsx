@@ -8,6 +8,7 @@ interface ApiContextProviderProps {
 export interface ApiContextProviderState {
   researcherId: number;
   token: string | null;
+  setToken: (val: string) => void;
 }
 
 class ApiContextProvider extends React.Component<
@@ -20,8 +21,13 @@ class ApiContextProvider extends React.Component<
     this.state = {
       researcherId: props.researcherId,
       token: props.token || null,
+      setToken: this.setToken,
     };
   }
+
+  private setToken = (val: string): void => {
+    this.setState({ token: val });
+  };
 
   render() {
     const { children } = this.props;

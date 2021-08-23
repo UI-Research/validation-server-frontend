@@ -1,9 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import ApiContext from '../components/context/ApiContext';
 import PageTemplate from '../components/PageTemplate';
 import { steps } from '../components/Steps/steps';
 import StepsContent from '../components/Steps/StepsContent';
 import StepsNav, { StepData } from '../components/StepsNav/StepsNav';
+import Welcome from '../components/Welcome';
 
 const title = 'Home';
 
@@ -60,7 +61,7 @@ function HomePage(): JSX.Element {
           onSetStep={handleSetStep}
         />
       ) : (
-        <div>NO TOKEN</div>
+        <Welcome />
       )}
     </PageTemplate>
   );

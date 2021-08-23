@@ -1,4 +1,5 @@
-const basePath = 'https://validation-server-stg.urban.org/api/v1';
+const apiBase = 'https://validation-server-stg.urban.org/api';
+const basePath = `${apiBase}/v1`;
 
 /**
  * Data loader for the Validation Server API.
@@ -27,4 +28,5 @@ async function load(endpoint: string, token?: string | null) {
   return resJson;
 }
 
+export { apiBase };
 export default load;

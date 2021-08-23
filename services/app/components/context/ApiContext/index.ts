@@ -9,6 +9,7 @@ export interface ApiContextType extends ApiContextProviderState {}
 const ApiContext = createContext<ApiContextType>({
   researcherId: 0,
   token: null,
+  setToken: () => {},
 });
 
 const { Consumer } = ApiContext;

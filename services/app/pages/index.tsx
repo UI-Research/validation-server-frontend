@@ -35,7 +35,8 @@ function HomePage(): JSX.Element {
       })),
       activeStep: id,
     }));
-    // TODO: scroll back to the top of the content on step update.
+
+    window.scrollTo(0, 0);
   };
 
   return (

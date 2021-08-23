@@ -39,7 +39,7 @@ interface UIButtonProps extends ButtonProps {
 }
 
 function UIButton(props: UIButtonProps): JSX.Element {
-  const { classes, title, icon, disabled } = props;
+  const { classes, title, icon, disabled, onClick } = props;
 
   return (
     <Button
@@ -47,6 +47,7 @@ function UIButton(props: UIButtonProps): JSX.Element {
       className={clsx(classes.button)}
       endIcon={icon && getIcon(icon)}
       disabled={disabled}
+      onClick={onClick}
     >
       {title}
     </Button>

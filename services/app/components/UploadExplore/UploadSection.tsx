@@ -1,5 +1,3 @@
-import { Button } from '@material-ui/core';
-import { Publish } from '@material-ui/icons';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 import UIButton from '../UIButton';

@@ -18,7 +18,6 @@ const queryClient = new QueryClient({
 });
 // TODO: Not hard code the researcher ID.
 const researcherId = 2;
-// const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [key, setKey] = useState(0);

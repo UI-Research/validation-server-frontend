@@ -12,12 +12,10 @@ const basePath = 'https://validation-server-stg.urban.org/api/v1';
  * const result = await load(endpoint);
  * ```
  */
-async function load(endpoint: string, token: string) {
-  const response = await fetch(`${basePath}${endpoint}`, {
-    headers: {
-      Authorization: `Token ${token}`,
-    },
-  });
+async function load(endpoint: string, token?: string | null) {
+  const headers = token ? { Authorization: `Token ${token}` } : undefined;
+
+  const response = await fetch(`${basePath}${endpoint}`, { headers });
 
   if (!response.ok) {
     throw new Error(

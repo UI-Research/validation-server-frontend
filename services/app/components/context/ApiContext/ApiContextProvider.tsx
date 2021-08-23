@@ -3,11 +3,11 @@ import ApiContext from '.';
 
 interface ApiContextProviderProps {
   researcherId: number;
-  token: string;
+  token?: string | null;
 }
 export interface ApiContextProviderState {
   researcherId: number;
-  token: string;
+  token: string | null;
 }
 
 class ApiContextProvider extends React.Component<
@@ -19,7 +19,7 @@ class ApiContextProvider extends React.Component<
 
     this.state = {
       researcherId: props.researcherId,
-      token: props.token,
+      token: props.token || null,
     };
   }
 

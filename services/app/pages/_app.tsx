@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
 });
 // TODO: Not hard code the researcher ID.
 const researcherId = 2;
-const token = process.env.NEXT_PUBLIC_API_TOKEN;
+// const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [key, setKey] = useState(0);
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ApiContextProvider researcherId={researcherId} token={token || ''}>
+      <ApiContextProvider researcherId={researcherId}>
         <ThemeProvider key={key} theme={theme}>
           <CssBaseline />
           <Component {...pageProps} />

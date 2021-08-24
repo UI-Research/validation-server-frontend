@@ -27,10 +27,10 @@ function Header(): JSX.Element {
             <a title="Home">
               <Image
                 className={classes.logo}
-                src="/assets/tpc-logo-screen.svg"
+                src="/assets/ui-logo-rgb.svg"
                 alt="Tax Policy Center, Urban Institute &amp; Brookings Institution"
-                width={288}
-                height={89}
+                width={150}
+                height={90}
               />
             </a>
           </Link>

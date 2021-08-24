@@ -5,7 +5,7 @@ const year = new Date().getFullYear();
 
 const useStyles = makeStyles(theme => ({
   footer: {
-    background: grey[800],
+    background: '#0a4c6a',
     color: theme.palette.common.white,
     display: 'flex',
     justifyContent: 'flex-end',

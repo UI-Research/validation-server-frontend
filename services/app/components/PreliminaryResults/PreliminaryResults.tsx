@@ -1,16 +1,34 @@
 import { Fragment } from 'react';
-import { useSyntheticData } from '../context/ApiContext/queries/syntheticData';
+import { useBudgetQuery } from '../context/ApiContext/queries/budget';
+import { useCommandQuery } from '../context/ApiContext/queries/command';
 import LoadingIndicator from '../LoadingIndicator';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 import PreliminaryResultsAccordion from './PreliminaryResultsAccordion';
 
-interface PreliminaryResultsProps {
-  // TODO
+function usePreliminaryResults() {
+  const commandResult = useCommandQuery();
+  const refinementBudgetResult = useBudgetQuery('review-and-refinement-budget');
+  const publicBudgetResult = useBudgetQuery('public-use-budget');
+
+  return {
+    isLoading:
+      commandResult.isLoading ||
+      refinementBudgetResult.isLoading ||
+      publicBudgetResult.isLoading,
+    // Sort commands by ID.
+    data: commandResult.data?.results.sort((a, b) =>
+      a.command_id > b.command_id ? 1 : -1,
+    ),
+    refinementBudgetData: refinementBudgetResult.data,
+    publicBudgetData: publicBudgetResult.data,
+  };
 }
+
+interface PreliminaryResultsProps {}
 function PreliminaryResults({}: PreliminaryResultsProps): JSX.Element {
   const { data, isLoading, publicBudgetData, refinementBudgetData } =
-    useSyntheticData();
+    usePreliminaryResults();
 
   return (
     <div>
@@ -28,10 +46,10 @@ function PreliminaryResults({}: PreliminaryResultsProps): JSX.Element {
           <LoadingIndicator />
         ) : (
           <Fragment>
-            {data.map(r => (
+            {data.map(c => (
               <PreliminaryResultsAccordion
-                key={r.run_id}
-                runItem={r}
+                key={c.command_id}
+                command={c}
                 availablePublic={publicBudgetData.total_budget_available}
                 availableRefinement={
                   refinementBudgetData.total_budget_available

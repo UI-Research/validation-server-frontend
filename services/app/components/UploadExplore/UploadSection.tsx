@@ -20,9 +20,7 @@ const testPayload: CommandPayload = {
   sanitized_command_input: sanitizedCommandInput,
 };
 
-interface UploadSectionProps {
-  // TODO
-}
+interface UploadSectionProps {}
 function UploadSection({}: UploadSectionProps): JSX.Element {
   const result = useCommandPost();
 

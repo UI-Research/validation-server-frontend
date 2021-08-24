@@ -4,9 +4,11 @@ import Accordion from '../Accordion';
 import BarChart from '../BarChart';
 import CodeBlock from '../CodeBlock';
 import CommandRenameDialog from '../CommandRenameDialog';
-import { useCommandDelete } from '../context/ApiContext/queries/command';
-import { SyntheticRunData } from '../context/ApiContext/queries/syntheticData';
-import { useSyntheticDataResultQuery } from '../context/ApiContext/queries/syntheticDataResult';
+import {
+  CommandResponseResult,
+  useCommandDelete,
+} from '../context/ApiContext/queries/command';
+import { useSyntheticDataResultByCommandIdQuery } from '../context/ApiContext/queries/syntheticDataResult';
 import LoadingIndicator from '../LoadingIndicator';
 import MoreMenu from '../MoreMenu';
 import Paragraph from '../Paragraph';
@@ -26,13 +28,13 @@ function CommandNotAllowedMessage(): JSX.Element {
 }
 
 interface PreliminaryResultsAccordionProps {
-  runItem: SyntheticRunData;
+  command: CommandResponseResult;
   availableRefinement: number;
   startingRefinement: number;
   availablePublic: number;
 }
 function PreliminaryResultsAccordion({
-  runItem,
+  command,
   availablePublic,
   availableRefinement,
   startingRefinement,
@@ -43,10 +45,11 @@ function PreliminaryResultsAccordion({
   // TODO: Handle any possible errors from the DELETE query.
   const commandDeleteResult = useCommandDelete();
   const [showDialog, setShowDialog] = useState(false);
-  const { data: resultItem, isLoading } = useSyntheticDataResultQuery(
-    runItem.run_id,
-  );
-  const { command } = runItem;
+  const {
+    data: resultItem,
+    isError,
+    isLoading,
+  } = useSyntheticDataResultByCommandIdQuery(command.command_id);
 
   const handleMoreButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -67,6 +70,11 @@ function PreliminaryResultsAccordion({
   const handleRemoveClick = () => {
     commandDeleteResult.mutate({ command_id: command.command_id });
   };
+
+  // TODO: Do something user facing if synthetic data result query errors out.
+  if (isError) {
+    return null;
+  }
 
   // Wait for data result item to finish loading.
   if (isLoading || !resultItem) {

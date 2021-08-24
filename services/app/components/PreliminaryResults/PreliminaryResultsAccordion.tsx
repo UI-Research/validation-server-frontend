@@ -1,5 +1,5 @@
 import { Grid, Typography } from '@material-ui/core';
-import { Fragment, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import Accordion from '../Accordion';
 import BarChart from '../BarChart';
 import CodeBlock from '../CodeBlock';
@@ -28,12 +28,16 @@ function CommandNotAllowedMessage(): JSX.Element {
 }
 
 interface PreliminaryResultsAccordionProps {
+  added?: boolean;
+  onAddClick?: () => void;
   command: CommandResponseResult;
   availableRefinement: number;
   startingRefinement: number;
   availablePublic: number;
 }
 function PreliminaryResultsAccordion({
+  added,
+  onAddClick,
   command,
   availablePublic,
   availableRefinement,
@@ -42,6 +46,7 @@ function PreliminaryResultsAccordion({
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
     null,
   );
+  const summaryRef = useRef<HTMLDivElement | null>(null);
   // TODO: Handle any possible errors from the DELETE query.
   const commandDeleteResult = useCommandDelete();
   const [showDialog, setShowDialog] = useState(false);
@@ -71,6 +76,17 @@ function PreliminaryResultsAccordion({
     commandDeleteResult.mutate({ command_id: command.command_id });
   };
 
+  const handleAddClick = () => {
+    // Close the accordion and focus the summary.
+    if (summaryRef.current) {
+      summaryRef.current.click();
+      summaryRef.current.focus();
+    }
+    if (onAddClick) {
+      onAddClick();
+    }
+  };
+
   // TODO: Do something user facing if synthetic data result query errors out.
   if (isError) {
     return null;
@@ -92,12 +108,15 @@ function PreliminaryResultsAccordion({
       id={String(resultItem.run_id)}
       summaryContent={
         <PreliminarySummaryContent
+          added={added}
           iconType={icon}
           text={title}
+          onAddedClick={onAddClick}
           onRenameClick={handleRenameClick}
           onRemoveClick={handleRemoveClick}
         />
       }
+      summaryRef={summaryRef}
     >
       <div>
         <Paragraph>
@@ -159,8 +178,11 @@ function PreliminaryResultsAccordion({
                   >
                     <Grid item={true}>
                       <UIButton
-                        title="Add to Review &amp; Refinement Queue"
+                        title={`${
+                          added ? 'Remove from' : 'Add to'
+                        } Review & Refinement Queue`}
                         icon="PlaylistAdd"
+                        onClick={handleAddClick}
                       />
                     </Grid>
                     <Grid item={true}>

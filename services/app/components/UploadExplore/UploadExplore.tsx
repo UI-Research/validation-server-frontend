@@ -1,16 +1,27 @@
 import { Grid } from '@material-ui/core';
+import { useState } from 'react';
 import BudgetView from '../BudgetView/BudgetView';
 import Divider from '../Divider';
 import Paragraph from '../Paragraph';
 import PreliminaryResults from '../PreliminaryResults/PreliminaryResults';
 import SectionTitle from '../SectionTitle';
-import UploadSection from './UploadSection';
 import UIButton from '../UIButton';
+import UploadSection from './UploadSection';
 
 interface UploadExploreProps {
   onNextClick: () => void;
 }
 function UploadExplore({ onNextClick }: UploadExploreProps): JSX.Element {
+  const [queue, setQueue] = useState<number[]>([]);
+
+  const handleCommandToggle = (commandId: number): void => {
+    if (queue.includes(commandId)) {
+      setQueue(arr => arr.filter(c => c !== commandId));
+    } else {
+      setQueue(arr => [...arr, commandId]);
+    }
+  };
+
   return (
     <div>
       <SectionTitle>
@@ -44,10 +55,13 @@ function UploadExplore({ onNextClick }: UploadExploreProps): JSX.Element {
       <Divider />
       <UploadSection />
       <Divider />
-      <PreliminaryResults />
+      <PreliminaryResults
+        refinementQueue={queue}
+        onCommandToggle={handleCommandToggle}
+      />
       <Divider />
       <div>
-        <Grid container={true}>
+        <Grid container={true} alignItems="center">
           <Grid item={true} xs={8}>
             <SectionTitle>Next Step:</SectionTitle>
             <Paragraph>
@@ -58,8 +72,13 @@ function UploadExplore({ onNextClick }: UploadExploreProps): JSX.Element {
               public-release request.
             </Paragraph>
           </Grid>
-          <Grid item={true} xs={4}>
-            <UIButton title="Next" icon="ChevronRight" onClick={onNextClick} />
+          <Grid item={true} container={true} xs={4} justify="flex-end">
+            <UIButton
+              disabled={queue.length === 0}
+              title="Next"
+              icon="ChevronRight"
+              onClick={onNextClick}
+            />
           </Grid>
         </Grid>
       </div>

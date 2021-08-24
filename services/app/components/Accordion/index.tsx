@@ -6,7 +6,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { ExpandMore } from '@material-ui/icons';
-import { ReactNode } from 'react';
+import { ReactNode, RefObject } from 'react';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -26,6 +26,10 @@ const useStyles = makeStyles(theme => ({
     // Undo default expanded styling.
     '&.Mui-expanded': {
       minHeight: 'inherit',
+    },
+    // Focus styling.
+    '&:focus': {
+      backgroundColor: theme.palette.grey[400],
     },
   },
   summaryContent: {
@@ -48,17 +52,24 @@ const useStyles = makeStyles(theme => ({
 interface AccordionProps {
   id: string;
   summaryContent: ReactNode;
+  summaryRef?:
+    | ((instance: HTMLDivElement | null) => void)
+    | RefObject<HTMLDivElement>
+    | null
+    | undefined;
 }
 
 const Accordion: React.FC<AccordionProps> = ({
   children,
   id,
   summaryContent,
+  summaryRef,
 }) => {
   const classes = useStyles();
   return (
     <MuiAccordion className={classes.wrapper} elevation={0}>
       <AccordionSummary
+        ref={summaryRef}
         classes={{
           content: classes.summaryContent,
           expanded: classes.summaryExpanded,

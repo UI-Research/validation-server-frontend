@@ -1,10 +1,5 @@
-import {
-  Grid,
-  IconButton,
-  makeStyles,
-  Menu,
-  MenuItem,
-} from '@material-ui/core';
+import { Grid, IconButton, makeStyles } from '@material-ui/core';
+import { green } from '@material-ui/core/colors';
 import { MoreVert, PlaylistAdd } from '@material-ui/icons';
 import React, { ReactNode, useState } from 'react';
 import Check from '../Icons/Check';
@@ -23,10 +18,14 @@ interface PreliminarySummaryContentProps {
   text: string | ReactNode;
   onRenameClick: () => void;
   onRemoveClick: () => void;
+  added?: boolean;
+  onAddedClick?: () => void;
 }
 function PreliminarySummaryContent({
+  added,
   iconType,
   text,
+  onAddedClick,
   onRenameClick,
   onRemoveClick,
 }: PreliminarySummaryContentProps): JSX.Element {
@@ -37,6 +36,10 @@ function PreliminarySummaryContent({
   const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     setMenuAnchorEl(event.currentTarget);
+  };
+  const handleAddClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onAddedClick && onAddedClick();
   };
   const handleMenuClose = () => {
     setMenuAnchorEl(null);
@@ -55,8 +58,19 @@ function PreliminarySummaryContent({
           <Grid container={true} justify="flex-end">
             {iconType === 'check' && (
               <Grid item={true}>
-                <IconButton aria-label="Add" onClick={e => e.stopPropagation()}>
-                  <PlaylistAdd />
+                <IconButton
+                  aria-label={`${
+                    added ? 'Remove from' : 'Add to'
+                  } Review & Refinement Queue`}
+                  title={`${
+                    added ? 'Remove from' : 'Add to'
+                  } Review & Refinement Queue`}
+                  onClick={handleAddClick}
+                  style={added ? { backgroundColor: green[100] } : undefined}
+                >
+                  <PlaylistAdd
+                    style={added ? { fill: green[900] } : undefined}
+                  />
                 </IconButton>
               </Grid>
             )}
@@ -65,6 +79,7 @@ function PreliminarySummaryContent({
                 aria-label="More"
                 aria-controls="more-menu"
                 aria-haspopup="true"
+                title="More actions"
                 onClick={handleMenuClick}
               >
                 <MoreVert />

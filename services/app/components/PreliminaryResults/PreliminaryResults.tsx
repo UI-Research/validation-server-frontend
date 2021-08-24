@@ -25,8 +25,14 @@ function usePreliminaryResults() {
   };
 }
 
-interface PreliminaryResultsProps {}
-function PreliminaryResults({}: PreliminaryResultsProps): JSX.Element {
+interface PreliminaryResultsProps {
+  refinementQueue: number[];
+  onCommandToggle: (commandId: number) => void;
+}
+function PreliminaryResults({
+  refinementQueue,
+  onCommandToggle,
+}: PreliminaryResultsProps): JSX.Element {
   const { data, isLoading, publicBudgetData, refinementBudgetData } =
     usePreliminaryResults();
 
@@ -50,6 +56,8 @@ function PreliminaryResults({}: PreliminaryResultsProps): JSX.Element {
               <PreliminaryResultsAccordion
                 key={c.command_id}
                 command={c}
+                added={refinementQueue.includes(c.command_id)}
+                onAddClick={() => onCommandToggle(c.command_id)}
                 availablePublic={publicBudgetData.total_budget_available}
                 availableRefinement={
                   refinementBudgetData.total_budget_available

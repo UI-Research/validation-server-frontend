@@ -1,4 +1,4 @@
-import { Container, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Grid, makeStyles, Typography } from '@material-ui/core';
 import { FC } from 'react';
 import Divider from '../Divider';
 import Paragraph from '../Paragraph';
@@ -50,9 +50,6 @@ function Welcome({}: WelcomeProps): JSX.Element {
           <SignInForm />
         </Grid>
       </Grid>
-      {/* <Container maxWidth="sm">
-        <SignInForm />
-      </Container> */}
       <Divider />
       <div>
         <Typography variant="h3" gutterBottom={true}>

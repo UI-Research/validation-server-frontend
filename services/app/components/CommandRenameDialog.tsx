@@ -6,7 +6,7 @@ import {
   DialogTitle,
   TextField,
 } from '@material-ui/core';
-import { FormEventHandler, useRef, useState } from 'react';
+import { FormEventHandler, useRef } from 'react';
 import {
   CommandResponseResult,
   useCommandPatch,

@@ -42,7 +42,7 @@ export interface CommandPostPayload {
   sanitized_command_input: {
     epsilon: number;
     analysis_query: string;
-    transformation_query: string;
+    transformation_query?: string;
   };
 }
 interface CommandPostOptions {

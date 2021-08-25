@@ -118,7 +118,7 @@ function PreliminaryResultsAccordion({
       }
       summaryRef={summaryRef}
     >
-      <div>
+      <div style={{ width: '100%' }}>
         <Paragraph>
           <strong>Command:</strong>
         </Paragraph>

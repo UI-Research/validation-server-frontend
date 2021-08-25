@@ -1,34 +1,18 @@
-import { sanitizedCommandInput } from '../../util/example-data/sql-commands';
-import { useCommandPost } from '../context/ApiContext/queries/command';
+import { useState } from 'react';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 import UIButton from '../UIButton';
-
-interface CommandPayload {
-  command_type: number;
-  command_name: string;
-  sanitized_command_input: {
-    epsilon: number;
-    analysis_query: string;
-    transformation_query: string;
-  };
-}
-
-const testPayload: CommandPayload = {
-  command_type: 2,
-  command_name: 'test-command-1.sql',
-  sanitized_command_input: sanitizedCommandInput,
-};
+import UploadCommandDialog from './UploadCommandDialog';
 
 interface UploadSectionProps {}
 function UploadSection({}: UploadSectionProps): JSX.Element {
-  const result = useCommandPost();
+  const [showDialog, setShowDialog] = useState(false);
 
   const handleClick = () => {
-    // TODO: Handle file upload stuff.
-    // For now, just use a test payload and send that to the API.
-    const payload = testPayload;
-    result.mutate(payload);
+    setShowDialog(true);
+  };
+  const handleDialogClose = () => {
+    setShowDialog(false);
   };
 
   return (
@@ -42,11 +26,10 @@ function UploadSection({}: UploadSectionProps): JSX.Element {
         commands, which may take a few minutes. Results for each command will
         appear below as the system completes the processing.
       </Paragraph>
-      <UIButton
-        title="Upload a file"
-        icon="Publish"
-        onClick={handleClick}
-        disabled={result.isLoading}
+      <UIButton title="Upload a command" icon="Publish" onClick={handleClick} />
+      <UploadCommandDialog
+        onDialogClose={handleDialogClose}
+        showDialog={showDialog}
       />
     </div>
   );

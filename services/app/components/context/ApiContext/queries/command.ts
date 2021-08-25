@@ -42,7 +42,7 @@ export interface CommandPostPayload {
   sanitized_command_input: {
     epsilon: number;
     analysis_query: string;
-    transformation_query?: string;
+    transformation_query?: string | null;
   };
 }
 interface CommandPostOptions {
@@ -55,6 +55,10 @@ function useCommandPost(opts: CommandPostOptions = {}) {
   const postCommand = async (
     data: CommandPostPayload,
   ): Promise<CommandResponseResult> => {
+    if (!data.sanitized_command_input.transformation_query) {
+      data.sanitized_command_input.transformation_query = null;
+    }
+
     const response = await post<CommandResponseResult>(
       '/command/',
       token,

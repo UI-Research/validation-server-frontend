@@ -22,6 +22,7 @@ function HomePage(): JSX.Element {
     steps: defaultStepData,
     activeStep: defaultActiveStep,
   });
+  const [queue, setQueue] = useState<number[]>([]);
 
   const handleSetStep = (id: string) => {
     if (id === stepData.activeStep) {
@@ -39,6 +40,14 @@ function HomePage(): JSX.Element {
     window.scrollTo(0, 0);
   };
 
+  const handleCommandToggle = (commandId: number): void => {
+    if (queue.includes(commandId)) {
+      setQueue(arr => arr.filter(c => c !== commandId));
+    } else {
+      setQueue(arr => [...arr, commandId]);
+    }
+  };
+
   return (
     <PageTemplate
       title={title}
@@ -53,6 +62,8 @@ function HomePage(): JSX.Element {
       <StepsContent
         activeStep={stepData.activeStep}
         onSetStep={handleSetStep}
+        refinementQueue={queue}
+        onCommandToggle={handleCommandToggle}
       />
     </PageTemplate>
   );

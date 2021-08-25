@@ -10,18 +10,14 @@ import UploadSection from './UploadSection';
 
 interface UploadExploreProps {
   onNextClick: () => void;
+  refinementQueue: number[];
+  onCommandToggle: (commandId: number) => void;
 }
-function UploadExplore({ onNextClick }: UploadExploreProps): JSX.Element {
-  const [queue, setQueue] = useState<number[]>([]);
-
-  const handleCommandToggle = (commandId: number): void => {
-    if (queue.includes(commandId)) {
-      setQueue(arr => arr.filter(c => c !== commandId));
-    } else {
-      setQueue(arr => [...arr, commandId]);
-    }
-  };
-
+function UploadExplore({
+  onNextClick,
+  onCommandToggle,
+  refinementQueue,
+}: UploadExploreProps): JSX.Element {
   return (
     <div>
       <SectionTitle>
@@ -56,8 +52,8 @@ function UploadExplore({ onNextClick }: UploadExploreProps): JSX.Element {
       <UploadSection />
       <Divider />
       <PreliminaryResults
-        refinementQueue={queue}
-        onCommandToggle={handleCommandToggle}
+        refinementQueue={refinementQueue}
+        onCommandToggle={onCommandToggle}
       />
       <Divider />
       <div>
@@ -74,7 +70,7 @@ function UploadExplore({ onNextClick }: UploadExploreProps): JSX.Element {
           </Grid>
           <Grid item={true} container={true} xs={4} justify="flex-end">
             <UIButton
-              disabled={queue.length === 0}
+              disabled={refinementQueue.length === 0}
               title="Next"
               icon="ChevronRight"
               onClick={onNextClick}

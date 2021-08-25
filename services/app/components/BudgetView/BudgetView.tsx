@@ -15,13 +15,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface BudgetDataResponse {
-  researcher_id: number;
-  total_budget_allocated: string;
-  total_budget_available: number;
-  total_budget_used: string;
-}
-
 interface BudgetViewProps {}
 function BudgetView({}: BudgetViewProps): JSX.Element {
   const classes = useStyles();

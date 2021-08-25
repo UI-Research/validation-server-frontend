@@ -2,11 +2,9 @@ import React from 'react';
 import ApiContext from '.';
 
 interface ApiContextProviderProps {
-  researcherId: number;
   token: string;
 }
 export interface ApiContextProviderState {
-  researcherId: number;
   token: string;
 }
 
@@ -18,7 +16,6 @@ class ApiContextProvider extends React.Component<
     super(props);
 
     this.state = {
-      researcherId: props.researcherId,
       token: props.token,
     };
   }

@@ -11,9 +11,8 @@ interface LoadOptions {
  * @returns some Promise response object
  * @example
  * ```ts
- * const researcherId = 2;
  * const token = 'abc123';
- * const endpoint = `/public-use-budget/${researcherId}`;
+ * const endpoint = '/public-use-budget/';
  * const result = await load(endpoint, token);
  * ```
  */

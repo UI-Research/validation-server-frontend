@@ -7,7 +7,6 @@ import ApiContextProvider, {
 export interface ApiContextType extends ApiContextProviderState {}
 
 const ApiContext = createContext<ApiContextType>({
-  researcherId: 0,
   token: '',
 });
 

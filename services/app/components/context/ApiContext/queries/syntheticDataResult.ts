@@ -1,5 +1,5 @@
 import { useContext, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryResult } from 'react-query';
 import ApiContext from '..';
 import load from '../load';
 
@@ -19,7 +19,7 @@ export interface SyntheticDataResponse {
   results: SyntheticDataResult[];
 }
 
-function useSyntheticDataResultsQuery() {
+function useSyntheticDataResultsQuery(): UseQueryResult<SyntheticDataResponse> {
   const { token } = useContext(ApiContext);
   const results = useQuery('synthetic-data-result', () =>
     load<SyntheticDataResponse>('/synthetic-data-result/', token),
@@ -40,7 +40,9 @@ function isNotFound<T>(item: T | ResultNotFound): item is ResultNotFound {
  * @param id Run ID to fetch.
  * @returns UseQueryResult UseQueryResult<SyntheticDataResult | null>
  */
-function useSyntheticDataResultQuery(id: number) {
+function useSyntheticDataResultQuery(
+  id: number,
+): UseQueryResult<SyntheticDataResult | null> {
   const [stop, setStop] = useState(false);
   const { token } = useContext(ApiContext);
   const results = useQuery(
@@ -87,7 +89,9 @@ function useSyntheticDataResultQuery(id: number) {
  * @param commandId Command ID to fetch.
  * @returns UseQueryResult UseQueryResult<SyntheticDataResult | null>
  */
-function useSyntheticDataResultByCommandIdQuery(commandId: number) {
+function useSyntheticDataResultByCommandIdQuery(
+  commandId: number,
+): UseQueryResult<SyntheticDataResult | null> {
   const [stop, setStop] = useState(false);
   const { token } = useContext(ApiContext);
   const paramString = useMemo(() => {

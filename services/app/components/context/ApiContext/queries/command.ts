@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import {
   useMutation,
+  UseMutationResult,
   useQuery,
   useQueryClient,
   UseQueryResult,
@@ -49,7 +50,14 @@ interface CommandPostOptions {
   onSuccess?: (data: CommandResponseResult) => void;
   onError?: (error: unknown) => void;
 }
-function useCommandPost(opts: CommandPostOptions = {}) {
+function useCommandPost(
+  opts: CommandPostOptions = {},
+): UseMutationResult<
+  CommandResponseResult,
+  unknown,
+  CommandPostPayload,
+  unknown
+> {
   const { token } = useContext(ApiContext);
   const queryClient = useQueryClient();
   const postCommand = async (
@@ -95,7 +103,14 @@ interface CommandPatchOptions {
   onSuccess?: (data: CommandResponseResult) => void;
   onError?: (error: unknown) => void;
 }
-function useCommandPatch(opts: CommandPatchOptions = {}) {
+function useCommandPatch(
+  opts: CommandPatchOptions = {},
+): UseMutationResult<
+  CommandResponseResult,
+  unknown,
+  CommandPatchPayload,
+  unknown
+> {
   const { token } = useContext(ApiContext);
   const queryClient = useQueryClient();
   const patchCommand = async (
@@ -136,7 +151,9 @@ interface CommandDeleteOptions {
   onSuccess?: () => void;
   onError?: (error: unknown) => void;
 }
-function useCommandDelete(opts: CommandDeleteOptions = {}) {
+function useCommandDelete(
+  opts: CommandDeleteOptions = {},
+): UseMutationResult<void, unknown, CommandDeletePayload, unknown> {
   const { token } = useContext(ApiContext);
   const queryClient = useQueryClient();
   const deleteCommand = async (data: CommandDeletePayload) =>

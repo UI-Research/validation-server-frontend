@@ -36,7 +36,7 @@ function MoreMenu({
         // For backdrop clicks, stop propagation (if event has it).
         // Else, the accordion with think it was clicked and toggle.
         if (reason === 'backdropClick') {
-          if (typeof (event as any).stopPropagation === 'function') {
+          if (typeof (event as Event).stopPropagation === 'function') {
             (event as React.MouseEvent<HTMLElement>).stopPropagation();
           }
         }

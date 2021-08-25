@@ -20,7 +20,7 @@ class ApiContextProvider extends React.Component<
     };
   }
 
-  render() {
+  render(): JSX.Element {
     const { children } = this.props;
     return (
       <ApiContext.Provider value={this.state}>{children}</ApiContext.Provider>

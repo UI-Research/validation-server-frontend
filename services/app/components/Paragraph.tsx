@@ -6,10 +6,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface ParagraphProps {
-  //
-}
-const Paragraph: React.FC<ParagraphProps> = ({ children }) => {
+const Paragraph: React.FC = ({ children }) => {
   const classes = useStyles();
   return <Typography className={classes.paragraph}>{children}</Typography>;
 };

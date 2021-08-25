@@ -4,7 +4,7 @@ import ApiContextProvider, {
   ApiContextProviderState,
 } from './ApiContextProvider';
 
-export interface ApiContextType extends ApiContextProviderState {}
+export type ApiContextType = ApiContextProviderState;
 
 const ApiContext = createContext<ApiContextType>({
   token: '',

@@ -1,10 +1,7 @@
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 
-interface ReviewRefineProps {
-  // TODO
-}
-function ReviewRefine({}: ReviewRefineProps): JSX.Element {
+function ReviewRefine(): JSX.Element {
   return (
     <div>
       <SectionTitle>Review &amp; Refine</SectionTitle>

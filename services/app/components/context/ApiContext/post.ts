@@ -18,10 +18,10 @@ interface PostOptions {
  * const result = await post(endpoint, token, payload);
  * ```
  */
-async function post<T = any>(
+async function post<T>(
   endpoint: string,
   token: string,
-  data: Object,
+  data: unknown,
   opts?: PostOptions,
 ): Promise<T> {
   const response = await fetch(`${basePath}${endpoint}`, {

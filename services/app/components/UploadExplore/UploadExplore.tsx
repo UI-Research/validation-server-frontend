@@ -1,5 +1,4 @@
 import { Grid } from '@material-ui/core';
-import { useState } from 'react';
 import BudgetView from '../BudgetView/BudgetView';
 import Divider from '../Divider';
 import Paragraph from '../Paragraph';

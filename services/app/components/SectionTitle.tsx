@@ -6,10 +6,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface SectionTitleProps {
-  //
-}
-const SectionTitle: React.FC<SectionTitleProps> = ({ children }) => {
+const SectionTitle: React.FC = ({ children }) => {
   const classes = useStyles();
   return (
     <Typography className={classes.sectionTitle} variant="h4">

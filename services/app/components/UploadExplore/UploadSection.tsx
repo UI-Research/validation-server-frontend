@@ -4,8 +4,7 @@ import SectionTitle from '../SectionTitle';
 import UIButton from '../UIButton';
 import UploadCommandDialog from './UploadCommandDialog';
 
-interface UploadSectionProps {}
-function UploadSection({}: UploadSectionProps): JSX.Element {
+function UploadSection(): JSX.Element {
   const [showDialog, setShowDialog] = useState(false);
 
   const handleClick = () => {

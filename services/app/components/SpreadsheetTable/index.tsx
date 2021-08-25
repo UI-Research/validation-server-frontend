@@ -84,7 +84,7 @@ function SpreadsheetTable({
   );
 }
 
-function isKeyedData(val: any): val is KeyedData {
+function isKeyedData<T>(val: T | KeyedData): val is KeyedData {
   return !Array.isArray(val);
 }
 

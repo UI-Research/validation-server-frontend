@@ -7,8 +7,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface DividerProps {}
-function Divider({}: DividerProps): JSX.Element {
+function Divider(): JSX.Element {
   const classes = useStyles();
   return <MuiDivider className={classes.divider} />;
 }

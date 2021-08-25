@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryResult } from 'react-query';
 import ApiContext from '..';
 import load from '../load';
 
@@ -14,7 +14,7 @@ interface SyntheticDataRunResponse {
   count: number;
   results: SyntheticDataRun[];
 }
-function useSyntheticDataRunQuery() {
+function useSyntheticDataRunQuery(): UseQueryResult<SyntheticDataRunResponse> {
   const { token } = useContext(ApiContext);
   const result = useQuery('synthetic-data-run', () =>
     load<SyntheticDataRunResponse>('/synthetic-data-run/', token),

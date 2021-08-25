@@ -15,8 +15,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-interface BudgetViewProps {}
-function BudgetView({}: BudgetViewProps): JSX.Element {
+function BudgetView(): JSX.Element {
   const classes = useStyles();
   return (
     <div>

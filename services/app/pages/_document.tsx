@@ -4,7 +4,7 @@ import React from 'react';
 import theme from '../styles/material-ui/theme';
 
 class MyDocument extends Document {
-  render() {
+  render(): JSX.Element {
     return (
       <Html lang="en">
         <Head>

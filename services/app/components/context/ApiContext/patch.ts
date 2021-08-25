@@ -18,10 +18,10 @@ interface PatchOptions {
  * const result = await patch(endpoint, token, payload);
  * ```
  */
-async function patch<T = any>(
+async function patch<T>(
   endpoint: string,
   token: string,
-  data: Object,
+  data: unknown,
   opts?: PatchOptions,
 ): Promise<T> {
   const response = await fetch(`${basePath}${endpoint}`, {

@@ -22,7 +22,7 @@ const queryClient = new QueryClient({
 });
 const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const [key, setKey] = useState(0);
   React.useEffect(() => {
     // Remove the server-side injected CSS.

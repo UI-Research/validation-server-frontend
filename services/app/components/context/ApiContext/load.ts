@@ -16,7 +16,7 @@ interface LoadOptions {
  * const result = await load(endpoint, token);
  * ```
  */
-async function load<T = any>(
+async function load<T>(
   endpoint: string,
   token: string,
   opts?: LoadOptions,

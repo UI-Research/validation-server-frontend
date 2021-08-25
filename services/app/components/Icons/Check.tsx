@@ -7,8 +7,7 @@ const useStlyes = makeStyles(theme => ({
   },
 }));
 
-interface CheckProps {}
-function Check({}: CheckProps): JSX.Element {
+function Check(): JSX.Element {
   const classes = useStlyes();
   return <MuiCheck className={classes.icon} />;
 }

@@ -1,10 +1,12 @@
 import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import type { AppProps } from 'next/app';
-import React, { useState } from 'react';
+import { parseCookies } from 'nookies';
+import React, { useMemo, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ApiContextProvider } from '../components/context/ApiContext';
 import theme from '../styles/material-ui/theme';
+import { COOKIE_TOKEN } from '../util/cookies';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,7 +22,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-const token = process.env.NEXT_PUBLIC_API_TOKEN;
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const [key, setKey] = useState(0);
@@ -39,9 +40,21 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     setKey(1);
   }, []);
 
+  // NOTE: We _should_ attempt to get the token cookie server side,
+  // but there is not a great way to do that using the _app component quite yet.
+  // So instead, parse for cookies on the client side.
+  // https://github.com/vercel/next.js/discussions/10874
+  // Also note that simple client side cookies for auth tokens is
+  // _not_ best practice. Further security should be fleshed out.
+  // See https://maxschmitt.me/posts/next-js-http-only-cookie-auth-tokens/
+  const token = useMemo(() => {
+    const cookies = parseCookies();
+    return cookies[COOKIE_TOKEN] || null;
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <ApiContextProvider token={token || ''}>
+      <ApiContextProvider token={token}>
         <ThemeProvider key={key} theme={theme}>
           <CssBaseline />
           <Component {...pageProps} />

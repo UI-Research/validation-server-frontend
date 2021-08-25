@@ -1,6 +1,7 @@
-import { makeStyles } from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import React from 'react';
+import React, { useContext } from 'react';
+import ApiContext from '../context/ApiContext';
 import { Step } from '../Steps/steps';
 import StepItem from './StepItem';
 
@@ -8,6 +9,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     padding: theme.spacing(5, 9),
+  },
+  signOutButton: {
+    marginTop: theme.spacing(3),
   },
 }));
 
@@ -27,6 +31,7 @@ function StepsNav({
   onStepClick,
 }: StepsNavProps): JSX.Element {
   const classes = useStyles();
+  const { setToken } = useContext(ApiContext);
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -36,6 +41,10 @@ function StepsNav({
     if (!step.locked) {
       onStepClick(step.id);
     }
+  };
+
+  const handleSignOutClick = () => {
+    setToken(null);
   };
 
   return (
@@ -53,6 +62,11 @@ function StepsNav({
           />
         ))}
       </Grid>
+      <div className={classes.signOutButton}>
+        <Button size="small" onClick={handleSignOutClick}>
+          Sign out
+        </Button>
+      </div>
     </div>
   );
 }

@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import ApiContext from '../components/context/ApiContext';
 import PageTemplate from '../components/PageTemplate';
 import { steps } from '../components/Steps/steps';
 import StepsContent from '../components/Steps/StepsContent';
 import StepsNav, { StepData } from '../components/StepsNav/StepsNav';
+import Welcome from '../components/Welcome';
 
 const title = 'Home';
 
@@ -23,6 +25,7 @@ function HomePage(): JSX.Element {
     activeStep: defaultActiveStep,
   });
   const [queue, setQueue] = useState<number[]>([]);
+  const { token } = useContext(ApiContext);
 
   const handleSetStep = (id: string) => {
     if (id === stepData.activeStep) {
@@ -52,19 +55,25 @@ function HomePage(): JSX.Element {
     <PageTemplate
       title={title}
       topContent={
-        <StepsNav
-          activeStep={stepData.activeStep}
-          steps={stepData.steps}
-          onStepClick={handleSetStep}
-        />
+        token && (
+          <StepsNav
+            activeStep={stepData.activeStep}
+            steps={stepData.steps}
+            onStepClick={handleSetStep}
+          />
+        )
       }
     >
-      <StepsContent
-        activeStep={stepData.activeStep}
-        onSetStep={handleSetStep}
-        refinementQueue={queue}
-        onCommandToggle={handleCommandToggle}
-      />
+      {token ? (
+        <StepsContent
+          activeStep={stepData.activeStep}
+          onSetStep={handleSetStep}
+          refinementQueue={queue}
+          onCommandToggle={handleCommandToggle}
+        />
+      ) : (
+        <Welcome />
+      )}
     </PageTemplate>
   );
 }

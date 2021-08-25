@@ -21,11 +21,9 @@ async function load<T>(
   token: string,
   opts?: LoadOptions,
 ): Promise<T> {
-  const response = await fetch(`${basePath}${endpoint}`, {
-    headers: {
-      Authorization: `Token ${token}`,
-    },
-  });
+  const headers = token ? { Authorization: `Token ${token}` } : undefined;
+
+  const response = await fetch(`${basePath}${endpoint}`, { headers });
 
   // Check that the response is ok OR if the status is passable.
   const isOkay = response.ok || opts?.okStatuses?.includes(response.status);

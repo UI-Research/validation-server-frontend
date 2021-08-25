@@ -7,7 +7,10 @@ import ApiContextProvider, {
 export type ApiContextType = ApiContextProviderState;
 
 const ApiContext = createContext<ApiContextType>({
-  token: '',
+  token: null,
+  setToken: () => {
+    // Empty
+  },
 });
 
 const { Consumer } = ApiContext;

@@ -10,6 +10,7 @@ import {
   CommandResponseResult,
   useCommandQuery,
 } from '../context/ApiContext/queries/command';
+import { useConfidentialDataResultByCommandId } from '../context/ApiContext/queries/confidentialData';
 import { useSyntheticDataResultByCommandIdQuery } from '../context/ApiContext/queries/syntheticDataResult';
 import LoadingIndicator from '../LoadingIndicator';
 import MoreMenu from '../MoreMenu';
@@ -106,11 +107,12 @@ function ReviewRefineAccordion({
     null,
   );
   const summaryRef = useRef<HTMLDivElement | null>(null);
-  const {
-    data: syntheticResult,
-    isError,
-    isLoading,
-  } = useSyntheticDataResultByCommandIdQuery(command.command_id);
+  const syntheticResult = useSyntheticDataResultByCommandIdQuery(
+    command.command_id,
+  );
+  const confidentialResult = useConfidentialDataResultByCommandId(
+    command.command_id,
+  );
 
   const handleMoreButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -141,20 +143,29 @@ function ReviewRefineAccordion({
   };
 
   // TODO: Do something user facing if synthetic data result query errors out.
-  if (isError) {
+  if (syntheticResult.isError || confidentialResult.isError) {
     return null;
   }
 
   // Wait for data result item to finish loading.
-  if (isLoading || !syntheticResult) {
+  if (
+    syntheticResult.isLoading ||
+    !syntheticResult.data ||
+    confidentialResult.isLoading ||
+    !confidentialResult.data
+  ) {
     return <LoadingIndicator />;
   }
 
   const syntheticData: Array<{ [key: string]: string | number }> | false =
-    syntheticResult.result.ok && JSON.parse(syntheticResult.result.data);
+    syntheticResult.data.result.ok &&
+    JSON.parse(syntheticResult.data.result.data);
+  const confidentialData: Array<{ [key: string]: string | number }> | false =
+    confidentialResult.data.result.ok &&
+    JSON.parse(confidentialResult.data.result.data);
 
   // TODO: Get actual cost from confidential result item.
-  const cost = Number(syntheticResult.privacy_budget_used);
+  const cost = Number(confidentialResult.data.privacy_budget_used);
   return (
     <Accordion
       id={String(command.command_id)}
@@ -186,94 +197,94 @@ function ReviewRefineAccordion({
                 data={syntheticData}
               />
             </div>
+          </Fragment>
+        ) : null}
+        {confidentialData ? (
+          <Fragment>
             <Paragraph>
               <strong>Results with Confidential Data:</strong>
             </Paragraph>
             <div>
               <SpreadsheetTable
-                columns={Object.keys(syntheticData[0])}
-                data={syntheticData}
+                columns={Object.keys(confidentialData[0])}
+                data={confidentialData}
               />
-            </div>
-            {!isNaN(cost) && (
-              <Fragment>
-                <Paragraph>
-                  <strong>Privacy Cost for Public Release Access</strong>
-                </Paragraph>
-                <div style={{ width: chartWidth }}>
-                  <Grid container={true}>
-                    <Grid item={true} xs={true}>
-                      <Typography align="left">
-                        Cost for request: {cost.toLocaleString()}
-                      </Typography>
-                    </Grid>
-                    <Grid item={true} xs={true}>
-                      <Typography align="right">
-                        Available budget: {availableRefinement.toLocaleString()}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  <BarChart
-                    width={chartWidth}
-                    max={startingRefinement}
-                    value={availableRefinement}
-                    secondaryValue={cost}
-                  />
-                </div>
-              </Fragment>
-            )}
-            <Paragraph>
-              <strong>Adjustments for Privacy</strong>
-            </Paragraph>
-            <Paragraph>
-              {/* TODO: Properly setup this section with dynamic data. */}
-              To preserve privacy, random variation was added by setting:
-            </Paragraph>
-            <Typography component="ul">
-              <li>
-                Root mean square error (RMSE): 1,293{' '}
-                <a href="#">Refine this privacy adjustment</a>
-              </li>
-            </Typography>
-            <Paragraph>
-              Additional adjustments require additional review &amp; refinement
-              budget cost.
-            </Paragraph>
-            <div>
-              <Grid
-                container={true}
-                justify="space-between"
-                alignItems="center"
-              >
-                <Grid item={true}>
-                  <UIButton
-                    title={`${
-                      added ? 'Remove from' : 'Add to'
-                    } final request queue`}
-                    icon="AddShoppingCart"
-                    onClick={handleAddClick}
-                  />
-                </Grid>
-                <Grid item={true}>
-                  <UIButton
-                    title="More Actions"
-                    icon="MoreVert"
-                    aria-label="More"
-                    aria-controls="more-menu"
-                    aria-haspopup="true"
-                    onClick={handleMoreButtonClick}
-                  />
-                  <MoreMenu
-                    menuAnchorEl={menuAnchorEl}
-                    onMenuClose={handleMenuClose}
-                    onRenameClick={handleRenameClick}
-                    onRemoveClick={handleRemoveClick}
-                  />
-                </Grid>
-              </Grid>
             </div>
           </Fragment>
         ) : null}
+        {!isNaN(cost) && (
+          <Fragment>
+            <Paragraph>
+              <strong>Privacy Cost for Public Release Access</strong>
+            </Paragraph>
+            <div style={{ width: chartWidth }}>
+              <Grid container={true}>
+                <Grid item={true} xs={true}>
+                  <Typography align="left">
+                    Cost for request: {cost.toLocaleString()}
+                  </Typography>
+                </Grid>
+                <Grid item={true} xs={true}>
+                  <Typography align="right">
+                    Available budget: {availableRefinement.toLocaleString()}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <BarChart
+                width={chartWidth}
+                max={startingRefinement}
+                value={availableRefinement}
+                secondaryValue={cost}
+              />
+            </div>
+          </Fragment>
+        )}
+        <Paragraph>
+          <strong>Adjustments for Privacy</strong>
+        </Paragraph>
+        <Paragraph>
+          {/* TODO: Properly setup this section with dynamic data. */}
+          To preserve privacy, random variation was added by setting:
+        </Paragraph>
+        <Typography component="ul">
+          <li>
+            Root mean square error (RMSE): 1,293{' '}
+            <a href="#">Refine this privacy adjustment</a>
+          </li>
+        </Typography>
+        <Paragraph>
+          Additional adjustments require additional review &amp; refinement
+          budget cost.
+        </Paragraph>
+        <div>
+          <Grid container={true} justify="space-between" alignItems="center">
+            <Grid item={true}>
+              <UIButton
+                title={`${
+                  added ? 'Remove from' : 'Add to'
+                } final request queue`}
+                icon="AddShoppingCart"
+                onClick={handleAddClick}
+              />
+            </Grid>
+            <Grid item={true}>
+              <UIButton
+                title="More Actions"
+                icon="MoreVert"
+                aria-label="More"
+                aria-controls="more-menu"
+                aria-haspopup="true"
+                onClick={handleMoreButtonClick}
+              />
+              <MoreMenu
+                menuAnchorEl={menuAnchorEl}
+                onMenuClose={handleMenuClose}
+                onRenameClick={handleRenameClick}
+                onRemoveClick={handleRemoveClick}
+              />
+            </Grid>
+          </Grid>
+        </div>
       </div>
     </Accordion>
   );

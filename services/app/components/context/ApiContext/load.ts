@@ -18,7 +18,7 @@ interface LoadOptions {
  */
 async function load<T>(
   endpoint: string,
-  token: string,
+  token: string | null,
   opts?: LoadOptions,
 ): Promise<T> {
   const headers = token ? { Authorization: `Token ${token}` } : undefined;

@@ -1,10 +1,9 @@
-import { Grid } from '@material-ui/core';
 import BudgetView from '../BudgetView/BudgetView';
 import Divider from '../Divider';
+import NextStepSection from '../NextStepSection';
 import Paragraph from '../Paragraph';
 import PreliminaryResults from '../PreliminaryResults/PreliminaryResults';
 import SectionTitle from '../SectionTitle';
-import UIButton from '../UIButton';
 import UploadSection from './UploadSection';
 
 interface UploadExploreProps {
@@ -56,9 +55,9 @@ function UploadExplore({
       />
       <Divider />
       <div>
-        <Grid container={true} alignItems="center">
-          <Grid item={true} xs={8}>
-            <SectionTitle>Next Step:</SectionTitle>
+        <NextStepSection
+          buttonDisabled={refinementQueue.length === 0}
+          description={
             <Paragraph>
               Enter the secure environment and select the{' '}
               <strong>Review &amp; Refinement</strong> tab to see your analyses
@@ -66,16 +65,9 @@ function UploadExplore({
               level of privacy adjustment and select analyses to add to your
               public-release request.
             </Paragraph>
-          </Grid>
-          <Grid item={true} container={true} xs={4} justify="flex-end">
-            <UIButton
-              disabled={refinementQueue.length === 0}
-              title="Next"
-              icon="ChevronRight"
-              onClick={onNextClick}
-            />
-          </Grid>
-        </Grid>
+          }
+          onNextClick={onNextClick}
+        />
       </div>
     </div>
   );

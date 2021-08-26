@@ -25,7 +25,12 @@ function StepsContent({
         />
       );
     case steps[1].id:
-      return <ReviewRefine />;
+      return (
+        <ReviewRefine
+          onNextClick={() => onSetStep(steps[2].id)}
+          queue={refinementQueue}
+        />
+      );
     case steps[2].id:
       return <RequestRelease />;
     default:

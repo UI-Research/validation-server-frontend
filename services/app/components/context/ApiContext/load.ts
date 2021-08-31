@@ -1,4 +1,5 @@
-const basePath = 'https://validation-server-stg.urban.org/api/v1';
+const apiBase = 'https://validation-server-stg.urban.org/api';
+const basePath = `${apiBase}/v1`;
 
 /**
  * Data loader for the Validation Server API.
@@ -12,12 +13,10 @@ const basePath = 'https://validation-server-stg.urban.org/api/v1';
  * const result = await load(endpoint);
  * ```
  */
-async function load(endpoint: string, token: string) {
-  const response = await fetch(`${basePath}${endpoint}`, {
-    headers: {
-      Authorization: `Token ${token}`,
-    },
-  });
+async function load(endpoint: string, token?: string | null) {
+  const headers = token ? { Authorization: `Token ${token}` } : undefined;
+
+  const response = await fetch(`${basePath}${endpoint}`, { headers });
 
   if (!response.ok) {
     throw new Error(
@@ -29,4 +28,5 @@ async function load(endpoint: string, token: string) {
   return resJson;
 }
 
+export { apiBase };
 export default load;

@@ -28,7 +28,7 @@ function Header(): JSX.Element {
               <Image
                 className={classes.logo}
                 src="/assets/ui-logo-rgb.svg"
-                alt="Tax Policy Center, Urban Institute &amp; Brookings Institution"
+                alt="Urban Institute"
                 width={150}
                 height={90}
               />

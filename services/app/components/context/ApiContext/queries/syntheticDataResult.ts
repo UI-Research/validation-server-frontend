@@ -1,7 +1,7 @@
 import { useContext, useMemo, useState } from 'react';
 import { useQuery, UseQueryResult } from 'react-query';
 import ApiContext from '..';
-import load from '../load';
+import load, { loadList } from '../load';
 
 export interface SyntheticDataResult {
   command_id: number;
@@ -19,10 +19,10 @@ export interface SyntheticDataResponse {
   results: SyntheticDataResult[];
 }
 
-function useSyntheticDataResultsQuery(): UseQueryResult<SyntheticDataResponse> {
+function useSyntheticDataResultsQuery(): UseQueryResult<SyntheticDataResult[]> {
   const { token } = useContext(ApiContext);
   const results = useQuery('synthetic-data-result', () =>
-    load<SyntheticDataResponse>('/synthetic-data-result/', token),
+    loadList<SyntheticDataResult>('/synthetic-data-result/', token),
   );
   return results;
 }

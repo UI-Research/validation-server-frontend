@@ -154,15 +154,25 @@ function ReviewRefineAccordion({
     return <LoadingIndicator />;
   }
 
+  // Get the epsilon 1.00 item. Note that the epsilon value is reflected in the
+  // `privacy_budget_used` value for confidential data result items.
+  const confidentialItem = confidentialResult.data.find(
+    c => c.privacy_budget_used === '1.00',
+  );
+
+  if (!confidentialItem) {
+    throw new Error(
+      `Confidential data result item with epsilon value of 1.00 not found for command ${command.command_id}.`,
+    );
+  }
+
   const syntheticData: Array<{ [key: string]: string | number }> | false =
     syntheticResult.data.result.ok &&
     JSON.parse(syntheticResult.data.result.data);
   const confidentialData: Array<{ [key: string]: string | number }> | false =
-    confidentialResult.data.result.ok &&
-    JSON.parse(confidentialResult.data.result.data);
+    confidentialItem.result.ok && JSON.parse(confidentialItem.result.data);
 
-  // TODO: Get actual cost from confidential result item.
-  const cost = Number(confidentialResult.data.privacy_budget_used);
+  const cost = Number(confidentialItem.privacy_budget_used);
   return (
     <Accordion
       id={String(command.command_id)}

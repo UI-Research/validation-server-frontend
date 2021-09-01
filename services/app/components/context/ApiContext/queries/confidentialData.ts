@@ -36,7 +36,7 @@ function useConfidentialDataResultsQuery(): UseQueryResult<
 
 function useConfidentialDataResultByCommandId(
   commandId: number,
-): UseQueryResult<ConfidentialDataResult | null> {
+): UseQueryResult<ConfidentialDataResult[] | null> {
   const [stop, setStop] = useState(false);
   const { token } = useContext(ApiContext);
   const paramString = useMemo(() => {
@@ -66,7 +66,7 @@ function useConfidentialDataResultByCommandId(
           }
           return null;
         }
-        return data[0];
+        return data;
       }),
     {
       onSuccess: data => {

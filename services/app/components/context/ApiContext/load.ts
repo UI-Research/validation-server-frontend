@@ -51,7 +51,7 @@ async function load<T>(
   return loadUrl(`${basePath}${endpoint}`, token, opts);
 }
 
-interface ResponseMany<T> {
+interface ListResponse<T> {
   count: number;
   next: string | null;
   prev: string | null;
@@ -70,7 +70,7 @@ async function loadList<T>(
   token: string | null,
   opts?: LoadOptions,
 ): Promise<T[]> {
-  const response = await load<ResponseMany<T>>(endpoint, token, opts);
+  const response = await load<ListResponse<T>>(endpoint, token, opts);
 
   let data = response.results;
 
@@ -79,7 +79,7 @@ async function loadList<T>(
   let nextUrl = response.next;
   while (nextUrl) {
     // Since the `response.next` will be a full URL, use `loadUrl`.
-    const { next, results } = await loadUrl<ResponseMany<T>>(
+    const { next, results } = await loadUrl<ListResponse<T>>(
       nextUrl.replace(/^http:\/\//i, 'https://'),
       token,
       opts,

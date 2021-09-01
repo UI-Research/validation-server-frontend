@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import ApiContext from '../components/context/ApiContext';
 import PageTemplate from '../components/PageTemplate';
 import { steps } from '../components/Steps/steps';
-import StepsContent from '../components/Steps/StepsContent';
+import StepsContentContainer from '../components/Steps/StepsContentContainer';
 import StepsNav, { StepData } from '../components/StepsNav/StepsNav';
 import Welcome from '../components/Welcome';
 
@@ -24,7 +24,6 @@ function HomePage(): JSX.Element {
     steps: defaultStepData,
     activeStep: defaultActiveStep,
   });
-  const [queue, setQueue] = useState<number[]>([]);
   const { token } = useContext(ApiContext);
 
   const handleSetStep = (id: string) => {
@@ -43,14 +42,6 @@ function HomePage(): JSX.Element {
     window.scrollTo(0, 0);
   };
 
-  const handleCommandToggle = (commandId: number): void => {
-    if (queue.includes(commandId)) {
-      setQueue(arr => arr.filter(c => c !== commandId));
-    } else {
-      setQueue(arr => [...arr, commandId]);
-    }
-  };
-
   return (
     <PageTemplate
       title={title}
@@ -65,11 +56,10 @@ function HomePage(): JSX.Element {
       }
     >
       {token ? (
-        <StepsContent
+        <StepsContentContainer
           activeStep={stepData.activeStep}
           onSetStep={handleSetStep}
-          refinementQueue={queue}
-          onCommandToggle={handleCommandToggle}
+          token={token}
         />
       ) : (
         <Welcome />

@@ -50,7 +50,6 @@ function UploadCommandDialog({
         payload.sanitized_command_input.transformation_query =
           transformationVal;
       }
-      console.log(payload);
 
       post.mutate(payload);
     }

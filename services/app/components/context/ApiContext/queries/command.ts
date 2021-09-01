@@ -67,6 +67,10 @@ function useCommandPost(
       data.sanitized_command_input.transformation_query = null;
     }
 
+    if (!token) {
+      throw new Error('Token is not defined.');
+    }
+
     const response = await post<CommandResponseResult>(
       '/command/',
       token,
@@ -116,6 +120,9 @@ function useCommandPatch(
   const patchCommand = async (
     data: CommandPatchPayload,
   ): Promise<CommandResponseResult> => {
+    if (!token) {
+      throw new Error('Token is not defined.');
+    }
     const response = await patch<CommandResponseResult>(
       `/command/${data.command_id}/`,
       token,
@@ -156,8 +163,12 @@ function useCommandDelete(
 ): UseMutationResult<void, unknown, CommandDeletePayload, unknown> {
   const { token } = useContext(ApiContext);
   const queryClient = useQueryClient();
-  const deleteCommand = async (data: CommandDeletePayload) =>
-    deleteMethod(`/command/${data.command_id}/`, token);
+  const deleteCommand = async (data: CommandDeletePayload) => {
+    if (!token) {
+      throw new Error('Token is not defined.');
+    }
+    return deleteMethod(`/command/${data.command_id}/`, token);
+  };
   const result = useMutation(deleteCommand, {
     onSuccess: () => {
       if (opts.onSuccess) {

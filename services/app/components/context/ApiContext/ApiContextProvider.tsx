@@ -35,7 +35,6 @@ class ApiContextProvider extends React.Component<
       });
     } else {
       // Destroy the cookie for token.
-      console.log('destroyCookie');
       destroyCookie(null, COOKIE_TOKEN);
     }
   };

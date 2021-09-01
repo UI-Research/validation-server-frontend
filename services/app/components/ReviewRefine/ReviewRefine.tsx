@@ -7,9 +7,16 @@ import ReviewRefineQueue from './ReviewRefineQueue';
 
 interface ReviewRefineProps {
   onNextClick: () => void;
-  queue: number[];
+  refinementQueue: number[];
+  releaseQueue: number[];
+  onReleaseToggle: (commandId: number) => void;
 }
-function ReviewRefine({ onNextClick, queue }: ReviewRefineProps): JSX.Element {
+function ReviewRefine({
+  onNextClick,
+  refinementQueue,
+  releaseQueue,
+  onReleaseToggle,
+}: ReviewRefineProps): JSX.Element {
   return (
     <div>
       <SectionTitle>Preliminary Results Using Synthetic Data</SectionTitle>
@@ -36,9 +43,14 @@ function ReviewRefine({ onNextClick, queue }: ReviewRefineProps): JSX.Element {
       <Divider />
       <BudgetView />
       <Divider />
-      <ReviewRefineQueue queue={queue} />
+      <ReviewRefineQueue
+        refinementQueue={refinementQueue}
+        releaseQueue={releaseQueue}
+        onReleaseToggle={onReleaseToggle}
+      />
       <Divider />
       <NextStepSection
+        buttonDisabled={releaseQueue.length === 0}
         description={
           <Paragraph>
             Select the <strong>Request &amp; Release</strong> tab to see all the

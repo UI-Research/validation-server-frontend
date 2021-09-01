@@ -28,10 +28,12 @@ function usePreliminaryResults() {
 interface PreliminaryResultsProps {
   refinementQueue: number[];
   onCommandToggle: (commandId: number) => void;
+  onCommandRemove: (commandId: number) => void;
 }
 function PreliminaryResults({
   refinementQueue,
   onCommandToggle,
+  onCommandRemove,
 }: PreliminaryResultsProps): JSX.Element {
   const { data, isLoading, publicBudgetData, refinementBudgetData } =
     usePreliminaryResults();
@@ -58,6 +60,7 @@ function PreliminaryResults({
                 command={c}
                 added={refinementQueue.includes(c.command_id)}
                 onAddClick={() => onCommandToggle(c.command_id)}
+                onRemoveCommand={() => onCommandRemove(c.command_id)}
                 availablePublic={publicBudgetData.total_budget_available}
                 availableRefinement={
                   refinementBudgetData.total_budget_available

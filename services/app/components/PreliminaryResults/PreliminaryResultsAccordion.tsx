@@ -30,6 +30,7 @@ function CommandNotAllowedMessage(): JSX.Element {
 interface PreliminaryResultsAccordionProps {
   added?: boolean;
   onAddClick?: () => void;
+  onRemoveCommand: () => void;
   command: CommandResponseResult;
   availableRefinement: number;
   startingRefinement: number;
@@ -38,6 +39,7 @@ interface PreliminaryResultsAccordionProps {
 function PreliminaryResultsAccordion({
   added,
   onAddClick,
+  onRemoveCommand,
   command,
   availablePublic,
   availableRefinement,
@@ -73,6 +75,7 @@ function PreliminaryResultsAccordion({
   };
 
   const handleRemoveClick = () => {
+    onRemoveCommand();
     commandDeleteResult.mutate({ command_id: command.command_id });
   };
 

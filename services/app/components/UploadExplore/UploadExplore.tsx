@@ -10,10 +10,12 @@ interface UploadExploreProps {
   onNextClick: () => void;
   refinementQueue: number[];
   onCommandToggle: (commandId: number) => void;
+  onCommandRemove: (commandId: number) => void;
 }
 function UploadExplore({
   onNextClick,
   onCommandToggle,
+  onCommandRemove,
   refinementQueue,
 }: UploadExploreProps): JSX.Element {
   return (
@@ -52,6 +54,7 @@ function UploadExplore({
       <PreliminaryResults
         refinementQueue={refinementQueue}
         onCommandToggle={onCommandToggle}
+        onCommandRemove={onCommandRemove}
       />
       <Divider />
       <div>

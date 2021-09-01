@@ -15,7 +15,9 @@ function StepsContent({
   initialQueueList,
   onSetStep,
 }: StepsContentProps): JSX.Element | null {
-  const [queue, setQueue] = useState<number[]>(initialQueueList);
+  const [refinementQueue, setRefinementQueue] =
+    useState<number[]>(initialQueueList);
+  const [releaseQueue, setReleaseQueue] = useState<number[]>([]);
   const confidentialDataPost = useConfidentialDataRunPost();
 
   const handleUploadExploreNextClick = () => {
@@ -23,7 +25,7 @@ function StepsContent({
     // - Post Confidential Data Runs for each item in the queue
     // - Update the Review & Refinement Budget for each item in the queue
     // - Go to the next step
-    queue.forEach(command_id => {
+    refinementQueue.forEach(command_id => {
       // TODO: Do not hard code the researcher ID.
       confidentialDataPost.mutate({ command_id, researcher_id: 2 });
     });
@@ -31,10 +33,25 @@ function StepsContent({
   };
 
   const handleCommandToggle = (commandId: number): void => {
-    if (queue.includes(commandId)) {
-      setQueue(arr => arr.filter(c => c !== commandId));
+    if (refinementQueue.includes(commandId)) {
+      setRefinementQueue(arr => arr.filter(c => c !== commandId));
     } else {
-      setQueue(arr => [...arr, commandId]);
+      setRefinementQueue(arr => [...arr, commandId]);
+    }
+  };
+
+  // When a command has been completely removed, also remove it from
+  // the queues.
+  const handleCommandRemove = (commandId: number): void => {
+    setRefinementQueue(arr => arr.filter(c => c !== commandId));
+    setReleaseQueue(arr => arr.filter(n => n !== commandId));
+  };
+
+  const handleReleaseToggle = (commandId: number): void => {
+    if (releaseQueue.includes(commandId)) {
+      setReleaseQueue(arr => arr.filter(n => n !== commandId));
+    } else {
+      setReleaseQueue(arr => [...arr, commandId]);
     }
   };
 
@@ -43,15 +60,18 @@ function StepsContent({
       return (
         <UploadExplore
           onNextClick={handleUploadExploreNextClick}
-          refinementQueue={queue}
+          refinementQueue={refinementQueue}
           onCommandToggle={handleCommandToggle}
+          onCommandRemove={handleCommandRemove}
         />
       );
     case steps[1].id:
       return (
         <ReviewRefine
           onNextClick={() => onSetStep(steps[2].id)}
-          queue={queue}
+          refinementQueue={refinementQueue}
+          releaseQueue={releaseQueue}
+          onReleaseToggle={handleReleaseToggle}
         />
       );
     case steps[2].id:

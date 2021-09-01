@@ -41,20 +41,17 @@ function useRefinementQueueResults(queue: number[]) {
 }
 
 interface ReviewRefineQueueProps {
-  queue: number[];
+  refinementQueue: number[];
+  releaseQueue: number[];
+  onReleaseToggle: (commandId: number) => void;
 }
-function ReviewRefineQueue({ queue }: ReviewRefineQueueProps): JSX.Element {
-  const [finalQueue, setFinalQueue] = useState<number[]>([]);
+function ReviewRefineQueue({
+  refinementQueue,
+  releaseQueue,
+  onReleaseToggle,
+}: ReviewRefineQueueProps): JSX.Element {
   const { data, isLoading, publicBudgetData, refinementBudgetData } =
-    useRefinementQueueResults(queue);
-
-  const onItemToggle = (commandId: number): void => {
-    if (finalQueue.includes(commandId)) {
-      setFinalQueue(finalQueue.filter(n => n !== commandId));
-    } else {
-      setFinalQueue([...finalQueue, commandId]);
-    }
-  };
+    useRefinementQueueResults(refinementQueue);
 
   return (
     <div>
@@ -69,8 +66,8 @@ function ReviewRefineQueue({ queue }: ReviewRefineQueueProps): JSX.Element {
               <ReviewRefineAccordion
                 key={c.command_id}
                 command={c}
-                added={finalQueue.includes(c.command_id)}
-                onAddClick={() => onItemToggle(c.command_id)}
+                added={releaseQueue.includes(c.command_id)}
+                onAddClick={() => onReleaseToggle(c.command_id)}
                 availablePublic={publicBudgetData.total_budget_available}
                 availableRefinement={
                   refinementBudgetData.total_budget_available

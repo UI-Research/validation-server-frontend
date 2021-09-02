@@ -16,8 +16,6 @@ import SpreadsheetTable from '../SpreadsheetTable';
 import UIButton from '../UIButton';
 import PreliminarySummaryContent from './PreliminarySummaryContent';
 
-const chartWidth = 600;
-
 function CommandNotAllowedMessage(): JSX.Element {
   return (
     <Fragment>
@@ -155,7 +153,7 @@ function PreliminaryResultsAccordion({
                     Privacy Cost for Review &amp; Refinement of Analyses
                   </strong>
                 </Paragraph>
-                <div style={{ width: chartWidth }}>
+                <div>
                   <Grid container={true}>
                     <Grid item={true} xs={true}>
                       <Typography align="left">
@@ -169,7 +167,7 @@ function PreliminaryResultsAccordion({
                     </Grid>
                   </Grid>
                   <BarChart
-                    width={chartWidth}
+                    width={600}
                     max={startingRefinement}
                     value={availableRefinement}
                     secondaryValue={cost}

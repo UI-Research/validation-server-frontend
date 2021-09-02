@@ -26,7 +26,7 @@ function BudgetView(): JSX.Element {
       </Paragraph>
       <div className={classes.root}>
         <Grid container={true} spacing={5}>
-          <Grid item={true} xs={true}>
+          <Grid item={true} sm={6}>
             <Typography variant="h5">
               Review &amp; Refinement Budget:
             </Typography>
@@ -36,7 +36,7 @@ function BudgetView(): JSX.Element {
             </Paragraph>
             <BudgetFigureContainer type="review-and-refinement-budget" />
           </Grid>
-          <Grid item={true} xs={true}>
+          <Grid item={true} sm={6}>
             <Typography variant="h5">Public Release Budget:</Typography>
             <Paragraph>
               The public release budget is for obtaining the confidential data

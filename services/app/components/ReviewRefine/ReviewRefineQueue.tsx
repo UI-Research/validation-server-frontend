@@ -26,8 +26,6 @@ import SpreadsheetTable from '../SpreadsheetTable';
 import UIButton from '../UIButton';
 import RefineAdjustmentsDialog from './RefineAdjustmentsDialog';
 
-const chartWidth = 600;
-
 function useRefinementQueueResults(queue: number[]) {
   const commandResult = useCommandQuery();
   const refinementBudgetResult = useBudgetQuery('review-and-refinement-budget');
@@ -243,7 +241,7 @@ function ReviewRefineAccordion({
             <Paragraph>
               <strong>Privacy Cost for Public Release Access</strong>
             </Paragraph>
-            <div style={{ width: chartWidth }}>
+            <div>
               <Grid container={true}>
                 <Grid item={true} xs={true}>
                   <Typography align="left">
@@ -257,7 +255,7 @@ function ReviewRefineAccordion({
                 </Grid>
               </Grid>
               <BarChart
-                width={chartWidth}
+                width={600}
                 max={startingRefinement}
                 value={availableRefinement}
                 secondaryValue={cost}

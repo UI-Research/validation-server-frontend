@@ -1,15 +1,13 @@
 import { Grid, Typography } from '@material-ui/core';
 import BarChart from '../BarChart';
 
-const chartWidth = 370;
-
 interface BudgetFigureProps {
   available: number;
   starting: number;
 }
 function BudgetFigure({ available, starting }: BudgetFigureProps): JSX.Element {
   return (
-    <div style={{ width: chartWidth }}>
+    <div>
       <Grid container={true}>
         <Grid item={true} xs={true}>
           <Typography align="left">
@@ -22,7 +20,7 @@ function BudgetFigure({ available, starting }: BudgetFigureProps): JSX.Element {
           </Typography>
         </Grid>
       </Grid>
-      <BarChart width={chartWidth} max={starting} value={available} />
+      <BarChart max={starting} value={available} />
       <Typography align="center">Privacy Units</Typography>
     </div>
   );

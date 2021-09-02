@@ -13,6 +13,10 @@ const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
   },
+  budgetTitle: {
+    fontSize: '16px',
+    fontWeight: 'bold',
+  },
 }));
 
 function BudgetView(): JSX.Element {
@@ -27,7 +31,7 @@ function BudgetView(): JSX.Element {
       <div className={classes.root}>
         <Grid container={true} spacing={5}>
           <Grid item={true} sm={6}>
-            <Typography variant="h5">
+            <Typography variant="h5" className={classes.budgetTitle}>
               Review &amp; Refinement Budget:
             </Typography>
             <Paragraph>
@@ -37,7 +41,9 @@ function BudgetView(): JSX.Element {
             <BudgetFigureContainer type="review-and-refinement-budget" />
           </Grid>
           <Grid item={true} sm={6}>
-            <Typography variant="h5">Public Release Budget:</Typography>
+            <Typography variant="h5" className={classes.budgetTitle}>
+              Public Release Budget:
+            </Typography>
             <Paragraph>
               The public release budget is for obtaining the confidential data
               for use in publications and other public-facing purposes.

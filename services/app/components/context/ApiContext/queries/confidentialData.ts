@@ -10,7 +10,7 @@ import ApiContext from '..';
 import { loadList } from '../load';
 import post from '../post';
 
-interface ConfidentialDataResult {
+export interface ConfidentialDataResult {
   command_id: number;
   run_id: number;
   researcher_id: number;

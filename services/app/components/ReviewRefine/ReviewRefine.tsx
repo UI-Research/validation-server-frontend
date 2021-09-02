@@ -8,8 +8,8 @@ import ReviewRefineQueue from './ReviewRefineQueue';
 interface ReviewRefineProps {
   onNextClick: () => void;
   refinementQueue: number[];
-  releaseQueue: number[];
-  onReleaseToggle: (commandId: number) => void;
+  releaseQueue: string[];
+  onReleaseToggle: (id: string) => void;
 }
 function ReviewRefine({
   onNextClick,

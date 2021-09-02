@@ -22,7 +22,7 @@ function StepsContent({
   const [refinementQueue, setRefinementQueue] =
     useState<number[]>(initialQueueList);
   const syntheticResults = useSyntheticDataResultsQuery();
-  const [releaseQueue, setReleaseQueue] = useState<number[]>([]);
+  const [releaseQueue, setReleaseQueue] = useState<string[]>([]);
   const confidentialDataPost = useConfidentialDataRunPost();
   const reviewBudgetPatch = useBudgetPatch(
     'review-and-refinement-budget',
@@ -78,14 +78,16 @@ function StepsContent({
   // the queues.
   const handleCommandRemove = (commandId: number): void => {
     setRefinementQueue(arr => arr.filter(c => c !== commandId));
-    setReleaseQueue(arr => arr.filter(n => n !== commandId));
+    setReleaseQueue(arr =>
+      arr.filter(n => n.split('-')[0] !== String(commandId)),
+    );
   };
 
-  const handleReleaseToggle = (commandId: number): void => {
-    if (releaseQueue.includes(commandId)) {
-      setReleaseQueue(arr => arr.filter(n => n !== commandId));
+  const handleReleaseToggle = (id: string): void => {
+    if (releaseQueue.includes(id)) {
+      setReleaseQueue(arr => arr.filter(n => n !== id));
     } else {
-      setReleaseQueue(arr => [...arr, commandId]);
+      setReleaseQueue(arr => [...arr, id]);
     }
   };
 

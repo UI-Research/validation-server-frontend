@@ -24,6 +24,7 @@ function TableExample({ useRadio }: TableExampleProps): JSX.Element {
         'Carbs (g)',
         'Protein (g)',
       ]}
+      getDataId={d => String(d[0])}
       data={data}
       useRadio={useRadio}
       radioValue={selectedItem}

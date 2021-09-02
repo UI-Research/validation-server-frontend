@@ -1,7 +1,13 @@
 import { Grid, IconButton, Typography } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
 import { AddShoppingCart, MoreVert } from '@material-ui/icons';
-import { Fragment, ReactNode, useRef, useState } from 'react';
+import {
+  Fragment,
+  MouseEventHandler,
+  ReactNode,
+  useRef,
+  useState,
+} from 'react';
 import Accordion from '../Accordion';
 import BarChart from '../BarChart';
 import CodeBlock from '../CodeBlock';
@@ -18,6 +24,7 @@ import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 import SpreadsheetTable from '../SpreadsheetTable';
 import UIButton from '../UIButton';
+import RefineAdjustmentsDialog from './RefineAdjustmentsDialog';
 
 const chartWidth = 600;
 
@@ -100,6 +107,7 @@ function ReviewRefineAccordion({
   onAddClick,
   startingRefinement,
 }: ReviewRefineAccordionProps): JSX.Element | null {
+  const [showDialog, setShowDialog] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
     null,
   );
@@ -171,6 +179,17 @@ function ReviewRefineAccordion({
     JSON.parse(syntheticResult.data.result.data);
   const confidentialData: Array<{ [key: string]: string | number }> | false =
     confidentialItem.result.ok && JSON.parse(confidentialItem.result.data);
+  const accuracyData: Array<{ [key: string]: string | number }> = JSON.parse(
+    confidentialItem.accuracy,
+  );
+
+  const handleRefineClick: MouseEventHandler<HTMLAnchorElement> = e => {
+    e.preventDefault();
+    setShowDialog(true);
+  };
+  const handleDialogClose = () => {
+    setShowDialog(false);
+  };
 
   const cost = Number(confidentialItem.privacy_budget_used);
   return (
@@ -256,7 +275,9 @@ function ReviewRefineAccordion({
         <Typography component="ul">
           <li>
             Root mean square error (RMSE): 1,293{' '}
-            <a href="#">Refine this privacy adjustment</a>
+            <a href="#" onClick={handleRefineClick}>
+              Refine this privacy adjustment
+            </a>
           </li>
         </Typography>
         <Paragraph>
@@ -293,6 +314,11 @@ function ReviewRefineAccordion({
           </Grid>
         </div>
       </div>
+      <RefineAdjustmentsDialog
+        accuracyData={accuracyData}
+        onDialogClose={handleDialogClose}
+        showDialog={showDialog}
+      />
     </Accordion>
   );
 }

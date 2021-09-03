@@ -1,6 +1,5 @@
 import { useQuery } from 'react-query';
 import { loadList } from '../context/ApiContext/load';
-import { loadBudget } from '../context/ApiContext/queries/budget';
 import { CommandResponseResult } from '../context/ApiContext/queries/command';
 import { ConfidentialDataRunResult } from '../context/ApiContext/queries/confidentialData';
 import LoadingIndicator from '../LoadingIndicator';
@@ -8,18 +7,13 @@ import StepsContent from './StepsContent';
 
 interface InitialData {
   queue: number[];
-  researcherId: number;
 }
 async function loadInitialData(token: string): Promise<InitialData> {
-  const [fullCommandIds, confidentialRuns, researcherId] = await Promise.all([
+  const [fullCommandIds, confidentialRuns] = await Promise.all([
     loadList<CommandResponseResult>('/command/', token).then(res =>
       res.map(c => c.command_id),
     ),
     loadList<ConfidentialDataRunResult>('/confidential-data-run/', token),
-    // Get the researcher ID from the budget query.
-    loadBudget('review-and-refinement-budget', token).then(
-      d => d.researcher_id,
-    ),
   ]);
 
   // Get list of unique command IDs from the confidential data run query.
@@ -37,7 +31,7 @@ async function loadInitialData(token: string): Promise<InitialData> {
       uniqueIds.push(d.command_id);
     }
   });
-  return { queue: uniqueIds, researcherId };
+  return { queue: uniqueIds };
 }
 
 interface StepsContentContainerProps {
@@ -62,13 +56,7 @@ function StepsContentContainer({
     return <LoadingIndicator />;
   }
 
-  return (
-    <StepsContent
-      {...props}
-      initialQueueList={result.data.queue}
-      researcherId={result.data.researcherId}
-    />
-  );
+  return <StepsContent {...props} initialQueueList={result.data.queue} />;
 }
 
 export default StepsContentContainer;

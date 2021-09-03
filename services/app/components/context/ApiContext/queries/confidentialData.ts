@@ -127,7 +127,6 @@ function useConfidentialDataRun(
 
 interface ConfidentialDataRunPostPayLoad {
   command_id: number;
-  researcher_id: number;
 }
 interface ConfidentialDataRunPostOptions {
   onSuccess?: (data: ConfidentialDataRunResult[]) => void;
@@ -177,7 +176,6 @@ function useConfidentialDataRunPost(
 
 interface FullPostPayLoad {
   command_id: number;
-  researcher_id: number;
   epsilon: number;
 }
 async function confidentialDataRunPostIfNeeded(
@@ -190,13 +188,7 @@ async function confidentialDataRunPostIfNeeded(
   const run = await loadList<ConfidentialDataRunResult>(
     `/confidential-data-run/?${p.toString()}`,
     token,
-  ).then(res =>
-    res.find(
-      r =>
-        r.researcher_id === payload.researcher_id &&
-        Number(r.epsilon) === payload.epsilon,
-    ),
-  );
+  ).then(res => res.find(r => Number(r.epsilon) === payload.epsilon));
   // If run was found, then resolve the promise by returning it.
   if (run) {
     return run;

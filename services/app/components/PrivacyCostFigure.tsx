@@ -1,5 +1,4 @@
 import { Grid, Typography } from '@material-ui/core';
-import { Fragment } from 'react';
 import BarChart from './BarChart';
 import Paragraph from './Paragraph';
 
@@ -16,7 +15,7 @@ function PrivacyCostFigure({
   totalBudget,
 }: PrivacyCostFigureProps): JSX.Element {
   return (
-    <Fragment>
+    <div>
       <Paragraph>
         <strong>{title}</strong>
       </Paragraph>
@@ -38,7 +37,7 @@ function PrivacyCostFigure({
         value={availableBudget}
         secondaryValue={cost}
       />
-    </Fragment>
+    </div>
   );
 }
 

@@ -82,10 +82,10 @@ function UploadCommandDialog({
             fullWidth={true}
             inputRef={nameRef}
             required={true}
-            // error={post.isError}
-            // helperText={
-            //   post.isError && 'Command name should be unique in your set.'
-            // }
+            error={post.isError}
+            helperText={
+              post.isError && 'Command name should be unique within your set.'
+            }
           />
           <TextField
             multiline={true}

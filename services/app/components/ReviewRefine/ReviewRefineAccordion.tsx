@@ -10,6 +10,7 @@ import {
 } from 'react';
 import Accordion from '../Accordion';
 import CodeBlock from '../CodeBlock';
+import CommandRenameDialog from '../CommandRenameDialog';
 import { CommandResponseResult } from '../context/ApiContext/queries/command';
 import { useConfidentialDataResultByCommandId } from '../context/ApiContext/queries/confidentialData';
 import { useSyntheticDataResultByCommandIdQuery } from '../context/ApiContext/queries/syntheticDataResult';
@@ -48,7 +49,8 @@ function ReviewRefineAccordion({
   availablePublic,
   startingPublic,
 }: ReviewRefineAccordionProps): JSX.Element | null {
-  const [showDialog, setShowDialog] = useState(false);
+  const [showRefinementDialog, setShowRefinementDialog] = useState(false);
+  const [showRenameDialog, setShowRenameDialog] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
     null,
   );
@@ -59,23 +61,6 @@ function ReviewRefineAccordion({
   const confidentialResult = useConfidentialDataResultByCommandId(
     command.command_id,
   );
-
-  const handleMoreButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.stopPropagation();
-    setMenuAnchorEl(event.currentTarget);
-  };
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
-  };
-
-  const handleRenameClick = () => {
-    // TODO
-  };
-  const handleRemoveClick = () => {
-    // TODO
-  };
 
   // TODO: Do something user facing if synthetic data result query errors out.
   if (syntheticResult.isError || confidentialResult.isError) {
@@ -108,15 +93,35 @@ function ReviewRefineAccordion({
   const confidentialData: Array<{ [key: string]: string | number }> | false =
     confidentialItem.result.ok && JSON.parse(confidentialItem.result.data);
 
+  // Event handlers
+  const handleMoreButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    event.stopPropagation();
+    setMenuAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setMenuAnchorEl(null);
+  };
+
+  const handleRenameClick = () => {
+    setShowRenameDialog(true);
+  };
+  const handleRemoveClick = () => {
+    // TODO
+  };
   const handleRefineClick: MouseEventHandler<HTMLAnchorElement> = e => {
     e.preventDefault();
-    setShowDialog(true);
+    setShowRefinementDialog(true);
   };
-  const handleDialogClose = () => {
-    setShowDialog(false);
+  const handleRefinementDialogClose = () => {
+    setShowRefinementDialog(false);
+  };
+  const handleRenameDialogClose = () => {
+    setShowRenameDialog(false);
   };
   const handleAddVersionClick = (id: number) => {
-    setShowDialog(false);
+    setShowRefinementDialog(false);
     onAddRun(id);
   };
 
@@ -140,6 +145,8 @@ function ReviewRefineAccordion({
           added={added}
           cost={cost}
           onAddedClick={() => onAddClick(runId)}
+          onRenameClick={handleRenameClick}
+          onRemoveClick={handleRemoveClick}
           text={command.command_name}
         />
       }
@@ -236,12 +243,17 @@ function ReviewRefineAccordion({
           </Grid>
         </div>
       </div>
+      <CommandRenameDialog
+        command={command}
+        onDialogClose={handleRenameDialogClose}
+        showDialog={showRenameDialog}
+      />
       <RefineAdjustmentsDialog
         confidentialDataResults={confidentialResult.data}
         selectedRuns={selectedRuns}
         onAddVersionClick={handleAddVersionClick}
-        onDialogClose={handleDialogClose}
-        showDialog={showDialog}
+        onDialogClose={handleRefinementDialogClose}
+        showDialog={showRefinementDialog}
       />
     </Accordion>
   );
@@ -251,19 +263,31 @@ interface ReviewRefineAccordionSummaryProps {
   added?: boolean;
   cost: number;
   onAddedClick?: () => void;
-  onRemoveClick?: () => void;
-  onRenameClick?: () => void;
+  onRemoveClick: () => void;
+  onRenameClick: () => void;
   text: string | ReactNode;
 }
 function ReviewRefineAccordionSummary({
   added,
   cost,
   onAddedClick,
+  onRemoveClick,
+  onRenameClick,
   text,
 }: ReviewRefineAccordionSummaryProps): JSX.Element {
+  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
+    null,
+  );
   const handleAddClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     onAddedClick && onAddedClick();
+  };
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setMenuAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setMenuAnchorEl(null);
   };
   return (
     <div style={{ flexGrow: 1, width: '100%' }}>
@@ -278,7 +302,8 @@ function ReviewRefineAccordionSummary({
           <Grid container={true} justify="flex-end">
             <Grid item={true}>
               <IconButton
-                aria-label="Add"
+                aria-label={`${added ? 'Remove from' : 'Add to'} Queue`}
+                title={`${added ? 'Remove from' : 'Add to'} Queue`}
                 onClick={handleAddClick}
                 style={added ? { backgroundColor: green[100] } : undefined}
               >
@@ -286,9 +311,21 @@ function ReviewRefineAccordionSummary({
                   style={added ? { fill: green[900] } : undefined}
                 />
               </IconButton>
-              <IconButton aria-label="More">
+              <IconButton
+                aria-label="More"
+                aria-controls="more-menu"
+                aria-haspopup="true"
+                title="More actions"
+                onClick={handleMenuClick}
+              >
                 <MoreVert />
               </IconButton>
+              <MoreMenu
+                menuAnchorEl={menuAnchorEl}
+                onMenuClose={handleMenuClose}
+                onRenameClick={onRenameClick}
+                onRemoveClick={onRemoveClick}
+              />
             </Grid>
           </Grid>
         </Grid>

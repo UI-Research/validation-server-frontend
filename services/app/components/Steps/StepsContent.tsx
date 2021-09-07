@@ -19,7 +19,7 @@ function StepsContent({
   const [refinementQueue, setRefinementQueue] =
     useState<number[]>(initialQueueList);
   const syntheticResults = useSyntheticDataResultsQuery();
-  const [releaseQueue, setReleaseQueue] = useState<string[]>([]);
+  const [releaseQueue, setReleaseQueue] = useState<number[]>([]);
   const confidentialDataPost = useConfidentialDataRunPost();
 
   const handleUploadExploreNextClick = () => {
@@ -71,12 +71,13 @@ function StepsContent({
   // the queues.
   const handleCommandRemove = (commandId: number): void => {
     setRefinementQueue(arr => arr.filter(c => c !== commandId));
-    setReleaseQueue(arr =>
-      arr.filter(n => n.split('-')[0] !== String(commandId)),
-    );
+    // TODO: Figure out way to remove from the release queue as well.
+    // setReleaseQueue(arr =>
+    //   arr.filter(n => n.split('-')[0] !== String(commandId)),
+    // );
   };
 
-  const handleReleaseToggle = (id: string): void => {
+  const handleReleaseToggle = (id: number): void => {
     if (releaseQueue.includes(id)) {
       setReleaseQueue(arr => arr.filter(n => n !== id));
     } else {

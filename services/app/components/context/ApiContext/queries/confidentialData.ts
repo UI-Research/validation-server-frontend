@@ -8,6 +8,7 @@ import {
 } from 'react-query';
 import ApiContext from '..';
 import { loadList } from '../load';
+import patch from '../patch';
 import post from '../post';
 
 export interface ConfidentialDataResult {
@@ -87,6 +88,49 @@ function useConfidentialDataResultByCommandId(
     },
   );
   return results;
+}
+
+interface ConfidentialDataResultPatchPayload {
+  run_id: number;
+  display_results_decision: boolean;
+}
+interface ConfidentialDataResultPatchOptions {
+  onSuccess?: (data: ConfidentialDataResult) => void;
+  onError?: (error: unknown) => void;
+}
+function useConfidentialDataResultPatch(
+  opts: ConfidentialDataResultPatchOptions = {},
+): UseMutationResult<
+  ConfidentialDataResult,
+  unknown,
+  ConfidentialDataResultPatchPayload,
+  unknown
+> {
+  const { token } = useContext(ApiContext);
+  const queryClient = useQueryClient();
+  // Function to patch the confidential data result.
+  const patchResult = async (
+    payload: ConfidentialDataResultPatchPayload,
+  ): Promise<ConfidentialDataResult> => {
+    if (!token) {
+      throw new Error('Token is not defined.');
+    }
+    const response = await patch<ConfidentialDataResult>(
+      `/confidential-data-result/${payload.run_id}/`,
+      token,
+      payload,
+    );
+    return response;
+  };
+  // Setup mutation object.
+  const result = useMutation(patchResult, {
+    ...opts,
+    onSettled: () => {
+      // Invalidate the confidential data result query.
+      queryClient.invalidateQueries('confidential-data-result');
+    },
+  });
+  return result;
 }
 
 export interface ConfidentialDataRunResult {
@@ -203,6 +247,7 @@ async function confidentialDataRunPostIfNeeded(
 }
 
 export {
+  useConfidentialDataResultPatch,
   useConfidentialDataResultsQuery,
   useConfidentialDataResultByCommandId,
   useConfidentialDataRun,

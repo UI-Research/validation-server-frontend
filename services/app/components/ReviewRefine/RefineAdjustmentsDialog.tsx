@@ -12,9 +12,9 @@ import UIButton from '../UIButton';
 
 interface RefineAdjustmentsDialogProps {
   confidentialDataResults: ConfidentialDataResult[];
-  onAddVersionClick: (selectedEpsilon: string) => void;
+  onAddVersionClick: (id: number) => void;
   onDialogClose: () => void;
-  selectedEpsilons: string[];
+  selectedRuns: number[];
   showDialog: boolean;
 }
 
@@ -22,7 +22,7 @@ function RefineAdjustmentsDialog({
   confidentialDataResults,
   onAddVersionClick,
   onDialogClose,
-  selectedEpsilons,
+  selectedRuns,
   showDialog,
 }: RefineAdjustmentsDialogProps): JSX.Element {
   const [radioVal, setRadioVal] = useState<string>();
@@ -36,7 +36,7 @@ function RefineAdjustmentsDialog({
   };
   const handleAddVersionClick = () => {
     if (radioVal) {
-      onAddVersionClick(radioVal);
+      onAddVersionClick(Number(radioVal));
       setRadioVal(undefined);
     }
   };
@@ -53,9 +53,9 @@ function RefineAdjustmentsDialog({
           <Table
             columns={columns}
             data={tableData}
-            getDataId={d => d['Privacy cost']}
-            // Do not show radio inputs for epsilons that have alreayd been selected.
-            noRadioOptions={selectedEpsilons}
+            getDataId={d => String(d.id)}
+            // Do not show radio inputs for run IDs that have already been selected.
+            noRadioOptions={selectedRuns.map(String)}
             useRadio={true}
             radioValue={radioVal}
             onRadioChange={setRadioVal}
@@ -84,6 +84,7 @@ function getTableData(data: ConfidentialDataResult[]) {
         a => a.quantiles === 0.5,
       );
       return {
+        id: d.run_id,
         Accuracy: accuracyItem?.accuracy || '',
         'Privacy cost': d.privacy_budget_used,
       };

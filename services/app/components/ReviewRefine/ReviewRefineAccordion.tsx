@@ -8,7 +8,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import getReleaseId from '../../util/getReleaseId';
 import Accordion from '../Accordion';
 import CodeBlock from '../CodeBlock';
 import { CommandResponseResult } from '../context/ApiContext/queries/command';
@@ -25,10 +24,10 @@ import RefineAdjustmentsDialog from './RefineAdjustmentsDialog';
 export interface ReviewRefineAccordionProps {
   added: boolean;
   command: CommandResponseResult;
-  epsilon: string;
-  selectedEpsilons: string[];
-  onAddClick: (id: string) => void;
-  onAddEpsilon: (epsilon: string) => void;
+  runId: number;
+  selectedRuns: number[];
+  onAddClick: (id: number) => void;
+  onAddRun: (runId: number) => void;
   // TODO: Maybe move these "budget" style props to a context?
   /** Available value for the "Review & Refinement Budget". */
   availableRefinement: number;
@@ -42,10 +41,10 @@ export interface ReviewRefineAccordionProps {
 function ReviewRefineAccordion({
   added,
   command,
-  epsilon,
-  selectedEpsilons,
   onAddClick,
-  onAddEpsilon,
+  onAddRun,
+  runId,
+  selectedRuns,
   availablePublic,
   startingPublic,
 }: ReviewRefineAccordionProps): JSX.Element | null {
@@ -94,12 +93,12 @@ function ReviewRefineAccordion({
   }
 
   const confidentialItem = confidentialResult.data.find(
-    c => c.privacy_budget_used === epsilon,
+    c => c.run_id === runId,
   );
 
   if (!confidentialItem) {
     throw new Error(
-      `Confidential data result item with epsilon value of ${epsilon} not found for command ${command.command_id}.`,
+      `Confidential data result item of run ID ${runId} not found for command ${command.command_id}.`,
     );
   }
 
@@ -116,9 +115,9 @@ function ReviewRefineAccordion({
   const handleDialogClose = () => {
     setShowDialog(false);
   };
-  const handleAddVersionClick = (epsilon: string) => {
+  const handleAddVersionClick = (id: number) => {
     setShowDialog(false);
-    onAddEpsilon(epsilon);
+    onAddRun(id);
   };
 
   const handleAddClick = () => {
@@ -128,7 +127,7 @@ function ReviewRefineAccordion({
       summaryRef.current.focus();
     }
     if (onAddClick) {
-      onAddClick(getReleaseId(command.command_id, epsilon));
+      onAddClick(runId);
     }
   };
 
@@ -140,9 +139,7 @@ function ReviewRefineAccordion({
         <ReviewRefineAccordionSummary
           added={added}
           cost={cost}
-          onAddedClick={() =>
-            onAddClick(getReleaseId(command.command_id, epsilon))
-          }
+          onAddedClick={() => onAddClick(runId)}
           text={command.command_name}
         />
       }
@@ -241,7 +238,7 @@ function ReviewRefineAccordion({
       </div>
       <RefineAdjustmentsDialog
         confidentialDataResults={confidentialResult.data}
-        selectedEpsilons={selectedEpsilons}
+        selectedRuns={selectedRuns}
         onAddVersionClick={handleAddVersionClick}
         onDialogClose={handleDialogClose}
         showDialog={showDialog}

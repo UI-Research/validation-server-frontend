@@ -29,6 +29,9 @@ function useConfidentialDataResultsQuery(): UseQueryResult<
   ConfidentialDataResult[]
 > {
   const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
   const results = useQuery('confidential-data-result', () =>
     loadList<ConfidentialDataResult>('/confidential-data-result/', token),
   );
@@ -40,6 +43,9 @@ function useConfidentialDataResultByCommandId(
 ): UseQueryResult<ConfidentialDataResult[] | null> {
   const [stop, setStop] = useState(false);
   const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
   const paramString = useMemo(() => {
     const p = new URLSearchParams();
     p.set('command_id', String(commandId));
@@ -126,8 +132,10 @@ function useConfidentialDataResultPatch(
   const result = useMutation(patchResult, {
     ...opts,
     onSettled: () => {
-      // Invalidate the confidential data result query.
+      // Invalidate the confidential data result and budget queries.
       queryClient.invalidateQueries('confidential-data-result');
+      queryClient.invalidateQueries('public-use-budget');
+      queryClient.invalidateQueries('review-and-refinement-budget');
     },
   });
   return result;
@@ -149,6 +157,9 @@ function useConfidentialDataRun(
   commandId?: number,
 ): UseQueryResult<ConfidentialDataRunResult[]> {
   const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
   const paramString = useMemo(() => {
     if (commandId) {
       const p = new URLSearchParams();
@@ -212,7 +223,7 @@ function useConfidentialDataRunPost(
     onSettled: () => {
       // Invalidate the confidential data queries.
       queryClient.invalidateQueries('confidential-data-run');
-      queryClient.invalidateQueries('confidential-data-run');
+      queryClient.invalidateQueries('confidential-data-result');
     },
   });
   return result;

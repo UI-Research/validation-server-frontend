@@ -1,5 +1,8 @@
 import { Fragment, useEffect, useState } from 'react';
-import { useConfidentialDataResultByCommandId } from '../context/ApiContext/queries/confidentialData';
+import {
+  useConfidentialDataResultByCommandId,
+  useConfidentialDataResultPatch,
+} from '../context/ApiContext/queries/confidentialData';
 import LoadingIndicator from '../LoadingIndicator';
 import ReviewRefineAccordion, {
   ReviewRefineAccordionProps,
@@ -19,45 +22,56 @@ function ReviewRefineAccordionGroup({
   const confidentialResult = useConfidentialDataResultByCommandId(
     props.command.command_id,
   );
-  // Keep track of what run IDs we are displaying for this group of accordions.
-  const [runIds, setRunIds] = useState<number[] | null>(null);
+  const confidentialResultPatch = useConfidentialDataResultPatch();
+  // Keep track of our initial fetching as to prevent duplicative calls.
+  // TODO: Figure out way to keep track of this via the `confidentialResultPatch` data object.
+  const [fetched, setFetched] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!runIds) {
-      // For initial load, get the run ID of the confidential data result with epsilon "1.00".
-      const run = confidentialResult.data?.find(
-        d => d.privacy_budget_used === '1.00',
-      );
-      if (run) {
-        setRunIds([run.run_id]);
+    if (fetched) {
+      return;
+    }
+    // We always assume that the epsilon "1.00" result should
+    const run = confidentialResult.data?.find(
+      d => d.privacy_budget_used === '1.00',
+    );
+    if (run) {
+      setFetched(true);
+      if (run.display_results_decision === false) {
+        // TODO: check that this mutation is currently already running before running.
+        confidentialResultPatch.mutate({
+          run_id: run.run_id,
+          display_results_decision: true,
+        });
       }
     }
-  }, [confidentialResult.data, runIds]);
+  }, [confidentialResult.data, confidentialResultPatch, fetched]);
 
   const handleAddRun = (id: number) => {
-    setRunIds(arr => {
-      if (arr && !arr.includes(id)) {
-        return [...arr, id];
-      } else {
-        return arr;
-      }
+    confidentialResultPatch.mutate({
+      run_id: id,
+      display_results_decision: true,
     });
   };
 
-  if (!runIds) {
+  const results = confidentialResult.data?.filter(
+    d => d.display_results_decision === true,
+  );
+
+  if (!results || results.length === 0) {
     return <LoadingIndicator />;
   }
 
   return (
     <Fragment>
-      {runIds.map(id => (
+      {results.map(result => (
         <ReviewRefineAccordion
-          key={id}
+          key={result.run_id}
           {...props}
-          added={releaseQueue.includes(id)}
+          added={releaseQueue.includes(result.run_id)}
           onAddRun={handleAddRun}
-          runId={id}
-          selectedRuns={runIds}
+          runId={result.run_id}
+          selectedRuns={results.map(r => r.run_id)}
         />
       ))}
     </Fragment>

@@ -16,6 +16,9 @@ interface SyntheticDataRunResponse {
 }
 function useSyntheticDataRunQuery(): UseQueryResult<SyntheticDataRunResponse> {
   const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
   const result = useQuery('synthetic-data-run', () =>
     load<SyntheticDataRunResponse>('/synthetic-data-run/', token),
   );

@@ -30,6 +30,9 @@ export interface CommandResponse {
 // COMMAND GET QUERY
 function useCommandQuery(): UseQueryResult<CommandResponse> {
   const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
   const result = useQuery('command', () =>
     load<CommandResponse>('/command/', token),
   );

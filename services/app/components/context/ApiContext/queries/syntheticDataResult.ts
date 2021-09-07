@@ -21,6 +21,9 @@ export interface SyntheticDataResponse {
 
 function useSyntheticDataResultsQuery(): UseQueryResult<SyntheticDataResult[]> {
   const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
   const results = useQuery('synthetic-data-result', () =>
     loadList<SyntheticDataResult>('/synthetic-data-result/', token),
   );
@@ -45,6 +48,9 @@ function useSyntheticDataResultQuery(
 ): UseQueryResult<SyntheticDataResult | null> {
   const [stop, setStop] = useState(false);
   const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
   const results = useQuery(
     ['synthetic-data-result', id],
     () =>
@@ -94,6 +100,9 @@ function useSyntheticDataResultByCommandIdQuery(
 ): UseQueryResult<SyntheticDataResult | null> {
   const [stop, setStop] = useState(false);
   const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
   const paramString = useMemo(() => {
     const p = new URLSearchParams();
     p.set('command_id', String(commandId));

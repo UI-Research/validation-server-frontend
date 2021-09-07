@@ -3,28 +3,31 @@ import { Menu, MenuItem } from '@material-ui/core';
 interface MoreMenuProps {
   menuAnchorEl: HTMLElement | null;
   onMenuClose: () => void;
-  onRenameClick: () => void;
-  onRemoveClick: () => void;
+  onRemoveClick?: () => void;
+  onRenameClick?: () => void;
+  onSaveClick?: () => void;
 }
 function MoreMenu({
   menuAnchorEl,
   onMenuClose,
   onRenameClick,
   onRemoveClick,
+  onSaveClick,
 }: MoreMenuProps): JSX.Element {
-  // const handleSaveClick = (event: React.MouseEvent<HTMLLIElement>) => {
-  //   event.stopPropagation();
-  //   onMenuClose();
-  // };
+  const handleSaveClick = (event: React.MouseEvent<HTMLLIElement>) => {
+    event.stopPropagation();
+    onMenuClose();
+    onSaveClick && onSaveClick();
+  };
   const handleRemoveClick = (event: React.MouseEvent<HTMLLIElement>) => {
     event.stopPropagation();
     onMenuClose();
-    onRemoveClick();
+    onRemoveClick && onRemoveClick();
   };
   const handleRenameClick = (event: React.MouseEvent<HTMLLIElement>) => {
     event.stopPropagation();
     onMenuClose();
-    onRenameClick();
+    onRenameClick && onRenameClick();
   };
   return (
     <Menu
@@ -43,9 +46,13 @@ function MoreMenu({
         onMenuClose();
       }}
     >
-      {/* <MenuItem onClick={handleSaveClick}>Save for Later</MenuItem> */}
-      <MenuItem onClick={handleRemoveClick}>Remove from List</MenuItem>
-      <MenuItem onClick={handleRenameClick}>Rename</MenuItem>
+      {onSaveClick && (
+        <MenuItem onClick={handleSaveClick}>Save for Later</MenuItem>
+      )}
+      {onRemoveClick && (
+        <MenuItem onClick={handleRemoveClick}>Remove from List</MenuItem>
+      )}
+      {onRenameClick && <MenuItem onClick={handleRenameClick}>Rename</MenuItem>}
     </Menu>
   );
 }

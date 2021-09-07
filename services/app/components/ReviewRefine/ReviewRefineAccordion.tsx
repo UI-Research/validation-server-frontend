@@ -107,9 +107,11 @@ function ReviewRefineAccordion({
   const handleRenameClick = () => {
     setShowRenameDialog(true);
   };
-  const handleRemoveClick = () => {
-    // TODO
-  };
+  // TODO: Include remove click handler if necessary.
+  // For now, leave undefined so the action will not appear.
+  // const handleRemoveClick = () => {
+  //
+  // };
   const handleRefineClick: MouseEventHandler<HTMLAnchorElement> = e => {
     e.preventDefault();
     setShowRefinementDialog(true);
@@ -146,7 +148,7 @@ function ReviewRefineAccordion({
           cost={cost}
           onAddedClick={() => onAddClick(runId)}
           onRenameClick={handleRenameClick}
-          onRemoveClick={handleRemoveClick}
+          // onRemoveClick={handleRemoveClick}
           text={command.command_name}
         />
       }
@@ -237,7 +239,7 @@ function ReviewRefineAccordion({
                 menuAnchorEl={menuAnchorEl}
                 onMenuClose={handleMenuClose}
                 onRenameClick={handleRenameClick}
-                onRemoveClick={handleRemoveClick}
+                // onRemoveClick={handleRemoveClick}
               />
             </Grid>
           </Grid>
@@ -263,7 +265,7 @@ interface ReviewRefineAccordionSummaryProps {
   added?: boolean;
   cost: number;
   onAddedClick?: () => void;
-  onRemoveClick: () => void;
+  onRemoveClick?: () => void;
   onRenameClick: () => void;
   text: string | ReactNode;
 }

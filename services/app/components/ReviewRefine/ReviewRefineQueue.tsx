@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { useBudgetQuery } from '../context/ApiContext/queries/budget';
 import { useCommandQuery } from '../context/ApiContext/queries/command';
 import LoadingIndicator from '../LoadingIndicator';
@@ -45,23 +44,20 @@ function ReviewRefineQueue({
         {isLoading || !data || !publicBudgetData || !refinementBudgetData ? (
           <LoadingIndicator />
         ) : (
-          <Fragment>
-            {data.map(c => (
-              <ReviewRefineAccordionGroup
-                key={c.command_id}
-                command={c}
-                onAddClick={onReleaseToggle}
-                availablePublic={publicBudgetData.total_budget_available}
-                availableRefinement={
-                  refinementBudgetData.total_budget_available
-                }
-                releaseQueue={releaseQueue}
-                startingRefinement={Number(
-                  refinementBudgetData.total_budget_allocated,
-                )}
-              />
-            ))}
-          </Fragment>
+          data.map(c => (
+            <ReviewRefineAccordionGroup
+              key={c.command_id}
+              command={c}
+              onAddClick={onReleaseToggle}
+              availablePublic={publicBudgetData.total_budget_available}
+              availableRefinement={refinementBudgetData.total_budget_available}
+              releaseQueue={releaseQueue}
+              startingPublic={Number(publicBudgetData.total_budget_allocated)}
+              startingRefinement={Number(
+                refinementBudgetData.total_budget_allocated,
+              )}
+            />
+          ))
         )}
       </div>
     </div>

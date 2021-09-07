@@ -1,7 +1,6 @@
-import { Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { Fragment, useRef, useState } from 'react';
 import Accordion from '../Accordion';
-import BarChart from '../BarChart';
 import CodeBlock from '../CodeBlock';
 import CommandRenameDialog from '../CommandRenameDialog';
 import {
@@ -12,6 +11,7 @@ import { useSyntheticDataResultByCommandIdQuery } from '../context/ApiContext/qu
 import LoadingIndicator from '../LoadingIndicator';
 import MoreMenu from '../MoreMenu';
 import Paragraph from '../Paragraph';
+import PrivacyCostFigure from '../PrivacyCostFigure';
 import SpreadsheetTable from '../SpreadsheetTable';
 import UIButton from '../UIButton';
 import PreliminarySummaryContent from './PreliminarySummaryContent';
@@ -148,62 +148,43 @@ function PreliminaryResultsAccordion({
             </Paragraph>
             {!isNaN(cost) && (
               <Fragment>
-                <Paragraph>
-                  <strong>
-                    Privacy Cost for Review &amp; Refinement of Analyses
-                  </strong>
-                </Paragraph>
-                <div>
-                  <Grid container={true}>
-                    <Grid item={true} xs={true}>
-                      <Typography align="left">
-                        Cost for request: {cost.toLocaleString()}
-                      </Typography>
-                    </Grid>
-                    <Grid item={true} xs={true}>
-                      <Typography align="right">
-                        Available budget: {availableRefinement.toLocaleString()}
-                      </Typography>
-                    </Grid>
+                <PrivacyCostFigure
+                  availableBudget={availableRefinement}
+                  cost={cost}
+                  title="Privacy Cost for Review &amp; Refinement of Analyses"
+                  totalBudget={startingRefinement}
+                />
+                <Grid
+                  container={true}
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <Grid item={true}>
+                    <UIButton
+                      title={`${
+                        added ? 'Remove from' : 'Add to'
+                      } Review & Refinement Queue`}
+                      icon="PlaylistAdd"
+                      onClick={handleAddClick}
+                    />
                   </Grid>
-                  <BarChart
-                    width={600}
-                    max={startingRefinement}
-                    value={availableRefinement}
-                    secondaryValue={cost}
-                  />
-                  <Grid
-                    container={true}
-                    justify="space-between"
-                    alignItems="center"
-                  >
-                    <Grid item={true}>
-                      <UIButton
-                        title={`${
-                          added ? 'Remove from' : 'Add to'
-                        } Review & Refinement Queue`}
-                        icon="PlaylistAdd"
-                        onClick={handleAddClick}
-                      />
-                    </Grid>
-                    <Grid item={true}>
-                      <UIButton
-                        title="More Actions"
-                        icon="MoreVert"
-                        aria-label="More"
-                        aria-controls="more-menu"
-                        aria-haspopup="true"
-                        onClick={handleMoreButtonClick}
-                      />
-                      <MoreMenu
-                        menuAnchorEl={menuAnchorEl}
-                        onMenuClose={handleMenuClose}
-                        onRenameClick={handleRenameClick}
-                        onRemoveClick={handleRemoveClick}
-                      />
-                    </Grid>
+                  <Grid item={true}>
+                    <UIButton
+                      title="More Actions"
+                      icon="MoreVert"
+                      aria-label="More"
+                      aria-controls="more-menu"
+                      aria-haspopup="true"
+                      onClick={handleMoreButtonClick}
+                    />
+                    <MoreMenu
+                      menuAnchorEl={menuAnchorEl}
+                      onMenuClose={handleMenuClose}
+                      onRenameClick={handleRenameClick}
+                      onRemoveClick={handleRemoveClick}
+                    />
                   </Grid>
-                </div>
+                </Grid>
                 <Paragraph>
                   <strong>Privacy Cost for Public Release of Results</strong>
                 </Paragraph>

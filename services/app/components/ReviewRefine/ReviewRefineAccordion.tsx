@@ -10,7 +10,6 @@ import {
 } from 'react';
 import getReleaseId from '../../util/getReleaseId';
 import Accordion from '../Accordion';
-import BarChart from '../BarChart';
 import CodeBlock from '../CodeBlock';
 import { CommandResponseResult } from '../context/ApiContext/queries/command';
 import { useConfidentialDataResultByCommandId } from '../context/ApiContext/queries/confidentialData';
@@ -18,6 +17,7 @@ import { useSyntheticDataResultByCommandIdQuery } from '../context/ApiContext/qu
 import LoadingIndicator from '../LoadingIndicator';
 import MoreMenu from '../MoreMenu';
 import Paragraph from '../Paragraph';
+import PrivacyCostFigure from '../PrivacyCostFigure';
 import SpreadsheetTable from '../SpreadsheetTable';
 import UIButton from '../UIButton';
 import RefineAdjustmentsDialog from './RefineAdjustmentsDialog';
@@ -29,19 +29,25 @@ export interface ReviewRefineAccordionProps {
   selectedEpsilons: string[];
   onAddClick: (id: string) => void;
   onAddEpsilon: (epsilon: string) => void;
+  // TODO: Maybe move these "budget" style props to a context?
+  /** Available value for the "Review & Refinement Budget". */
   availableRefinement: number;
+  /** Starting value for the "Review & Refinement Budget". */
   startingRefinement: number;
+  /** Available value for the "Public Release Budget". */
   availablePublic: number;
+  /** Starting value for the "Public Release Budget". */
+  startingPublic: number;
 }
 function ReviewRefineAccordion({
   added,
-  availableRefinement,
   command,
   epsilon,
   selectedEpsilons,
   onAddClick,
   onAddEpsilon,
-  startingRefinement,
+  availablePublic,
+  startingPublic,
 }: ReviewRefineAccordionProps): JSX.Element | null {
   const [showDialog, setShowDialog] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
@@ -176,31 +182,12 @@ function ReviewRefineAccordion({
           </Fragment>
         ) : null}
         {!isNaN(cost) && (
-          <Fragment>
-            <Paragraph>
-              <strong>Privacy Cost for Public Release Access</strong>
-            </Paragraph>
-            <div>
-              <Grid container={true}>
-                <Grid item={true} xs={true}>
-                  <Typography align="left">
-                    Cost for request: {cost.toLocaleString()}
-                  </Typography>
-                </Grid>
-                <Grid item={true} xs={true}>
-                  <Typography align="right">
-                    Available budget: {availableRefinement.toLocaleString()}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <BarChart
-                width={600}
-                max={startingRefinement}
-                value={availableRefinement}
-                secondaryValue={cost}
-              />
-            </div>
-          </Fragment>
+          <PrivacyCostFigure
+            availableBudget={availablePublic}
+            cost={cost}
+            title="Privacy Cost for Public Release Access"
+            totalBudget={startingPublic}
+          />
         )}
         <Paragraph>
           <strong>Adjustments for Privacy</strong>

@@ -25,8 +25,8 @@ function useRefinementQueueResults(queue: number[]) {
 
 interface ReviewRefineQueueProps {
   refinementQueue: number[];
-  releaseQueue: number[];
-  onReleaseToggle: (id: number) => void;
+  releaseQueue: string[];
+  onReleaseToggle: (id: string) => void;
 }
 function ReviewRefineQueue({
   refinementQueue,

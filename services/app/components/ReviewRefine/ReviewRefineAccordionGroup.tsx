@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
+import getReleaseId from '../../util/getReleaseId';
 import {
   useConfidentialDataResultByCommandId,
   useConfidentialDataResultPatch,
@@ -13,7 +14,7 @@ interface ReviewRefineAccordionGroupProps
     ReviewRefineAccordionProps,
     'added' | 'onAddRun' | 'runId' | 'selectedRuns'
   > {
-  releaseQueue: number[];
+  releaseQueue: string[];
 }
 function ReviewRefineAccordionGroup({
   releaseQueue,
@@ -68,7 +69,9 @@ function ReviewRefineAccordionGroup({
         <ReviewRefineAccordion
           key={result.run_id}
           {...props}
-          added={releaseQueue.includes(result.run_id)}
+          added={releaseQueue.includes(
+            getReleaseId(props.command.command_id, result.run_id),
+          )}
           onAddRun={handleAddRun}
           runId={result.run_id}
           selectedRuns={results.map(r => r.run_id)}

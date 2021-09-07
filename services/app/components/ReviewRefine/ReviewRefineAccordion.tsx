@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import getReleaseId from '../../util/getReleaseId';
 import Accordion from '../Accordion';
 import CodeBlock from '../CodeBlock';
 import CommandRenameDialog from '../CommandRenameDialog';
@@ -27,7 +28,7 @@ export interface ReviewRefineAccordionProps {
   command: CommandResponseResult;
   runId: number;
   selectedRuns: number[];
-  onAddClick: (id: number) => void;
+  onAddClick: (id: string) => void;
   onAddRun: (runId: number) => void;
   // TODO: Maybe move these "budget" style props to a context?
   /** Available value for the "Review & Refinement Budget". */
@@ -134,7 +135,7 @@ function ReviewRefineAccordion({
       summaryRef.current.focus();
     }
     if (onAddClick) {
-      onAddClick(runId);
+      onAddClick(getReleaseId(command.command_id, runId));
     }
   };
 
@@ -146,7 +147,9 @@ function ReviewRefineAccordion({
         <ReviewRefineAccordionSummary
           added={added}
           cost={cost}
-          onAddedClick={() => onAddClick(runId)}
+          onAddedClick={() =>
+            onAddClick(getReleaseId(command.command_id, runId))
+          }
           onRenameClick={handleRenameClick}
           // onRemoveClick={handleRemoveClick}
           text={command.command_name}

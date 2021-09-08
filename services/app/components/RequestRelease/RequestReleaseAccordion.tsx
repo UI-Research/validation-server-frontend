@@ -67,7 +67,7 @@ function RequestReleaseAccordion({
           <ConfidentialDataDisplay
             confidentialDataResult={confidentialDataResult}
           />
-          <div>
+          <div style={{ marginTop: '1rem' }}>
             <Grid container={true} justify="space-between" alignItems="center">
               <Grid item={true}>
                 <UIButton

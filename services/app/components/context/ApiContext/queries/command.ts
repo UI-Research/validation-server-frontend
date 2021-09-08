@@ -20,7 +20,7 @@ export interface CommandResponseResult {
   sanitized_command_input: {
     analysis_query: string;
     epsilon: number;
-    transformation_query: string;
+    transformation_query: string | null;
   };
 }
 export interface CommandResponse {

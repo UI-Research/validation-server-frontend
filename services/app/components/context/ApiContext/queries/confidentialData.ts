@@ -11,6 +11,12 @@ import load, { loadList } from '../load';
 import patch from '../patch';
 import post from '../post';
 
+// Set max wait time to 1 minute, converted to milliseconds.
+const MAX_WAIT_TIME_MS = 1 * 60 * 1000;
+// Interval on refetching attempts. Set to 3 seconds, converted to milliseconds.
+const INTERVAL_MS = 3 * 1000;
+const MAX_ATTEMPTS = MAX_WAIT_TIME_MS / INTERVAL_MS;
+
 export interface ConfidentialDataResult {
   command_id: number;
   run_id: number;
@@ -79,7 +85,7 @@ function useConfidentialDataResultByCommandId(
         if (data.length === 0) {
           // Check attempts to retrieve query. Stop after a certain number as to not burden the server.
           // NOTE: probably remove this once API work has been more finalized.
-          if (attempts > 4) {
+          if (attempts > MAX_ATTEMPTS) {
             throw new Error(
               `Exceeded attempts to retrieve confidential data result for command ${commandId}. Stopping.`,
             );
@@ -102,7 +108,7 @@ function useConfidentialDataResultByCommandId(
       },
       enabled: commandId !== null,
       // Refetch every 3 seconds (3000ms).
-      refetchInterval: stop ? false : 3000,
+      refetchInterval: stop ? false : INTERVAL_MS,
       refetchIntervalInBackground: true,
     },
   );

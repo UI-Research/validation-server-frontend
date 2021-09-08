@@ -111,16 +111,18 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
       <Divider />
       <div>
         <SectionTitle>Final Request Queue</SectionTitle>
-        {isLoading || !data ? (
+        {isLoading || !data || !availableBudget || !totalBudget ? (
           <LoadingIndicator />
         ) : (
           <div>
             {data.map(r => (
               <RequestReleaseAccordion
                 key={r.id}
+                availablePublic={availableBudget}
                 finalQueue={finalQueue}
                 onCheckboxClick={() => toggleItem(r.id)}
                 releaseItem={r}
+                startingPublic={Number(totalBudget)}
               />
             ))}
           </div>

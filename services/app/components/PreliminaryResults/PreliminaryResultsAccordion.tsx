@@ -9,7 +9,7 @@ import {
 } from '../context/ApiContext/queries/command';
 import { useSyntheticDataResultByCommandIdQuery } from '../context/ApiContext/queries/syntheticDataResult';
 import LoadingIndicator from '../LoadingIndicator';
-import MoreMenu from '../MoreMenu';
+import MoreMenuButton from '../MoreMenu/MoreMenuButton';
 import Paragraph from '../Paragraph';
 import PrivacyCostFigure from '../PrivacyCostFigure';
 import SpreadsheetTable from '../SpreadsheetTable';
@@ -43,9 +43,6 @@ function PreliminaryResultsAccordion({
   availableRefinement,
   startingRefinement,
 }: PreliminaryResultsAccordionProps): JSX.Element | null {
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
-    null,
-  );
   const summaryRef = useRef<HTMLDivElement | null>(null);
   // TODO: Handle any possible errors from the DELETE query.
   const commandDeleteResult = useCommandDelete();
@@ -56,15 +53,6 @@ function PreliminaryResultsAccordion({
     isLoading,
   } = useSyntheticDataResultByCommandIdQuery(command.command_id);
 
-  const handleMoreButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.stopPropagation();
-    setMenuAnchorEl(event.currentTarget);
-  };
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
-  };
   const handleRenameClick = () => {
     setShowDialog(true);
   };
@@ -169,17 +157,7 @@ function PreliminaryResultsAccordion({
                     />
                   </Grid>
                   <Grid item={true}>
-                    <UIButton
-                      title="More Actions"
-                      icon="MoreVert"
-                      aria-label="More"
-                      aria-controls="more-menu"
-                      aria-haspopup="true"
-                      onClick={handleMoreButtonClick}
-                    />
-                    <MoreMenu
-                      menuAnchorEl={menuAnchorEl}
-                      onMenuClose={handleMenuClose}
+                    <MoreMenuButton
                       onRenameClick={handleRenameClick}
                       onRemoveClick={handleRemoveClick}
                     />

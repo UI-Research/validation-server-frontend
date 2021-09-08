@@ -16,7 +16,7 @@ import { CommandResponseResult } from '../context/ApiContext/queries/command';
 import { useConfidentialDataResultByCommandId } from '../context/ApiContext/queries/confidentialData';
 import { useSyntheticDataResultByCommandIdQuery } from '../context/ApiContext/queries/syntheticDataResult';
 import LoadingIndicator from '../LoadingIndicator';
-import MoreMenu from '../MoreMenu';
+import MoreMenuButton from '../MoreMenu/MoreMenuButton';
 import MoreMenuIcon from '../MoreMenu/MoreMenuIcon';
 import Paragraph from '../Paragraph';
 import PrivacyCostFigure from '../PrivacyCostFigure';
@@ -53,9 +53,6 @@ function ReviewRefineAccordion({
 }: ReviewRefineAccordionProps): JSX.Element | null {
   const [showRefinementDialog, setShowRefinementDialog] = useState(false);
   const [showRenameDialog, setShowRenameDialog] = useState(false);
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
-    null,
-  );
   const summaryRef = useRef<HTMLDivElement | null>(null);
   const syntheticResult = useSyntheticDataResultByCommandIdQuery(
     command.command_id,
@@ -96,16 +93,6 @@ function ReviewRefineAccordion({
     confidentialItem.result.ok && JSON.parse(confidentialItem.result.data);
 
   // Event handlers
-  const handleMoreButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.stopPropagation();
-    setMenuAnchorEl(event.currentTarget);
-  };
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
-  };
-
   const handleRenameClick = () => {
     setShowRenameDialog(true);
   };
@@ -231,20 +218,7 @@ function ReviewRefineAccordion({
               />
             </Grid>
             <Grid item={true}>
-              <UIButton
-                title="More Actions"
-                icon="MoreVert"
-                aria-label="More"
-                aria-controls="more-menu"
-                aria-haspopup="true"
-                onClick={handleMoreButtonClick}
-              />
-              <MoreMenu
-                menuAnchorEl={menuAnchorEl}
-                onMenuClose={handleMenuClose}
-                onRenameClick={handleRenameClick}
-                // onRemoveClick={handleRemoveClick}
-              />
+              <MoreMenuButton onRenameClick={handleRenameClick} />
             </Grid>
           </Grid>
         </div>

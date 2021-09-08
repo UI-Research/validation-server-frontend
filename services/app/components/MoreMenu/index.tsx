@@ -1,11 +1,13 @@
 import { Menu, MenuItem } from '@material-ui/core';
 
-interface MoreMenuProps {
-  menuAnchorEl: HTMLElement | null;
-  onMenuClose: () => void;
+export interface MoreMenuEventProps {
   onRemoveClick?: () => void;
   onRenameClick?: () => void;
   onSaveClick?: () => void;
+}
+interface MoreMenuProps extends MoreMenuEventProps {
+  menuAnchorEl: HTMLElement | null;
+  onMenuClose: () => void;
 }
 function MoreMenu({
   menuAnchorEl,

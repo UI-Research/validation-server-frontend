@@ -33,7 +33,7 @@ type Icon =
   | 'ChevronRight';
 
 interface UIButtonProps
-  extends Omit<ButtonProps, 'endIcon' | 'variant' | 'className'> {
+  extends Omit<ButtonProps, 'children' | 'endIcon' | 'variant' | 'className'> {
   title: string;
   icon?: Icon;
 }

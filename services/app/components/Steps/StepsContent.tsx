@@ -75,7 +75,7 @@ function StepsContent({
         />
       );
     case steps[2].id:
-      return <RequestRelease />;
+      return <RequestRelease releaseQueue={releaseQueue} />;
     default:
       return null;
   }

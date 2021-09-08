@@ -1,6 +1,6 @@
 import { Grid, IconButton, Typography } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
-import { AddShoppingCart, MoreVert } from '@material-ui/icons';
+import { AddShoppingCart } from '@material-ui/icons';
 import {
   Fragment,
   MouseEventHandler,
@@ -17,6 +17,7 @@ import { useConfidentialDataResultByCommandId } from '../context/ApiContext/quer
 import { useSyntheticDataResultByCommandIdQuery } from '../context/ApiContext/queries/syntheticDataResult';
 import LoadingIndicator from '../LoadingIndicator';
 import MoreMenu from '../MoreMenu';
+import MoreMenuIcon from '../MoreMenu/MoreMenuIcon';
 import Paragraph from '../Paragraph';
 import PrivacyCostFigure from '../PrivacyCostFigure';
 import SpreadsheetTable from '../SpreadsheetTable';
@@ -280,19 +281,9 @@ function ReviewRefineAccordionSummary({
   onRenameClick,
   text,
 }: ReviewRefineAccordionSummaryProps): JSX.Element {
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
-    null,
-  );
   const handleAddClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     onAddedClick && onAddedClick();
-  };
-  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    setMenuAnchorEl(event.currentTarget);
-  };
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
   };
   return (
     <div style={{ flexGrow: 1, width: '100%' }}>
@@ -301,7 +292,7 @@ function ReviewRefineAccordionSummary({
           {text}
         </Grid>
         <Grid item={true} xs={1} md={1}>
-          {cost}
+          {cost.toLocaleString()}
         </Grid>
         <Grid item={true} xs={4} md={2}>
           <Grid container={true} justify="flex-end">
@@ -316,18 +307,7 @@ function ReviewRefineAccordionSummary({
                   style={added ? { fill: green[900] } : undefined}
                 />
               </IconButton>
-              <IconButton
-                aria-label="More"
-                aria-controls="more-menu"
-                aria-haspopup="true"
-                title="More actions"
-                onClick={handleMenuClick}
-              >
-                <MoreVert />
-              </IconButton>
-              <MoreMenu
-                menuAnchorEl={menuAnchorEl}
-                onMenuClose={handleMenuClose}
+              <MoreMenuIcon
                 onRenameClick={onRenameClick}
                 onRemoveClick={onRemoveClick}
               />

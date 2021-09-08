@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@material-ui/core';
+import AccordionContentTitle from './Accordion/content/AccordionContentTitle';
 import BarChart from './BarChart';
-import Paragraph from './Paragraph';
 
 interface PrivacyCostFigureProps {
   availableBudget: number;
@@ -16,9 +16,7 @@ function PrivacyCostFigure({
 }: PrivacyCostFigureProps): JSX.Element {
   return (
     <div>
-      <Paragraph>
-        <strong>{title}</strong>
-      </Paragraph>
+      <AccordionContentTitle>{title}</AccordionContentTitle>
       <Grid container={true}>
         <Grid item={true} xs={true}>
           <Typography align="left">

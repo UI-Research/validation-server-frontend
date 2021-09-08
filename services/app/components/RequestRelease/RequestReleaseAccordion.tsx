@@ -1,13 +1,12 @@
 import { Checkbox, Grid, makeStyles } from '@material-ui/core';
 import { Fragment, ReactNode, useRef, useState } from 'react';
 import Accordion from '../Accordion';
-import CodeBlock from '../CodeBlock';
+import CommandDisplay from '../Accordion/content/CommandDisplay';
+import ConfidentialDataDisplay from '../Accordion/content/ConfidentialDataDisplay';
+import SyntheticDataDisplay from '../Accordion/content/SyntheticDataDisplay';
 import CommandRenameDialog from '../CommandRenameDialog';
 import MoreMenuButton from '../MoreMenu/MoreMenuButton';
 import MoreMenuIcon from '../MoreMenu/MoreMenuIcon';
-import Paragraph from '../Paragraph';
-import PrivacyCostFigure from '../PrivacyCostFigure';
-import SpreadsheetTable from '../SpreadsheetTable';
 import UIButton from '../UIButton';
 import { ReleaseItem } from './RequestRelease';
 
@@ -21,23 +20,15 @@ interface RequestReleaseAccordionProps {
   startingPublic: number;
 }
 function RequestReleaseAccordion({
-  availablePublic,
   finalQueue,
   onCheckboxClick,
   releaseItem: { id, command, confidentialDataResult, syntheticDataResult },
-  startingPublic,
 }: RequestReleaseAccordionProps): JSX.Element {
   const [showRenameDialog, setShowRenameDialog] = useState(false);
   const summaryRef = useRef<HTMLDivElement>(null);
 
   const added = finalQueue.includes(id);
   const cost = Number(confidentialDataResult.privacy_budget_used);
-  const syntheticData: Array<{ [key: string]: string | number }> | false =
-    syntheticDataResult.result.ok &&
-    JSON.parse(syntheticDataResult.result.data);
-  const confidentialData: Array<{ [key: string]: string | number }> | false =
-    confidentialDataResult.result.ok &&
-    JSON.parse(confidentialDataResult.result.data);
 
   // Event handlers
   const handleRenameClick = () => {
@@ -71,46 +62,11 @@ function RequestReleaseAccordion({
         summaryRef={summaryRef}
       >
         <div style={{ width: '100%' }}>
-          <Paragraph>
-            <strong>Command:</strong>
-          </Paragraph>
-          <div>
-            <CodeBlock code={command.sanitized_command_input.analysis_query} />
-          </div>
-          {syntheticData ? (
-            <Fragment>
-              <Paragraph>
-                <strong>Results with Synthetic Data:</strong>
-              </Paragraph>
-              <div>
-                <SpreadsheetTable
-                  columns={Object.keys(syntheticData[0])}
-                  data={syntheticData}
-                />
-              </div>
-            </Fragment>
-          ) : null}
-          {confidentialData ? (
-            <Fragment>
-              <Paragraph>
-                <strong>Results with Confidential Data:</strong>
-              </Paragraph>
-              <div>
-                <SpreadsheetTable
-                  columns={Object.keys(confidentialData[0])}
-                  data={confidentialData}
-                />
-              </div>
-            </Fragment>
-          ) : null}
-          {!isNaN(cost) && (
-            <PrivacyCostFigure
-              availableBudget={availablePublic}
-              cost={cost}
-              title="Privacy Cost for Public Release Access"
-              totalBudget={startingPublic}
-            />
-          )}
+          <CommandDisplay command={command} />
+          <SyntheticDataDisplay syntheticDataResult={syntheticDataResult} />
+          <ConfidentialDataDisplay
+            confidentialDataResult={confidentialDataResult}
+          />
           <div>
             <Grid container={true} justify="space-between" alignItems="center">
               <Grid item={true}>

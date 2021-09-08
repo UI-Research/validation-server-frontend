@@ -1,7 +1,9 @@
 import { Grid } from '@material-ui/core';
 import { Fragment, useRef, useState } from 'react';
 import Accordion from '../Accordion';
-import CodeBlock from '../CodeBlock';
+import AccordionContentTitle from '../Accordion/content/AccordionContentTitle';
+import CommandDisplay from '../Accordion/content/CommandDisplay';
+import SyntheticDataDisplay from '../Accordion/content/SyntheticDataDisplay';
 import CommandRenameDialog from '../CommandRenameDialog';
 import {
   CommandResponseResult,
@@ -12,7 +14,6 @@ import LoadingIndicator from '../LoadingIndicator';
 import MoreMenuButton from '../MoreMenu/MoreMenuButton';
 import Paragraph from '../Paragraph';
 import PrivacyCostFigure from '../PrivacyCostFigure';
-import SpreadsheetTable from '../SpreadsheetTable';
 import UIButton from '../UIButton';
 import PreliminarySummaryContent from './PreliminarySummaryContent';
 
@@ -108,26 +109,13 @@ function PreliminaryResultsAccordion({
       summaryRef={summaryRef}
     >
       <div style={{ width: '100%' }}>
-        <Paragraph>
-          <strong>Command:</strong>
-        </Paragraph>
-        <div>
-          <CodeBlock code={command.sanitized_command_input.analysis_query} />
-        </div>
+        <CommandDisplay command={command} />
         {resultData ? (
           <div>
-            <Paragraph>
-              <strong>Results with Synthetic Data:</strong>
-            </Paragraph>
-            <div>
-              <SpreadsheetTable
-                columns={Object.keys(resultData[0])}
-                data={resultData}
-              />
-            </div>
-            <Paragraph>
-              <strong>Adjustments for Privacy in the Confidential Data</strong>
-            </Paragraph>
+            <SyntheticDataDisplay syntheticDataResult={resultItem} />
+            <AccordionContentTitle>
+              Adjustments for Privacy in the Confidential Data
+            </AccordionContentTitle>
             <Paragraph>
               To preserve privacy, random variation will be added to the
               confidential data you see in the next tabs. The amount of
@@ -163,9 +151,9 @@ function PreliminaryResultsAccordion({
                     />
                   </Grid>
                 </Grid>
-                <Paragraph>
-                  <strong>Privacy Cost for Public Release of Results</strong>
-                </Paragraph>
+                <AccordionContentTitle>
+                  Privacy Cost for Public Release of Results
+                </AccordionContentTitle>
                 <Paragraph>
                   Cost for request: {cost.toLocaleString()} /{' '}
                   {availablePublic.toLocaleString()}

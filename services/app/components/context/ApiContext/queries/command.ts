@@ -39,6 +39,19 @@ function useCommandQuery(): UseQueryResult<CommandResponse> {
   return result;
 }
 
+function useCommandByIdQuery(
+  id: number,
+): UseQueryResult<CommandResponseResult> {
+  const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
+  const result = useQuery(['command', { id }], () =>
+    load<CommandResponseResult>(`/command/${id}/`, token),
+  );
+  return result;
+}
+
 // COMMAND POST QUERY
 export interface CommandPostPayload {
   command_type: number;
@@ -192,4 +205,10 @@ function useCommandDelete(
   return result;
 }
 
-export { useCommandDelete, useCommandPatch, useCommandPost, useCommandQuery };
+export {
+  useCommandByIdQuery,
+  useCommandDelete,
+  useCommandPatch,
+  useCommandPost,
+  useCommandQuery,
+};

@@ -1,38 +1,52 @@
 import { Checkbox, Grid, makeStyles } from '@material-ui/core';
-import { Fragment, ReactNode } from 'react';
+import { Fragment, ReactNode, useState } from 'react';
 import Accordion from '../Accordion';
+import CommandRenameDialog from '../CommandRenameDialog';
 import MoreMenuIcon from '../MoreMenu/MoreMenuIcon';
+import { ReleaseItem } from './RequestRelease';
 
 interface RequestReleaseAccordionProps {
   finalQueue: string[];
   onCheckboxClick: () => void;
-  releaseId: string;
+  releaseItem: ReleaseItem;
 }
 function RequestReleaseAccordion({
   finalQueue,
   onCheckboxClick,
-  releaseId,
+  releaseItem,
 }: RequestReleaseAccordionProps): JSX.Element {
+  const [showRenameDialog, setShowRenameDialog] = useState(false);
+
   const handleRenameClick = () => {
-    // TODO
+    setShowRenameDialog(true);
+  };
+  const handleRenameDialogClose = () => {
+    setShowRenameDialog(false);
   };
 
   return (
     <Fragment>
       <Accordion
-        id={releaseId}
+        id={releaseItem.id}
         summaryContent={
           <RequestAccordionSummary
-            added={finalQueue.includes(releaseId)}
-            cost={5}
+            added={finalQueue.includes(releaseItem.id)}
+            cost={Number(
+              releaseItem.confidentialDataResult.privacy_budget_used,
+            )}
             onCheckboxClick={onCheckboxClick}
             onRenameClick={handleRenameClick}
-            text={releaseId}
+            text={releaseItem.command.command_name}
           />
         }
       >
-        {releaseId}
+        {releaseItem.id}
       </Accordion>
+      <CommandRenameDialog
+        command={releaseItem.command}
+        onDialogClose={handleRenameDialogClose}
+        showDialog={showRenameDialog}
+      />
     </Fragment>
   );
 }

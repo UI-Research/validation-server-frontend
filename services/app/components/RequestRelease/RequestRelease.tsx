@@ -1,10 +1,7 @@
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 
-interface RequestReleaseProps {
-  // TODO
-}
-function RequestRelease({}: RequestReleaseProps): JSX.Element {
+function RequestRelease(): JSX.Element {
   return (
     <div>
       <SectionTitle>Request &amp; Release</SectionTitle>

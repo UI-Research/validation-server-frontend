@@ -26,10 +26,13 @@ const SpreadsheetHeaderCell = withStyles(theme =>
   }),
 )(SpreadsheetTableCell);
 
+interface KeyedData {
+  [key: string]: string | number;
+}
+
 interface SpreadsheetTableProps {
   columns: string[];
-  data: (string | number)[][];
-  getRowId?: (d: (string | number)[], i: number) => string;
+  data: (string | number)[][] | KeyedData[];
 }
 
 const useStyles = makeStyles({
@@ -41,7 +44,6 @@ const useStyles = makeStyles({
 function SpreadsheetTable({
   columns,
   data,
-  getRowId = d => String(d[0]),
 }: SpreadsheetTableProps): JSX.Element {
   const classes = useStyles();
   return (
@@ -59,21 +61,31 @@ function SpreadsheetTable({
         </TableHead>
         <TableBody>
           {data.map((row, index) => (
-            <TableRow key={getRowId(row, index)}>
+            <TableRow key={index}>
               <SpreadsheetHeaderCell variant="head" align="center">
                 {index + 1}
               </SpreadsheetHeaderCell>
-              {row.map((item, itemIndex) => (
-                <SpreadsheetTableCell key={itemIndex} align="center">
-                  {item}
-                </SpreadsheetTableCell>
-              ))}
+              {isKeyedData(row)
+                ? columns.map(key => (
+                    <SpreadsheetTableCell key={key} align="center">
+                      {row[key]}
+                    </SpreadsheetTableCell>
+                  ))
+                : row.map((item, itemIndex) => (
+                    <SpreadsheetTableCell key={itemIndex} align="center">
+                      {item}
+                    </SpreadsheetTableCell>
+                  ))}
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
+}
+
+function isKeyedData<T>(val: T | KeyedData): val is KeyedData {
+  return !Array.isArray(val);
 }
 
 export default SpreadsheetTable;

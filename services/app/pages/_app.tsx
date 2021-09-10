@@ -16,12 +16,14 @@ const queryClient = new QueryClient({
       // Do not refetch on window focus.
       refetchOnWindowFocus: false,
     },
+    mutations: {
+      // Do not retry query on failed fetch.
+      retry: false,
+    },
   },
 });
-// TODO: Not hard code the researcher ID.
-const researcherId = 2;
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const [key, setKey] = useState(0);
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -47,12 +49,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   // See https://maxschmitt.me/posts/next-js-http-only-cookie-auth-tokens/
   const token = useMemo(() => {
     const cookies = parseCookies();
-    return cookies[COOKIE_TOKEN];
+    return cookies[COOKIE_TOKEN] || null;
   }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ApiContextProvider researcherId={researcherId} token={token}>
+      <ApiContextProvider token={token}>
         <ThemeProvider key={key} theme={theme}>
           <CssBaseline />
           <Component {...pageProps} />

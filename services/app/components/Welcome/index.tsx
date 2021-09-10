@@ -21,8 +21,7 @@ const WelcomeItem: FC = ({ children }) => {
   );
 };
 
-interface WelcomeProps {}
-function Welcome({}: WelcomeProps): JSX.Element {
+function Welcome(): JSX.Element {
   return (
     <div>
       <Typography variant="h2" align="center" gutterBottom={true}>

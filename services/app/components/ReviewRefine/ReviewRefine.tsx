@@ -1,68 +1,66 @@
+import BudgetView from '../BudgetView/BudgetView';
+import Divider from '../Divider';
+import NextStepSection from '../NextStepSection';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
+import ReviewRefineQueue from './ReviewRefineQueue';
 
 interface ReviewRefineProps {
-  // TODO
+  onNextClick: () => void;
+  refinementQueue: number[];
+  releaseQueue: string[];
+  onReleaseToggle: (id: string) => void;
 }
-function ReviewRefine({}: ReviewRefineProps): JSX.Element {
+function ReviewRefine({
+  onNextClick,
+  refinementQueue,
+  releaseQueue,
+  onReleaseToggle,
+}: ReviewRefineProps): JSX.Element {
   return (
     <div>
-      <SectionTitle>Review &amp; Refine</SectionTitle>
+      <SectionTitle>Preliminary Results Using Synthetic Data</SectionTitle>
       <Paragraph>
-        Minim consectetuer expedita. Mollit sed orci, vel habitant, inventore
-        incididunt pretium dolorum eleifend adipisci? Doloribus, pede, provident
-        purus sociosqu? Magna vulputate illo! Eum voluptatibus? Porro!
-        Accusantium. Veniam omnis? Molestiae aliquid pretium dolor donec hic
-        cras iaculis! Elit aenean fermentum dis ultricies assumenda animi
-        ullamcorper. Pede minima repudiandae mauris, eos ex fusce sit!
-        Doloremque, ipsam sequi morbi quaerat iaculis natus iusto.
+        Now that you are within the secure environment, you can see the analyses
+        you selected for review and refinement with the confidential data. The
+        earlier results using synthetic data are also available for comparison
       </Paragraph>
       <Paragraph>
-        Duis! Laborum dolore sagittis. Labore consectetuer, curae, ea
-        reprehenderit placerat, augue consequuntur excepturi nesciunt curae
-        illo? Ex imperdiet cursus turpis, cubilia! Earum cumque tortor, aenean
-        rem, nunc ipsa conubia egestas suscipit animi, nullam, pede, aliqua
-        montes? Parturient ante? Maxime debitis, quas iusto, laoreet tellus!
-        Fugiat, posuere dolorum, amet, deleniti rerum class aliquip. Lorem quo
-        quisquam, curae dis repellendus, voluptatem ut.
+        For each analysis, you can see the random variation that the system
+        added to the confidential data to protect privacy. You can re-run any
+        request with different privacy adjustments. This will incur additional
+        review &amp; refinement budget cost. Remember that reducing the amount
+        of random variation added to data comes at a greater cost to each of
+        your privacy budgets, in turn.
       </Paragraph>
       <Paragraph>
-        Ornare neque velit montes. Risus nobis torquent a iste dictumst! Augue!
-        Corrupti repellat justo vel proident? Malesuada dignissim culpa
-        exercitationem rerum viverra voluptate montes! Ut, elit deserunt ut orci
-        veniam itaque provident. Iure fames soluta voluptatem. Mattis temporibus
-        hendrerit nulla felis quae fugiat porta? Optio, ex ipsum, porttitor
-        aperiam quaerat! Penatibus hic doloribus nonummy proin cum ullam curae
-        facere aenean.
+        Once you have identified analyses you want to request for public
+        release, selected the shopping cart icon or the{' '}
+        <strong>Add to final request queue</strong> button. Identified analysis
+        will appear in your final request queue on the{' '}
+        <strong>Request &amp; Release</strong> tab.
       </Paragraph>
-      <Paragraph>
-        Placeat. Urna aliquam cupidatat parturient lobortis! Taciti phasellus
-        repellendus nonummy suspendisse incididunt, quisque eaque, vestibulum,
-        iste, hac mattis natoque vel? Minus porta malesuada beatae sociis
-        reiciendis vel voluptatibus mollis luctus, dolorum parturient similique,
-        class vestibulum class? Occaecati, vestibulum animi aute litora montes
-        illo sodales. Exercitation cupidatat volutpat? Proident nostrum eu
-        lacus, facere. Nostrud, praesent natoque proin augue perspiciatis, vitae
-        earum.
-      </Paragraph>
-      <Paragraph>
-        Voluptate sunt nullam litora laboriosam fringilla ligula senectus cillum
-        nascetur? Class, massa, beatae ultrices, potenti esse convallis
-        architecto ullamcorper facere conubia eiusmod architecto fringilla,
-        fringilla adipisci, hac! Diamlorem vestibulum convallis est eros nisi
-        habitant. Similique deserunt varius inventore quasi optio, ipsa
-        porttitor nisl laudantium nostrum! In ipsa quod nisl massa nisl
-        possimus, veniam voluptas voluptates numquam, animi quasi ex adipisci.
-      </Paragraph>
-      <Paragraph>
-        Diam proident facere quisque adipiscing dui, scelerisque risus excepturi
-        temporibus doloribus interdum saepe blandit, duis nam quam modi porta
-        atque anim pede? Platea quasi, quas ratione nobis mollitia habitant
-        dolorem penatibus cupiditate eros voluptates? Maxime natus illo sagittis
-        eum earum maxime fringilla, urna aliquet iure doloribus modi eleifend.
-        Unde luctus! Dapibus fugit ullamcorper dui? Libero dignissim voluptatum
-        omnis itaque laborum.
-      </Paragraph>
+      <Divider />
+      <BudgetView />
+      <Divider />
+      <ReviewRefineQueue
+        refinementQueue={refinementQueue}
+        releaseQueue={releaseQueue}
+        onReleaseToggle={onReleaseToggle}
+      />
+      <Divider />
+      <NextStepSection
+        buttonDisabled={releaseQueue.length === 0}
+        description={
+          <Paragraph>
+            Select the <strong>Request &amp; Release</strong> tab to see all the
+            analyses you have requested for public release. There, you can
+            submit a final request; files leveraging the confidential data for
+            each analysis will be emailed to you.
+          </Paragraph>
+        }
+        onNextClick={onNextClick}
+      />
     </div>
   );
 }

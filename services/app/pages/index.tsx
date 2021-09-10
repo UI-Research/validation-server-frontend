@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import ApiContext from '../components/context/ApiContext';
 import PageTemplate from '../components/PageTemplate';
 import { steps } from '../components/Steps/steps';
-import StepsContent from '../components/Steps/StepsContent';
+import StepsContentContainer from '../components/Steps/StepsContentContainer';
 import StepsNav, { StepData } from '../components/StepsNav/StepsNav';
 import Welcome from '../components/Welcome';
 
@@ -56,9 +56,10 @@ function HomePage(): JSX.Element {
       }
     >
       {token ? (
-        <StepsContent
+        <StepsContentContainer
           activeStep={stepData.activeStep}
           onSetStep={handleSetStep}
+          token={token}
         />
       ) : (
         <Welcome />

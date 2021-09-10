@@ -11,6 +11,10 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 
+interface KeyedData {
+  [key: string]: string | number;
+}
+
 const StyledTableRow = withStyles(theme =>
   createStyles({
     root: {
@@ -21,7 +25,7 @@ const StyledTableRow = withStyles(theme =>
   }),
 )(TableRow);
 
-interface TableProps {
+interface TableProps<E> {
   useRadio?: boolean;
   radioValue?: string;
   onRadioChange?: (
@@ -29,18 +33,21 @@ interface TableProps {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
   columns: string[];
-  data: (string | number)[][];
-  getDataId?: (d: (string | number)[]) => string;
+  data: E[];
+  getDataId?: (d: E, i: number) => string;
+  /** List of Data IDs that do not use a radio element. */
+  noRadioOptions?: string[];
 }
 
-function Table({
+function Table<T extends (string | number)[] | KeyedData>({
   columns,
   data,
   useRadio,
   radioValue,
   onRadioChange,
-  getDataId = d => String(d[0]),
-}: TableProps): JSX.Element {
+  getDataId = (_, i) => String(i),
+  noRadioOptions,
+}: TableProps<T>): JSX.Element {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onRadioChange) {
       onRadioChange(event.target.value, event);
@@ -60,25 +67,33 @@ function Table({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(d => {
-            const dataId = getDataId(d);
+          {data.map((row, index) => {
+            const dataId = getDataId(row, index);
             return (
               <StyledTableRow key={dataId}>
                 {useRadio && (
                   <TableCell padding="checkbox">
-                    <Radio
-                      checked={radioValue === dataId}
-                      onChange={handleChange}
-                      value={dataId}
-                      name="table-radio-demo"
-                    />
+                    {!noRadioOptions || !noRadioOptions.includes(dataId) ? (
+                      <Radio
+                        checked={radioValue === dataId}
+                        onChange={handleChange}
+                        value={dataId}
+                        name="table-radio-demo"
+                      />
+                    ) : null}
                   </TableCell>
                 )}
-                {d.map((item, index) => (
-                  <TableCell key={index} align="center">
-                    {item}
-                  </TableCell>
-                ))}
+                {isKeyedData(row)
+                  ? columns.map(key => (
+                      <TableCell key={key} align="center">
+                        {row[key]}
+                      </TableCell>
+                    ))
+                  : row.map((item, itemIndex) => (
+                      <TableCell key={itemIndex} align="center">
+                        {item}
+                      </TableCell>
+                    ))}
               </StyledTableRow>
             );
           })}
@@ -86,6 +101,10 @@ function Table({
       </MuiTable>
     </TableContainer>
   );
+}
+
+function isKeyedData<T>(val: T | KeyedData): val is KeyedData {
+  return !Array.isArray(val);
 }
 
 export default Table;

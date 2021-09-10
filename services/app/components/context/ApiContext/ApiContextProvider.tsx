@@ -4,11 +4,9 @@ import ApiContext from '.';
 import { COOKIE_TOKEN } from '../../../util/cookies';
 
 interface ApiContextProviderProps {
-  researcherId: number;
   token?: string | null;
 }
 export interface ApiContextProviderState {
-  researcherId: number;
   token: string | null;
   setToken: (val: string | null) => void;
 }
@@ -21,7 +19,6 @@ class ApiContextProvider extends React.Component<
     super(props);
 
     this.state = {
-      researcherId: props.researcherId,
       token: props.token || null,
       setToken: this.setToken,
     };
@@ -38,12 +35,11 @@ class ApiContextProvider extends React.Component<
       });
     } else {
       // Destroy the cookie for token.
-      console.log('destroyCookie');
       destroyCookie(null, COOKIE_TOKEN);
     }
   };
 
-  render() {
+  render(): JSX.Element {
     const { children } = this.props;
     return (
       <ApiContext.Provider value={this.state}>{children}</ApiContext.Provider>

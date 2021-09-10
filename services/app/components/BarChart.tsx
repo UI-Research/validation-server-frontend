@@ -28,7 +28,7 @@ function BarChart({
   const barMaxWidth = width - borderPx * 2;
   const barHeight = height - borderPx * 2;
   return (
-    <svg width={width} height={height}>
+    <svg viewBox={`0 0 ${width} ${height}`}>
       <rect
         fill="white"
         x={1}

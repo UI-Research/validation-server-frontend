@@ -4,12 +4,13 @@ import ApiContextProvider, {
   ApiContextProviderState,
 } from './ApiContextProvider';
 
-export interface ApiContextType extends ApiContextProviderState {}
+export type ApiContextType = ApiContextProviderState;
 
 const ApiContext = createContext<ApiContextType>({
-  researcherId: 0,
   token: null,
-  setToken: () => {},
+  setToken: () => {
+    // Empty
+  },
 });
 
 const { Consumer } = ApiContext;

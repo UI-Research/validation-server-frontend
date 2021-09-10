@@ -1,10 +1,19 @@
+import { useState } from 'react';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 import UIButton from '../UIButton';
-interface UploadSectionProps {
-  // TODO
-}
-function UploadSection({}: UploadSectionProps): JSX.Element {
+import UploadCommandDialog from './UploadCommandDialog';
+
+function UploadSection(): JSX.Element {
+  const [showDialog, setShowDialog] = useState(false);
+
+  const handleClick = () => {
+    setShowDialog(true);
+  };
+  const handleDialogClose = () => {
+    setShowDialog(false);
+  };
+
   return (
     <div>
       <SectionTitle>Upload Command File</SectionTitle>
@@ -16,7 +25,11 @@ function UploadSection({}: UploadSectionProps): JSX.Element {
         commands, which may take a few minutes. Results for each command will
         appear below as the system completes the processing.
       </Paragraph>
-      <UIButton title="Upload a file" icon="Publish" />
+      <UIButton title="Upload a command" icon="Publish" onClick={handleClick} />
+      <UploadCommandDialog
+        onDialogClose={handleDialogClose}
+        showDialog={showDialog}
+      />
     </div>
   );
 }

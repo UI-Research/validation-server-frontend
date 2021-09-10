@@ -1,16 +1,23 @@
-import { Grid } from '@material-ui/core';
 import BudgetView from '../BudgetView/BudgetView';
 import Divider from '../Divider';
+import NextStepSection from '../NextStepSection';
 import Paragraph from '../Paragraph';
 import PreliminaryResults from '../PreliminaryResults/PreliminaryResults';
 import SectionTitle from '../SectionTitle';
 import UploadSection from './UploadSection';
-import UIButton from '../UIButton';
 
 interface UploadExploreProps {
   onNextClick: () => void;
+  refinementQueue: number[];
+  onCommandToggle: (commandId: number) => void;
+  onCommandRemove: (commandId: number) => void;
 }
-function UploadExplore({ onNextClick }: UploadExploreProps): JSX.Element {
+function UploadExplore({
+  onNextClick,
+  onCommandToggle,
+  onCommandRemove,
+  refinementQueue,
+}: UploadExploreProps): JSX.Element {
   return (
     <div>
       <SectionTitle>
@@ -44,12 +51,16 @@ function UploadExplore({ onNextClick }: UploadExploreProps): JSX.Element {
       <Divider />
       <UploadSection />
       <Divider />
-      <PreliminaryResults />
+      <PreliminaryResults
+        refinementQueue={refinementQueue}
+        onCommandToggle={onCommandToggle}
+        onCommandRemove={onCommandRemove}
+      />
       <Divider />
       <div>
-        <Grid container={true}>
-          <Grid item={true} xs={8}>
-            <SectionTitle>Next Step:</SectionTitle>
+        <NextStepSection
+          buttonDisabled={refinementQueue.length === 0}
+          description={
             <Paragraph>
               Enter the secure environment and select the{' '}
               <strong>Review &amp; Refinement</strong> tab to see your analyses
@@ -57,11 +68,9 @@ function UploadExplore({ onNextClick }: UploadExploreProps): JSX.Element {
               level of privacy adjustment and select analyses to add to your
               public-release request.
             </Paragraph>
-          </Grid>
-          <Grid item={true} xs={4}>
-            <UIButton title="Next" icon="ChevronRight" onClick={onNextClick} />
-          </Grid>
-        </Grid>
+          }
+          onNextClick={onNextClick}
+        />
       </div>
     </div>
   );

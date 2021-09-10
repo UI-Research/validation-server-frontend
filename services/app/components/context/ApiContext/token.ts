@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from 'react-query';
-import { apiBase } from './load';
+import { useMutation, UseMutationResult, useQueryClient } from 'react-query';
+import { apiBase } from './basePath';
 
 interface TokenResponse {
   token: string;
@@ -29,7 +29,12 @@ interface TokenPayload {
   username: string;
   password: string;
 }
-function useApiTokenMutation() {
+function useApiTokenMutation(): UseMutationResult<
+  TokenResponse,
+  unknown,
+  TokenPayload,
+  unknown
+> {
   const queryClient = useQueryClient();
   const postToken = async ({
     username,

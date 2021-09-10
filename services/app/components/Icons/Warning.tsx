@@ -7,8 +7,7 @@ const useStlyes = makeStyles(theme => ({
   },
 }));
 
-interface WarningProps {}
-function Warning({}: WarningProps): JSX.Element {
+function Warning(): JSX.Element {
   const classes = useStlyes();
   return <MuiWarning className={classes.icon} />;
 }

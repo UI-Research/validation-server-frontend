@@ -20,7 +20,7 @@ export interface CommandResponseResult {
   sanitized_command_input: {
     analysis_query: string;
     epsilon: number;
-    transformation_query: string;
+    transformation_query: string | null;
   };
 }
 export interface CommandResponse {
@@ -35,6 +35,19 @@ function useCommandQuery(): UseQueryResult<CommandResponse> {
   }
   const result = useQuery('command', () =>
     load<CommandResponse>('/command/', token),
+  );
+  return result;
+}
+
+function useCommandByIdQuery(
+  id: number,
+): UseQueryResult<CommandResponseResult> {
+  const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
+  const result = useQuery(['command', { id }], () =>
+    load<CommandResponseResult>(`/command/${id}/`, token),
   );
   return result;
 }
@@ -192,4 +205,10 @@ function useCommandDelete(
   return result;
 }
 
-export { useCommandDelete, useCommandPatch, useCommandPost, useCommandQuery };
+export {
+  useCommandByIdQuery,
+  useCommandDelete,
+  useCommandPatch,
+  useCommandPost,
+  useCommandQuery,
+};

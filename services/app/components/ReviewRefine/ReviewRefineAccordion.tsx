@@ -1,25 +1,22 @@
 import { Grid, IconButton, Typography } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
-import { AddShoppingCart, MoreVert } from '@material-ui/icons';
-import {
-  Fragment,
-  MouseEventHandler,
-  ReactNode,
-  useRef,
-  useState,
-} from 'react';
+import { AddShoppingCart } from '@material-ui/icons';
+import { MouseEventHandler, ReactNode, useRef, useState } from 'react';
 import getReleaseId from '../../util/getReleaseId';
 import Accordion from '../Accordion';
-import CodeBlock from '../CodeBlock';
+import AccordionContentTitle from '../Accordion/content/AccordionContentTitle';
+import CommandDisplay from '../Accordion/content/CommandDisplay';
+import ConfidentialDataDisplay from '../Accordion/content/ConfidentialDataDisplay';
+import SyntheticDataDisplay from '../Accordion/content/SyntheticDataDisplay';
 import CommandRenameDialog from '../CommandRenameDialog';
 import { CommandResponseResult } from '../context/ApiContext/queries/command';
 import { useConfidentialDataResultByCommandId } from '../context/ApiContext/queries/confidentialData';
 import { useSyntheticDataResultByCommandIdQuery } from '../context/ApiContext/queries/syntheticDataResult';
 import LoadingIndicator from '../LoadingIndicator';
-import MoreMenu from '../MoreMenu';
+import MoreMenuButton from '../MoreMenu/MoreMenuButton';
+import MoreMenuIcon from '../MoreMenu/MoreMenuIcon';
 import Paragraph from '../Paragraph';
 import PrivacyCostFigure from '../PrivacyCostFigure';
-import SpreadsheetTable from '../SpreadsheetTable';
 import UIButton from '../UIButton';
 import RefineAdjustmentsDialog from './RefineAdjustmentsDialog';
 
@@ -52,9 +49,6 @@ function ReviewRefineAccordion({
 }: ReviewRefineAccordionProps): JSX.Element | null {
   const [showRefinementDialog, setShowRefinementDialog] = useState(false);
   const [showRenameDialog, setShowRenameDialog] = useState(false);
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
-    null,
-  );
   const summaryRef = useRef<HTMLDivElement | null>(null);
   const syntheticResult = useSyntheticDataResultByCommandIdQuery(
     command.command_id,
@@ -88,23 +82,7 @@ function ReviewRefineAccordion({
     );
   }
 
-  const syntheticData: Array<{ [key: string]: string | number }> | false =
-    syntheticResult.data.result.ok &&
-    JSON.parse(syntheticResult.data.result.data);
-  const confidentialData: Array<{ [key: string]: string | number }> | false =
-    confidentialItem.result.ok && JSON.parse(confidentialItem.result.data);
-
   // Event handlers
-  const handleMoreButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.stopPropagation();
-    setMenuAnchorEl(event.currentTarget);
-  };
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
-  };
-
   const handleRenameClick = () => {
     setShowRenameDialog(true);
   };
@@ -158,38 +136,9 @@ function ReviewRefineAccordion({
       summaryRef={summaryRef}
     >
       <div style={{ width: '100%' }}>
-        <Paragraph>
-          <strong>Command:</strong>
-        </Paragraph>
-        <div>
-          <CodeBlock code={command.sanitized_command_input.analysis_query} />
-        </div>
-        {syntheticData ? (
-          <Fragment>
-            <Paragraph>
-              <strong>Results with Synthetic Data:</strong>
-            </Paragraph>
-            <div>
-              <SpreadsheetTable
-                columns={Object.keys(syntheticData[0])}
-                data={syntheticData}
-              />
-            </div>
-          </Fragment>
-        ) : null}
-        {confidentialData ? (
-          <Fragment>
-            <Paragraph>
-              <strong>Results with Confidential Data:</strong>
-            </Paragraph>
-            <div>
-              <SpreadsheetTable
-                columns={Object.keys(confidentialData[0])}
-                data={confidentialData}
-              />
-            </div>
-          </Fragment>
-        ) : null}
+        <CommandDisplay command={command} />
+        <SyntheticDataDisplay syntheticDataResult={syntheticResult.data} />
+        <ConfidentialDataDisplay confidentialDataResult={confidentialItem} />
         {!isNaN(cost) && (
           <PrivacyCostFigure
             availableBudget={availablePublic}
@@ -198,9 +147,7 @@ function ReviewRefineAccordion({
             totalBudget={startingPublic}
           />
         )}
-        <Paragraph>
-          <strong>Adjustments for Privacy</strong>
-        </Paragraph>
+        <AccordionContentTitle>Adjustments for Privacy</AccordionContentTitle>
         <Paragraph>
           {/* TODO: Properly setup this section with dynamic data. */}
           To preserve privacy, random variation was added by setting:
@@ -230,20 +177,7 @@ function ReviewRefineAccordion({
               />
             </Grid>
             <Grid item={true}>
-              <UIButton
-                title="More Actions"
-                icon="MoreVert"
-                aria-label="More"
-                aria-controls="more-menu"
-                aria-haspopup="true"
-                onClick={handleMoreButtonClick}
-              />
-              <MoreMenu
-                menuAnchorEl={menuAnchorEl}
-                onMenuClose={handleMenuClose}
-                onRenameClick={handleRenameClick}
-                // onRemoveClick={handleRemoveClick}
-              />
+              <MoreMenuButton onRenameClick={handleRenameClick} />
             </Grid>
           </Grid>
         </div>
@@ -280,19 +214,9 @@ function ReviewRefineAccordionSummary({
   onRenameClick,
   text,
 }: ReviewRefineAccordionSummaryProps): JSX.Element {
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
-    null,
-  );
   const handleAddClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     onAddedClick && onAddedClick();
-  };
-  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    setMenuAnchorEl(event.currentTarget);
-  };
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
   };
   return (
     <div style={{ flexGrow: 1, width: '100%' }}>
@@ -301,7 +225,7 @@ function ReviewRefineAccordionSummary({
           {text}
         </Grid>
         <Grid item={true} xs={1} md={1}>
-          {cost}
+          {cost.toLocaleString()}
         </Grid>
         <Grid item={true} xs={4} md={2}>
           <Grid container={true} justify="flex-end">
@@ -316,18 +240,7 @@ function ReviewRefineAccordionSummary({
                   style={added ? { fill: green[900] } : undefined}
                 />
               </IconButton>
-              <IconButton
-                aria-label="More"
-                aria-controls="more-menu"
-                aria-haspopup="true"
-                title="More actions"
-                onClick={handleMenuClick}
-              >
-                <MoreVert />
-              </IconButton>
-              <MoreMenu
-                menuAnchorEl={menuAnchorEl}
-                onMenuClose={handleMenuClose}
+              <MoreMenuIcon
                 onRenameClick={onRenameClick}
                 onRemoveClick={onRemoveClick}
               />

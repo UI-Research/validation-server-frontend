@@ -1,10 +1,10 @@
 import { Grid, IconButton, makeStyles } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
-import { MoreVert, PlaylistAdd } from '@material-ui/icons';
-import React, { ReactNode, useState } from 'react';
+import { PlaylistAdd } from '@material-ui/icons';
+import React, { ReactNode } from 'react';
 import Check from '../Icons/Check';
 import Warning from '../Icons/Warning';
-import MoreMenu from '../MoreMenu';
+import MoreMenuIcon from '../MoreMenu/MoreMenuIcon';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -29,20 +29,10 @@ function PreliminarySummaryContent({
   onRenameClick,
   onRemoveClick,
 }: PreliminarySummaryContentProps): JSX.Element {
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
-    null,
-  );
   const classes = useStyles();
-  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    setMenuAnchorEl(event.currentTarget);
-  };
   const handleAddClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     onAddedClick && onAddedClick();
-  };
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
   };
   return (
     <div className={classes.root}>
@@ -75,18 +65,7 @@ function PreliminarySummaryContent({
               </Grid>
             )}
             <Grid item={true}>
-              <IconButton
-                aria-label="More"
-                aria-controls="more-menu"
-                aria-haspopup="true"
-                title="More actions"
-                onClick={handleMenuClick}
-              >
-                <MoreVert />
-              </IconButton>
-              <MoreMenu
-                menuAnchorEl={menuAnchorEl}
-                onMenuClose={handleMenuClose}
+              <MoreMenuIcon
                 onRenameClick={onRenameClick}
                 onRemoveClick={onRemoveClick}
               />

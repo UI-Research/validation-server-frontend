@@ -1,67 +1,173 @@
+import { Grid, Typography } from '@material-ui/core';
+import { Fragment, useState } from 'react';
+import notEmpty from '../../util/notEmpty';
+import BarChart from '../BarChart';
+import { useBudgetQuery } from '../context/ApiContext/queries/budget';
+import {
+  CommandResponseResult,
+  useCommandByIdQuery,
+} from '../context/ApiContext/queries/command';
+import {
+  ConfidentialDataResult,
+  useConfidentialDataResultByIdQuery,
+} from '../context/ApiContext/queries/confidentialData';
+import {
+  SyntheticDataResult,
+  useSyntheticDataResultByCommandIdQuery,
+} from '../context/ApiContext/queries/syntheticDataResult';
+import Divider from '../Divider';
+import LoadingIndicator from '../LoadingIndicator';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
+import UIButton from '../UIButton';
+import RequestReleaseAccordion from './RequestReleaseAccordion';
 
-function RequestRelease(): JSX.Element {
+export interface ReleaseItem {
+  id: string;
+  command: CommandResponseResult;
+  confidentialDataResult: ConfidentialDataResult;
+  syntheticDataResult: SyntheticDataResult;
+}
+
+function useReleaseItem(id: string): ReleaseItem | null {
+  const [commandId, confidentialDataRunId] = id.split('-').map(Number);
+  const commandResult = useCommandByIdQuery(commandId);
+  const confidentialResult = useConfidentialDataResultByIdQuery(
+    confidentialDataRunId,
+  );
+  const syntheticResult = useSyntheticDataResultByCommandIdQuery(commandId);
+
+  if (
+    !commandResult.data ||
+    !confidentialResult.data ||
+    !syntheticResult.data
+  ) {
+    return null;
+  }
+
+  return {
+    id,
+    command: commandResult.data,
+    confidentialDataResult: confidentialResult.data,
+    syntheticDataResult: syntheticResult.data,
+  };
+}
+
+function useRequestReleaseData(queue: string[]) {
+  const arr = queue.map(useReleaseItem);
+  // Filter to non-null items.
+  const filtered = arr.filter(notEmpty);
+
+  return {
+    // If the original array length does not match that of the filtered array,
+    // we can assume that data items are still loading.
+    isLoading: arr.length !== filtered.length,
+    data: filtered,
+  };
+}
+
+interface RequestReleaseProps {
+  releaseQueue: string[];
+}
+function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
+  // Initialize final queue items with the release queue.
+  const [finalQueue, setFinalQueue] = useState<string[]>(releaseQueue);
+  const { isLoading, data } = useRequestReleaseData(releaseQueue);
+  const publicBudgetResult = useBudgetQuery('public-use-budget');
+
+  const finalItems = data.filter(d => finalQueue.includes(d.id));
+
+  // Calculate our total cost by first generating an array of the cost of each item,
+  const totalCost = finalItems
+    .map(d => Number(d.confidentialDataResult.privacy_budget_used))
+    // then using reduce to sum them together.
+    .reduce((a, b) => a + b, 0);
+  const availableBudget = publicBudgetResult.data?.total_budget_available;
+  const totalBudget = publicBudgetResult.data?.total_budget_allocated;
+
+  const toggleItem = (id: string) => {
+    setFinalQueue(arr => {
+      if (arr.includes(id)) {
+        return arr.filter(a => a !== id);
+      } else {
+        return [...arr, id];
+      }
+    });
+  };
+
   return (
     <div>
-      <SectionTitle>Request &amp; Release</SectionTitle>
+      <SectionTitle>Preliminary Results Using Synthetic Data</SectionTitle>
       <Paragraph>
-        Incidunt litora dictum nullam erat blandit minus inventore rhoncus
-        feugiat, sapien egestas tempora sed rhoncus harum ultricies? Class!
-        Accusantium erat veniam euismod tempor fames, nostrum irure quae, sapien
-        praesent magnam, accumsan molestiae impedit doloremque mus at facere
-        posuere, sunt eleifend, voluptates sociosqu eos, adipisci luctus,
-        nascetur quod fugit congue! Morbi eligendi massa! Etiam nonummy
-        convallis reiciendis exercitationem ligula. Montes dictum.
+        The analyses you requested for public release are listed below along
+        with their privacy costs. To remove items from your request, simply
+        uncheck them. Remember to review your choices in light of your public
+        release budget and their cost against that budget. When you have your
+        final set selected, submit your request by clicking the{' '}
+        <strong>Request selected analyses and spend privacy budget</strong>{' '}
+        button. The files for each analysis will be emailed to you within one
+        day.
       </Paragraph>
-      <Paragraph>
-        Nisl anim minus nobis modi magnam nonummy, aspernatur laborum
-        repudiandae dictum laborum aliquam euismod integer aliquid, conubia
-        vehicula! Litora laoreet. Dignissimos reiciendis semper habitasse,
-        dolorem pellentesque possimus quibusdam ut dignissimos porttitor nostrum
-        ad eum, malesuada voluptatem. Delectus excepturi aliquid diamlorem,
-        metus ducimus? Aptent nonummy minus dignissim sunt ex, ante consequuntur
-        placeat nunc. Cursus doloribus potenti, mollitia. Repudiandae, possimus
-        animi nostrum.
-      </Paragraph>
-      <Paragraph>
-        Delectus aperiam beatae justo, facilisis dolor, dolore purus erat
-        quidem. Ultrices eveniet. Sapien fusce aptent praesent ullam aptent
-        tempus? Dis earum, diam aenean modi! Quasi libero repudiandae per ea
-        expedita recusandae blandit? Pariatur beatae saepe reiciendis, justo hic
-        architecto officiis wisi voluptatum, felis sem hendrerit, iaculis
-        commodo nisi! Ultricies non accumsan nulla ullam sociis alias. Minim
-        primis eaque consequuntur ab.
-      </Paragraph>
-      <Paragraph>
-        Lorem adipiscing? Ligula congue culpa eveniet officiis primis ullamco
-        mauris commodi unde? Massa semper phasellus est quod, suspendisse, vel
-        occaecat dolores, lacinia dapibus exercitationem, taciti consequatur
-        proin donec, placerat autem nam tempor, odit nisi aliquam aut vero sequi
-        beatae. Dictum feugiat molestiae rem nascetur eius occaecati placerat
-        bibendum. Adipiscing cupiditate, fuga morbi eaque euismod? Mi laoreet,
-        aut torquent velit? Orci.
-      </Paragraph>
-      <Paragraph>
-        Pharetra praesent quisque iaculis eu rerum quidem vivamus pariatur non
-        doloribus consectetur cubilia consectetuer cursus rem nec facere vivamus
-        iure debitis, suspendisse tempus orci, habitasse aspernatur voluptates
-        maiores? Varius, doloribus, laudantium potenti dignissimos. Totam,
-        cubilia praesentium, officiis fusce sem. Facilisis, id vivamus pretium
-        platea facere penatibus corrupti per! Cupiditate ac facilisi totam,
-        condimentum molestiae? Tempore reiciendis, eleifend metus? Vehicula
-        cubilia.
-      </Paragraph>
-      <Paragraph>
-        Dolor animi dolores sollicitudin! Distinctio eget torquent quasi. Purus
-        curabitur dui, rem laudantium volutpat. Augue placerat, facere facilisi.
-        Exercitation consequuntur netus aspernatur adipiscing consequuntur.
-        Facilisi incidunt risus. Non saepe tempora, aliquam taciti, repellendus
-        cillum nibh, error commodo malesuada, lectus orci aute aliquid vitae
-        irure omnis asperiores quasi recusandae! Laboriosam eligendi commodi
-        lorem montes, parturient! Saepe hymenaeos aenean. Sagittis, sodales
-        nostrud.
-      </Paragraph>
+      <Divider />
+      <div>
+        <SectionTitle>Final Request Queue</SectionTitle>
+        {isLoading || !data || !availableBudget || !totalBudget ? (
+          <LoadingIndicator />
+        ) : (
+          <div>
+            {data.map(r => (
+              <RequestReleaseAccordion
+                key={r.id}
+                availablePublic={availableBudget}
+                finalQueue={finalQueue}
+                onCheckboxClick={() => toggleItem(r.id)}
+                releaseItem={r}
+                startingPublic={Number(totalBudget)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+      <Divider />
+      <div>
+        <SectionTitle>Available Privacy Budget</SectionTitle>
+        {totalBudget && availableBudget ? (
+          <Fragment>
+            <Grid container={true}>
+              <Grid item={true} xs={true}>
+                <Typography align="left">
+                  <strong>Cost of selected:</strong>{' '}
+                  {totalCost.toLocaleString()}
+                </Typography>
+              </Grid>
+              <Grid item={true} xs={true}>
+                <Typography align="right">
+                  <strong>Available budget:</strong>{' '}
+                  {availableBudget.toLocaleString()}
+                </Typography>
+              </Grid>
+            </Grid>
+            <BarChart
+              width={600}
+              max={Number(totalBudget)}
+              value={availableBudget}
+              secondaryValue={totalCost}
+            />
+          </Fragment>
+        ) : (
+          <LoadingIndicator />
+        )}
+        <Typography align="center">Privacy Units</Typography>
+        <UIButton
+          disabled={finalQueue.length === 0}
+          style={{ margin: '2rem 0' }}
+          title="Request selected analyses and spend privacy budget"
+        />
+        <Typography>
+          The system will email you the files for each of your anlyses within 1
+          day.
+        </Typography>
+      </div>
     </div>
   );
 }

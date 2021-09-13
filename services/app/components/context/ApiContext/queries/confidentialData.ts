@@ -7,9 +7,15 @@ import {
   UseQueryResult,
 } from 'react-query';
 import ApiContext from '..';
-import { loadList } from '../load';
+import load, { loadList } from '../load';
 import patch from '../patch';
 import post from '../post';
+
+// Set max wait time to 2 minutes, converted to milliseconds.
+const MAX_WAIT_TIME_MS = 2 * 60 * 1000;
+// Interval on refetching attempts. Set to 3 seconds, converted to milliseconds.
+const INTERVAL_MS = 3 * 1000;
+const MAX_ATTEMPTS = MAX_WAIT_TIME_MS / INTERVAL_MS;
 
 export interface ConfidentialDataResult {
   command_id: number;
@@ -34,6 +40,19 @@ function useConfidentialDataResultsQuery(): UseQueryResult<
   }
   const results = useQuery('confidential-data-result', () =>
     loadList<ConfidentialDataResult>('/confidential-data-result/', token),
+  );
+  return results;
+}
+
+function useConfidentialDataResultByIdQuery(
+  id: number,
+): UseQueryResult<ConfidentialDataResult> {
+  const { token } = useContext(ApiContext);
+  if (!token) {
+    throw new Error('Token is not defined.');
+  }
+  const results = useQuery(['confidential-data-result', { id }], () =>
+    load<ConfidentialDataResult>(`/confidential-data-result/${id}/`, token),
   );
   return results;
 }
@@ -66,7 +85,7 @@ function useConfidentialDataResultByCommandId(
         if (data.length === 0) {
           // Check attempts to retrieve query. Stop after a certain number as to not burden the server.
           // NOTE: probably remove this once API work has been more finalized.
-          if (attempts > 4) {
+          if (attempts > MAX_ATTEMPTS) {
             throw new Error(
               `Exceeded attempts to retrieve confidential data result for command ${commandId}. Stopping.`,
             );
@@ -89,7 +108,7 @@ function useConfidentialDataResultByCommandId(
       },
       enabled: commandId !== null,
       // Refetch every 3 seconds (3000ms).
-      refetchInterval: stop ? false : 3000,
+      refetchInterval: stop ? false : INTERVAL_MS,
       refetchIntervalInBackground: true,
     },
   );
@@ -258,6 +277,7 @@ async function confidentialDataRunPostIfNeeded(
 }
 
 export {
+  useConfidentialDataResultByIdQuery,
   useConfidentialDataResultPatch,
   useConfidentialDataResultsQuery,
   useConfidentialDataResultByCommandId,

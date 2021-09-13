@@ -3,8 +3,8 @@ import { useQuery, UseQueryResult } from 'react-query';
 import ApiContext from '..';
 import load, { loadList } from '../load';
 
-// Set max wait time to 1 minute, converted to milliseconds.
-const MAX_WAIT_TIME_MS = 1 * 60 * 1000;
+// Set max wait time to 2 minutes, converted to milliseconds.
+const MAX_WAIT_TIME_MS = 2 * 60 * 1000;
 // Interval on refetching attempts. Set to 3 seconds, converted to milliseconds.
 const INTERVAL_MS = 3 * 1000;
 const MAX_ATTEMPTS = MAX_WAIT_TIME_MS / INTERVAL_MS;

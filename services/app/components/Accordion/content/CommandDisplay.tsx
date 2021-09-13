@@ -19,7 +19,7 @@ function CommandDisplay({
         <div>
           <Typography>Analysis Query</Typography>
           <CodeBlock code={analysis_query} />
-          <Typography>Transormation Query</Typography>
+          <Typography>Transformation Query</Typography>
           <CodeBlock code={transformation_query} />
         </div>
       ) : (

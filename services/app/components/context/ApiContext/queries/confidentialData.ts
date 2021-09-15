@@ -17,6 +17,8 @@ const MAX_WAIT_TIME_MS = 2 * 60 * 1000;
 const INTERVAL_MS = 3 * 1000;
 const MAX_ATTEMPTS = MAX_WAIT_TIME_MS / INTERVAL_MS;
 
+const EPSILONS = [0.01, 0.1, 1, 5, 10];
+
 export interface ConfidentialDataResult {
   command_id: number;
   run_id: number;
@@ -81,8 +83,15 @@ function useConfidentialDataResultByCommandId(
         token,
       ).then(data => {
         setAttempts(attempts + 1);
-        // For no results, return null so it's easier to check.
-        if (data.length === 0) {
+        // Return null so it's easier to check if either:
+        // - there are no results
+        // - not every epsilon value is accounted for in the data
+        if (
+          data.length === 0 ||
+          !EPSILONS.every(epsilon =>
+            data.some(d => Number(d.privacy_budget_used) === epsilon),
+          )
+        ) {
           // Check attempts to retrieve query. Stop after a certain number as to not burden the server.
           // NOTE: probably remove this once API work has been more finalized.
           if (attempts > MAX_ATTEMPTS) {
@@ -225,7 +234,7 @@ function useConfidentialDataRunPost(
     const all = await Promise.all(
       // For the given command payload, we want to post 5 separate
       // confidential data runs: 0.01, 0.1, 1, 5, 10.
-      [0.01, 0.1, 1, 5, 10].map(epsilon =>
+      EPSILONS.map(epsilon =>
         confidentialDataRunPostIfNeeded(
           {
             ...payload,

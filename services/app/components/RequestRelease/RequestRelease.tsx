@@ -163,10 +163,6 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
           style={{ margin: '2rem 0' }}
           title="Request selected analyses and spend privacy budget"
         />
-        <Typography>
-          The system will email you the files for each of your anlyses within 1
-          day.
-        </Typography>
       </div>
     </div>
   );

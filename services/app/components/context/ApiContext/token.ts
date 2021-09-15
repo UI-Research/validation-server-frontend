@@ -1,4 +1,5 @@
 import { useMutation, UseMutationResult, useQueryClient } from 'react-query';
+import { getCsrfToken } from '../../../util/cookies';
 import { apiBase } from './basePath';
 
 interface TokenResponse {
@@ -9,11 +10,19 @@ async function fetchToken(
   username: string,
   password: string,
 ): Promise<TokenResponse> {
+  const csrfToken = getCsrfToken();
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+
+  if (csrfToken) {
+    headers['X-CSRFToken'] = csrfToken;
+  }
+
   const response = await fetch(`${apiBase}/api-token-auth/`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: JSON.stringify({ username, password }),
   });
 

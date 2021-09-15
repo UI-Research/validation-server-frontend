@@ -1,3 +1,4 @@
+import { getCsrfToken } from '../../../util/cookies';
 import basePath from './basePath';
 
 interface DeleteOptions {
@@ -21,11 +22,19 @@ async function deleteMethod(
   token: string,
   opts?: DeleteOptions,
 ): Promise<void> {
+  const csrfToken = getCsrfToken();
+
+  const headers: Record<string, string> = {
+    Authorization: `Token ${token}`,
+  };
+
+  if (csrfToken) {
+    headers['X-CSRFToken'] = csrfToken;
+  }
+
   const response = await fetch(`${basePath}${endpoint}`, {
     method: 'DELETE',
-    headers: {
-      Authorization: `Token ${token}`,
-    },
+    headers,
   });
 
   // Check that the response is ok OR if the status is passable.

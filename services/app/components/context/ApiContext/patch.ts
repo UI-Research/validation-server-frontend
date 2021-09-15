@@ -1,3 +1,4 @@
+import { getCsrfToken } from '../../../util/cookies';
 import basePath from './basePath';
 
 interface PatchOptions {
@@ -24,12 +25,19 @@ async function patch<T>(
   data: unknown,
   opts?: PatchOptions,
 ): Promise<T> {
+  const csrfToken = getCsrfToken();
+
+  const headers: Record<string, string> = {
+    Authorization: `Token ${token}`,
+    'Content-Type': 'application/json',
+  };
+
+  if (csrfToken) {
+    headers['X-CSRFToken'] = csrfToken;
+  }
   const response = await fetch(`${basePath}${endpoint}`, {
     method: 'PATCH',
-    headers: {
-      Authorization: `Token ${token}`,
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: JSON.stringify(data),
   });
 

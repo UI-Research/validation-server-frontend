@@ -13,11 +13,15 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { useState } from 'react';
-import notEmpty from '../../util/notEmpty';
 import { ConfidentialDataResult } from '../context/ApiContext/queries/confidentialData';
 import Divider from '../Divider';
 import Table from '../Table';
 import UIButton from '../UIButton';
+import getAccuracyData, {
+  AccuracyData,
+  Columns,
+  getErrorVal,
+} from './getAccuracyData';
 import RefineAdjustmentsChart from './RefineAdjustmentsChart';
 
 const styles = (theme: Theme) =>
@@ -57,11 +61,6 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
   );
 });
 
-export enum Columns {
-  PRIVACY_ERROR = 'Privacy error',
-  PRIVACY_COST = 'Privacy cost',
-}
-
 interface RefineAdjustmentsDialogProps {
   confidentialDataResults: ConfidentialDataResult[];
   onAddVersionClick: (id: number) => void;
@@ -79,7 +78,7 @@ function RefineAdjustmentsDialog({
 }: RefineAdjustmentsDialogProps): JSX.Element {
   const [radioVal, setRadioVal] = useState<string>();
 
-  const data = getData(confidentialDataResults);
+  const data = getAccuracyData(confidentialDataResults);
   const tableData = getTableData(data);
   const columns = [Columns.PRIVACY_ERROR, Columns.PRIVACY_COST];
 
@@ -143,35 +142,6 @@ function RefineAdjustmentsDialog({
   );
 }
 
-interface ParsedAccuracy {
-  accuracy: number;
-  quantiles: number;
-}
-export interface AccuracyData {
-  id: number;
-  [Columns.PRIVACY_ERROR]: number | null | undefined;
-  [Columns.PRIVACY_COST]: string;
-  '10': number | null | undefined;
-  '90': number | null | undefined;
-}
-function getData(data: ConfidentialDataResult[]): AccuracyData[] {
-  return data
-    .map(d => {
-      const parsed = JSON.parse(d.accuracy) as ParsedAccuracy[];
-      return {
-        id: d.run_id,
-        [Columns.PRIVACY_ERROR]: parsed.find(a => a.quantiles === 0.5)
-          ?.accuracy,
-        [Columns.PRIVACY_COST]: d.privacy_budget_used,
-        '10': parsed.find(a => a.quantiles === 0.1)?.accuracy,
-        '90': parsed.find(a => a.quantiles === 0.9)?.accuracy,
-      };
-    })
-    .sort(
-      (a, b) =>
-        Number(a[Columns.PRIVACY_COST]) - Number(b[Columns.PRIVACY_COST]),
-    );
-}
 type TableData = {
   id: number;
   [Columns.PRIVACY_ERROR]: string;
@@ -184,15 +154,6 @@ function getTableData(data: AccuracyData[]): TableData[] {
       [Columns.PRIVACY_ERROR]: getErrorVal(d[Columns.PRIVACY_ERROR]),
     };
   });
-}
-
-function getErrorVal(val: number | null | undefined): string {
-  if (notEmpty(val)) {
-    // Round to one decimal place.
-    const num = Math.round(val * 10) / 10;
-    return String(num);
-  }
-  return '';
 }
 
 export default RefineAdjustmentsDialog;

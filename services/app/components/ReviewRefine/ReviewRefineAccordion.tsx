@@ -120,7 +120,6 @@ function ReviewRefineAccordion({
 
   const cost = Number(confidentialItem.privacy_budget_used);
   const accuracyDatum = getAccuracyDatum(confidentialItem);
-  console.log(accuracyDatum);
   return (
     <Accordion
       id={String(command.command_id)}

@@ -38,7 +38,6 @@ function getAccuracyData(data: ConfidentialDataResult[]): AccuracyData[] {
 
 function getErrorVal(val: number | null | undefined, places = 1): string {
   if (notEmpty(val)) {
-    // Round to one decimal place.
     const p = 10 ** places;
     const num = Math.round(val * p) / p;
     return num.toLocaleString();

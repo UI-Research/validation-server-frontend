@@ -1,5 +1,8 @@
-import { Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
+import { GetApp } from '@material-ui/icons';
 import { Fragment, useState } from 'react';
+import CsvDownload from 'react-csv-downloader';
+import sanitize from 'sanitize-filename';
 import notEmpty from '../../util/notEmpty';
 import BarChart from '../BarChart';
 import { useBudgetQuery } from '../context/ApiContext/queries/budget';
@@ -153,18 +156,57 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
               value={availableBudget}
               secondaryValue={totalCost}
             />
+            <Typography align="center">Privacy Units</Typography>
           </Fragment>
         ) : (
           <LoadingIndicator />
         )}
-        <Typography align="center">Privacy Units</Typography>
         <UIButton
           disabled={finalQueue.length === 0}
           style={{ margin: '2rem 0' }}
           title="Request selected analyses and spend privacy budget"
         />
+        {isLoading || data.length === 0 ? (
+          <LoadingIndicator />
+        ) : (
+          <div>
+            {finalItems.length === 0 ? (
+              <Typography>No items are currently selected.</Typography>
+            ) : (
+              <ul>
+                {finalItems.map(i => (
+                  <li key={i.id}>
+                    <ReleaseCsv item={i} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
       </div>
     </div>
+  );
+}
+
+interface ReleaseCsvProps {
+  item: ReleaseItem;
+}
+function ReleaseCsv({ item }: ReleaseCsvProps): JSX.Element {
+  // Create sanitized filename for the CSV.
+  const name = sanitize(
+    `${item.command.command_name}_${item.confidentialDataResult.privacy_budget_used}.csv`,
+  );
+  const data: Array<{ [key: string]: string }> = JSON.parse(
+    item.confidentialDataResult.result.data,
+  );
+
+  return (
+    <CsvDownload datas={data} filename={name} style={{ display: 'inline' }}>
+      <Button endIcon={<GetApp />} style={{ textTransform: 'none' }}>
+        Download CSV for &quot;{item.command.command_name} (
+        {item.confidentialDataResult.privacy_budget_used})&quot;
+      </Button>
+    </CsvDownload>
   );
 }
 

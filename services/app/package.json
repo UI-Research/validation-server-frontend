@@ -14,9 +14,11 @@
     "next": "^11.1.0",
     "nookies": "^2.5.2",
     "react": "17.0.2",
+    "react-csv-downloader": "^2.7.0",
     "react-dom": "17.0.2",
     "react-query": "^3.19.1",
-    "recharts": "^2.1.2"
+    "recharts": "^2.1.2",
+    "sanitize-filename": "^1.6.3"
   },
   "devDependencies": {
     "@types/react": "17.0.11",

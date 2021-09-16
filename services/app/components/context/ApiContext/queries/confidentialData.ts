@@ -124,10 +124,17 @@ function useConfidentialDataResultByCommandId(
   return results;
 }
 
-interface ConfidentialDataResultPatchPayload {
+interface ConfidentialDataResultDisplayResultsPayload {
   run_id: number;
   display_results_decision: boolean;
 }
+interface ConfidentialDataResultReleaseResultsPayload {
+  run_id: number;
+  release_results_decision: boolean;
+}
+type ConfidentialDataResultPatchPayload =
+  | ConfidentialDataResultDisplayResultsPayload
+  | ConfidentialDataResultReleaseResultsPayload;
 interface ConfidentialDataResultPatchOptions {
   onSuccess?: (data: ConfidentialDataResult) => void;
   onError?: (error: unknown) => void;

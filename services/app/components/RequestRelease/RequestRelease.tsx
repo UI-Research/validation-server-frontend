@@ -13,6 +13,7 @@ import {
 import {
   ConfidentialDataResult,
   useConfidentialDataResultByIdQuery,
+  useConfidentialDataResultPatch,
 } from '../context/ApiContext/queries/confidentialData';
 import {
   SyntheticDataResult,
@@ -77,8 +78,16 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
   const [finalQueue, setFinalQueue] = useState<string[]>(releaseQueue);
   const { isLoading, data } = useRequestReleaseData(releaseQueue);
   const publicBudgetResult = useBudgetQuery('public-use-budget');
+  const confidentialPatch = useConfidentialDataResultPatch();
 
   const finalItems = data.filter(d => finalQueue.includes(d.id));
+  // For the CSV list, only show items that have the
+  // `release_results_decision` property set to true.
+  // This means that they were already requested and do not need to go through
+  // the data result mutation process to use budget.
+  const csvItems = finalItems.filter(
+    i => i.confidentialDataResult.release_results_decision === true,
+  );
 
   // Calculate our total cost by first generating an array of the cost of each item,
   const totalCost = finalItems
@@ -94,6 +103,19 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
         return arr.filter(a => a !== id);
       } else {
         return [...arr, id];
+      }
+    });
+  };
+
+  const handleRequestClick = () => {
+    finalItems.forEach(item => {
+      // Set the "release results decision" property each item in the final queue
+      // to `true` if necessary.
+      if (item.confidentialDataResult.release_results_decision === false) {
+        confidentialPatch.mutate({
+          run_id: item.confidentialDataResult.run_id,
+          release_results_decision: true,
+        });
       }
     });
   };
@@ -162,27 +184,25 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
           <LoadingIndicator />
         )}
         <UIButton
-          disabled={finalQueue.length === 0}
+          disabled={finalItems.length === 0}
+          onClick={handleRequestClick}
           style={{ margin: '2rem 0' }}
           title="Request selected analyses and spend privacy budget"
         />
-        {isLoading || data.length === 0 ? (
-          <LoadingIndicator />
-        ) : (
-          <div>
-            {finalItems.length === 0 ? (
-              <Typography>No items are currently selected.</Typography>
-            ) : (
+        {csvItems.length > 0 &&
+          (confidentialPatch.isLoading ? (
+            <LoadingIndicator />
+          ) : (
+            <div>
               <ul>
-                {finalItems.map(i => (
+                {csvItems.map(i => (
                   <li key={i.id}>
                     <ReleaseCsv item={i} />
                   </li>
                 ))}
               </ul>
-            )}
-          </div>
-        )}
+            </div>
+          ))}
       </div>
     </div>
   );

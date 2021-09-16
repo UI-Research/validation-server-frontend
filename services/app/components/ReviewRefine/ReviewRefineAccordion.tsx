@@ -18,6 +18,7 @@ import MoreMenuIcon from '../MoreMenu/MoreMenuIcon';
 import Paragraph from '../Paragraph';
 import PrivacyCostFigure from '../PrivacyCostFigure';
 import UIButton from '../UIButton';
+import { Columns, getAccuracyDatum, getErrorVal } from './getAccuracyData';
 import RefineAdjustmentsDialog from './RefineAdjustmentsDialog';
 
 export interface ReviewRefineAccordionProps {
@@ -118,6 +119,8 @@ function ReviewRefineAccordion({
   };
 
   const cost = Number(confidentialItem.privacy_budget_used);
+  const accuracyDatum = getAccuracyDatum(confidentialItem);
+  console.log(accuracyDatum);
   return (
     <Accordion
       id={String(command.command_id)}
@@ -147,23 +150,28 @@ function ReviewRefineAccordion({
             totalBudget={startingPublic}
           />
         )}
-        <AccordionContentTitle>Adjustments for Privacy</AccordionContentTitle>
+        <AccordionContentTitle>
+          Adjustments for Random Variation
+        </AccordionContentTitle>
         <Paragraph>
-          {/* TODO: Properly setup this section with dynamic data. */}
-          To preserve privacy, random variation was added by setting:
+          To preserve privacy, random variation was added by setting the privacy
+          loss budget. The distribution of the variation is:
         </Paragraph>
         <Typography component="ul">
+          <li>10% Quantile: {getErrorVal(accuracyDatum['10'])}</li>
           <li>
-            {/* TODO: Use proper RMSE value. */}
-            Root mean square error (RMSE): XYZ{' '}
-            <a href="#" onClick={handleRefineClick}>
-              Refine this privacy adjustment
-            </a>
+            50% Quantile: {getErrorVal(accuracyDatum[Columns.PRIVACY_ERROR])}
           </li>
+          <li>90% Quantile: {getErrorVal(accuracyDatum['90'])}</li>
         </Typography>
         <Paragraph>
-          Additional adjustments require additional review &amp; refinement
-          budget cost.
+          <a href="#" onClick={handleRefineClick}>
+            Refine this variation
+          </a>
+        </Paragraph>
+        <Paragraph>
+          More adjustments require additional review &amp; refinement budget
+          cost.
         </Paragraph>
         <div>
           <Grid container={true} justify="space-between" alignItems="center">

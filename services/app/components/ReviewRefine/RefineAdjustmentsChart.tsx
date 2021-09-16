@@ -1,6 +1,6 @@
 import { Typography } from '@material-ui/core';
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import { AccuracyData, Columns } from './RefineAdjustmentsDialog';
+import { AccuracyData, Columns } from './getAccuracyData';
 
 function range(start: number, end: number): number[] {
   if (start > end) {

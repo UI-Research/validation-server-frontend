@@ -38,14 +38,17 @@ function BarChart({
         strokeWidth={borderPx}
         stroke={grey[500]}
       />
-      <rect
-        x={1}
-        y={1}
-        fill={cyan[700]}
-        width={(value / max) * barMaxWidth}
-        height={barHeight}
-      />
-      {secondaryValue && (
+      {/* Only display positive values. */}
+      {value >= 0 && (
+        <rect
+          x={1}
+          y={1}
+          fill={cyan[700]}
+          width={(value / max) * barMaxWidth}
+          height={barHeight}
+        />
+      )}
+      {secondaryValue && secondaryValue >= 0 ? (
         <rect
           x={1}
           y={1}
@@ -53,7 +56,7 @@ function BarChart({
           width={(secondaryValue / max) * barMaxWidth}
           height={barHeight}
         />
-      )}
+      ) : null}
     </svg>
   );
 }

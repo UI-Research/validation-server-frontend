@@ -6,12 +6,14 @@ import {
   DialogTitle as MuiDialogTitle,
   Grid,
   IconButton,
+  makeStyles,
   Theme,
   Typography,
   withStyles,
   WithStyles,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import Alert from '@material-ui/lab/Alert';
 import { useState } from 'react';
 import { ConfidentialDataResult } from '../context/ApiContext/queries/confidentialData';
 import Divider from '../Divider';
@@ -61,7 +63,15 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
   );
 });
 
+const useStyles = makeStyles(theme => ({
+  alert: {
+    marginBottom: theme.spacing(2),
+  },
+}));
+
 interface RefineAdjustmentsDialogProps {
+  /** Available value for the "Review & Refinement Budget". */
+  availableRefinement: number;
   confidentialDataResults: ConfidentialDataResult[];
   onAddVersionClick: (id: number) => void;
   onDialogClose: () => void;
@@ -70,17 +80,26 @@ interface RefineAdjustmentsDialogProps {
 }
 
 function RefineAdjustmentsDialog({
+  availableRefinement,
   confidentialDataResults,
   onAddVersionClick,
   onDialogClose,
   selectedRuns,
   showDialog,
 }: RefineAdjustmentsDialogProps): JSX.Element {
+  const classes = useStyles();
   const [radioVal, setRadioVal] = useState<string>();
 
   const data = getAccuracyData(confidentialDataResults);
   const tableData = getTableData(data);
   const columns = [Columns.PRIVACY_ERROR, Columns.PRIVACY_COST];
+
+  // Get currently selected item.
+  const selectedItem =
+    (radioVal && data.find(d => d.id === Number(radioVal))) || undefined;
+
+  const costIsTooMuch =
+    selectedItem && Number(selectedItem['Privacy cost']) > availableRefinement;
 
   // Event handlers
   const handleDialogClose = () => {
@@ -126,8 +145,16 @@ function RefineAdjustmentsDialog({
                 onRadioChange={setRadioVal}
               />
             </div>
+            {costIsTooMuch && (
+              <Alert className={classes.alert} severity="error">
+                Privacy cost for the selected item (
+                {selectedItem && Number(selectedItem['Privacy cost'])}) exceeds
+                the available amount in your Review &amp; Refinement Budget (
+                {availableRefinement}).
+              </Alert>
+            )}
             <UIButton
-              disabled={!radioVal}
+              disabled={!radioVal || costIsTooMuch}
               onClick={handleAddVersionClick}
               title="Add new version"
               icon="Add"

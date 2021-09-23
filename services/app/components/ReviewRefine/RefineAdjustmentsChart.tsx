@@ -1,5 +1,6 @@
 import { Typography } from '@material-ui/core';
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import notEmpty from '../../util/notEmpty';
 import { AccuracyData, Columns } from './getAccuracyData';
 
 function range(start: number, end: number): number[] {
@@ -26,6 +27,20 @@ function RefineAdjustmentsChart({
     ...d,
     [Columns.PRIVACY_COST]: Number(d[Columns.PRIVACY_COST]),
   }));
+
+  let maxVal = 0;
+  data.forEach(d => {
+    [d['10'], d['90'], d[Columns.PRIVACY_ERROR]].forEach(n => {
+      if (notEmpty(n)) {
+        if (n > maxVal) {
+          maxVal = n;
+        }
+      }
+    });
+  });
+  const maxValStr = Math.round(maxVal).toLocaleString();
+  const yAxisMargin = (maxValStr.length + 1) * 9;
+
   return (
     <div>
       <Typography align="center">
@@ -59,6 +74,7 @@ function RefineAdjustmentsChart({
                 textAnchor: 'middle',
               },
             }}
+            width={yAxisMargin}
           />
           <Line
             type="monotone"

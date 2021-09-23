@@ -1,5 +1,6 @@
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, makeStyles, Typography } from '@material-ui/core';
 import { GetApp } from '@material-ui/icons';
+import { Alert } from '@material-ui/lab';
 import { Fragment, useState } from 'react';
 import CsvDownload from 'react-csv-downloader';
 import sanitize from 'sanitize-filename';
@@ -25,6 +26,15 @@ import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 import UIButton from '../UIButton';
 import RequestReleaseAccordion from './RequestReleaseAccordion';
+
+const useStyles = makeStyles(theme => ({
+  alert: {
+    margin: theme.spacing(2, 0),
+  },
+  requestButton: {
+    margin: theme.spacing(2, 0),
+  },
+}));
 
 export interface ReleaseItem {
   id: string;
@@ -79,6 +89,7 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
   const { isLoading, data } = useRequestReleaseData(releaseQueue);
   const publicBudgetResult = useBudgetQuery('public-use-budget');
   const confidentialPatch = useConfidentialDataResultPatch();
+  const classes = useStyles();
 
   const finalItems = data.filter(d => finalQueue.includes(d.id));
   // For the CSV list, only show items that have the
@@ -96,6 +107,8 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
     .reduce((a, b) => a + b, 0);
   const availableBudget = publicBudgetResult.data?.total_budget_available;
   const totalBudget = publicBudgetResult.data?.total_budget_allocated;
+  const costIsOverBudget =
+    (availableBudget && totalCost > availableBudget) || false;
 
   const toggleItem = (id: string) => {
     setFinalQueue(arr => {
@@ -183,10 +196,16 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
         ) : (
           <LoadingIndicator />
         )}
+        {costIsOverBudget && (
+          <Alert className={classes.alert} severity="error">
+            Total cost ({totalCost}) exceeds the available amount in your
+            privacy budget ({availableBudget}).
+          </Alert>
+        )}
         <UIButton
-          disabled={finalItems.length === 0}
+          className={classes.requestButton}
+          disabled={finalItems.length === 0 || costIsOverBudget}
           onClick={handleRequestClick}
-          style={{ margin: '2rem 0' }}
           title="Request selected analyses and spend privacy budget"
         />
         {csvItems.length > 0 &&

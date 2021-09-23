@@ -98,7 +98,7 @@ function RefineAdjustmentsDialog({
   const selectedItem =
     (radioVal && data.find(d => d.id === Number(radioVal))) || undefined;
 
-  const costIsTooMuch =
+  const costIsOverBudget =
     selectedItem && Number(selectedItem['Privacy cost']) > availableRefinement;
 
   // Event handlers
@@ -145,7 +145,7 @@ function RefineAdjustmentsDialog({
                 onRadioChange={setRadioVal}
               />
             </div>
-            {costIsTooMuch && (
+            {costIsOverBudget && (
               <Alert className={classes.alert} severity="error">
                 Privacy cost for the selected item (
                 {selectedItem && Number(selectedItem['Privacy cost'])}) exceeds
@@ -154,7 +154,7 @@ function RefineAdjustmentsDialog({
               </Alert>
             )}
             <UIButton
-              disabled={!radioVal || costIsTooMuch}
+              disabled={!radioVal || costIsOverBudget}
               onClick={handleAddVersionClick}
               title="Add new version"
               icon="Add"

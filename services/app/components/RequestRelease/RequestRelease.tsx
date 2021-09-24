@@ -1,6 +1,6 @@
 import { Button, Grid, makeStyles, Typography } from '@material-ui/core';
 import { GetApp } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
+import Alert from '@material-ui/lab/Alert';
 import { Fragment, useState } from 'react';
 import CsvDownload from 'react-csv-downloader';
 import sanitize from 'sanitize-filename';

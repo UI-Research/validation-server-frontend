@@ -41,11 +41,15 @@ const useStyles = makeStyles({
   },
 });
 
+const MAX_ROWS = 500;
+
 function SpreadsheetTable({
   columns,
   data,
 }: SpreadsheetTableProps): JSX.Element {
   const classes = useStyles();
+  // Show only a certain amount of rows. Else, the browser gets slow.
+  const rows = data.slice(0, MAX_ROWS);
   return (
     <TableContainer className={classes.container}>
       <Table size="small">
@@ -60,7 +64,7 @@ function SpreadsheetTable({
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, index) => (
+          {rows.map((row, index) => (
             <TableRow key={index}>
               <SpreadsheetHeaderCell variant="head" align="center">
                 {index + 1}

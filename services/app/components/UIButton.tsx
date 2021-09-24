@@ -7,6 +7,7 @@ import {
   Add,
   ChevronRight,
 } from '@material-ui/icons';
+import notEmpty from '../util/notEmpty';
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -33,19 +34,24 @@ type Icon =
   | 'ChevronRight';
 
 interface UIButtonProps
-  extends Omit<ButtonProps, 'children' | 'endIcon' | 'variant' | 'className'> {
+  extends Omit<ButtonProps, 'children' | 'endIcon' | 'variant'> {
   title: string;
   icon?: Icon;
 }
 
-function UIButton({ title, icon, ...props }: UIButtonProps): JSX.Element {
+function UIButton({
+  title,
+  icon,
+  className,
+  ...props
+}: UIButtonProps): JSX.Element {
   const classes = useStyles();
 
   return (
     <Button
       {...props}
       variant="contained"
-      className={classes.button}
+      className={[classes.button, className].filter(notEmpty).join(' ')}
       endIcon={icon && getIcon(icon)}
     >
       {title}

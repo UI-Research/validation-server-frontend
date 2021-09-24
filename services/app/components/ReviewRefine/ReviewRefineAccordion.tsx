@@ -45,6 +45,7 @@ function ReviewRefineAccordion({
   onAddRun,
   runId,
   selectedRuns,
+  availableRefinement,
   availablePublic,
   startingPublic,
 }: ReviewRefineAccordionProps): JSX.Element | null {
@@ -195,6 +196,7 @@ function ReviewRefineAccordion({
         showDialog={showRenameDialog}
       />
       <RefineAdjustmentsDialog
+        availableRefinement={availableRefinement}
         confidentialDataResults={confidentialResult.data}
         selectedRuns={selectedRuns}
         onAddVersionClick={handleAddVersionClick}

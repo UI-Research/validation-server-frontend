@@ -12,7 +12,7 @@ import { ReleaseItem } from './RequestRelease';
 
 interface RequestReleaseAccordionProps {
   finalQueue: string[];
-  onCheckboxClick: () => void;
+  onCheckboxClick?: () => void;
   releaseItem: ReleaseItem;
   /** Available value for the "Public Release Budget". */
   availablePublic: number;
@@ -43,7 +43,7 @@ function RequestReleaseAccordion({
       summaryRef.current.click();
       summaryRef.current.focus();
     }
-    onCheckboxClick();
+    onCheckboxClick && onCheckboxClick();
   };
 
   return (
@@ -70,13 +70,15 @@ function RequestReleaseAccordion({
           <div style={{ marginTop: '1rem' }}>
             <Grid container={true} justify="space-between" alignItems="center">
               <Grid item={true}>
-                <UIButton
-                  title={`${
-                    added ? 'Remove from' : 'Add to'
-                  } final request queue`}
-                  icon="AddShoppingCart"
-                  onClick={handleToggleButtonClick}
-                />
+                {onCheckboxClick && (
+                  <UIButton
+                    title={`${
+                      added ? 'Remove from' : 'Add to'
+                    } final request queue`}
+                    icon="AddShoppingCart"
+                    onClick={handleToggleButtonClick}
+                  />
+                )}
               </Grid>
               <Grid item={true}>
                 <MoreMenuButton onRenameClick={handleRenameClick} />
@@ -105,7 +107,7 @@ const useStyles = makeStyles(() => ({
 interface RequestAccordionSummaryProps {
   added: boolean;
   cost: number;
-  onCheckboxClick: () => void;
+  onCheckboxClick?: () => void;
   onRemoveClick?: () => void;
   onRenameClick?: () => void;
   text: string | ReactNode;
@@ -123,19 +125,21 @@ function RequestAccordionSummary({
   // Event Handlers
   const handleCheckboxClick: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
-    onCheckboxClick();
+    onCheckboxClick && onCheckboxClick();
   };
 
   return (
     <div className={classes.root}>
       <Grid container={true} alignItems="center">
         <Grid item={true} xs={1}>
-          <Checkbox
-            checked={added}
-            color="default"
-            inputProps={{ 'aria-label': 'toggle request' }}
-            onClick={handleCheckboxClick}
-          />
+          {onCheckboxClick && (
+            <Checkbox
+              checked={added}
+              color="default"
+              inputProps={{ 'aria-label': 'toggle request' }}
+              onClick={handleCheckboxClick}
+            />
+          )}
         </Grid>
         <Grid item={true} xs={7}>
           {text}

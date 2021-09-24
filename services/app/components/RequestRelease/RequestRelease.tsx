@@ -1,5 +1,6 @@
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, makeStyles, Typography } from '@material-ui/core';
 import { GetApp } from '@material-ui/icons';
+import { Alert } from '@material-ui/lab';
 import { Fragment, useState } from 'react';
 import CsvDownload from 'react-csv-downloader';
 import sanitize from 'sanitize-filename';
@@ -25,6 +26,15 @@ import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
 import UIButton from '../UIButton';
 import RequestReleaseAccordion from './RequestReleaseAccordion';
+
+const useStyles = makeStyles(theme => ({
+  alert: {
+    margin: theme.spacing(2, 0),
+  },
+  requestButton: {
+    margin: theme.spacing(2, 0),
+  },
+}));
 
 export interface ReleaseItem {
   id: string;
@@ -79,23 +89,31 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
   const { isLoading, data } = useRequestReleaseData(releaseQueue);
   const publicBudgetResult = useBudgetQuery('public-use-budget');
   const confidentialPatch = useConfidentialDataResultPatch();
+  const classes = useStyles();
 
-  const finalItems = data.filter(d => finalQueue.includes(d.id));
   // For the CSV list, only show items that have the
   // `release_results_decision` property set to true.
   // This means that they were already requested and do not need to go through
   // the data result mutation process to use budget.
-  const csvItems = finalItems.filter(
+  const releasedItems = data.filter(
     i => i.confidentialDataResult.release_results_decision === true,
   );
+  const unreleasedItems = data.filter(
+    i => i.confidentialDataResult.release_results_decision === false,
+  );
 
-  // Calculate our total cost by first generating an array of the cost of each item,
+  const finalItems = unreleasedItems.filter(d => finalQueue.includes(d.id));
+
+  // Calculate our total cost by...
   const totalCost = finalItems
+    // generating an array of the cost of each item,
     .map(d => Number(d.confidentialDataResult.privacy_budget_used))
     // then using reduce to sum them together.
     .reduce((a, b) => a + b, 0);
   const availableBudget = publicBudgetResult.data?.total_budget_available;
   const totalBudget = publicBudgetResult.data?.total_budget_allocated;
+  const costIsOverBudget =
+    (availableBudget && totalCost > availableBudget) || false;
 
   const toggleItem = (id: string) => {
     setFinalQueue(arr => {
@@ -140,20 +158,39 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
           <LoadingIndicator />
         ) : (
           <div>
-            {data.map(r => (
-              <RequestReleaseAccordion
-                key={r.id}
-                availablePublic={availableBudget}
-                finalQueue={finalQueue}
-                onCheckboxClick={() => toggleItem(r.id)}
-                releaseItem={r}
-                startingPublic={Number(totalBudget)}
-              />
-            ))}
+            {unreleasedItems.length > 0 ? (
+              unreleasedItems.map(r => (
+                <RequestReleaseAccordion
+                  key={r.id}
+                  availablePublic={availableBudget}
+                  finalQueue={finalQueue}
+                  onCheckboxClick={() => toggleItem(r.id)}
+                  releaseItem={r}
+                  startingPublic={Number(totalBudget)}
+                />
+              ))
+            ) : (
+              <Paragraph>Final request queue empty.</Paragraph>
+            )}
           </div>
         )}
       </div>
       <Divider />
+      {availableBudget && releasedItems.length > 0 ? (
+        <div>
+          <SectionTitle>Released Data</SectionTitle>
+          {releasedItems.map(r => (
+            <RequestReleaseAccordion
+              key={r.id}
+              availablePublic={availableBudget}
+              finalQueue={finalQueue}
+              releaseItem={r}
+              startingPublic={Number(totalBudget)}
+            />
+          ))}
+          <Divider />
+        </div>
+      ) : null}
       <div>
         <SectionTitle>Available Privacy Budget</SectionTitle>
         {totalBudget && availableBudget ? (
@@ -183,19 +220,25 @@ function RequestRelease({ releaseQueue }: RequestReleaseProps): JSX.Element {
         ) : (
           <LoadingIndicator />
         )}
+        {costIsOverBudget && (
+          <Alert className={classes.alert} severity="error">
+            Total cost ({totalCost}) exceeds the available amount in your
+            privacy budget ({availableBudget}).
+          </Alert>
+        )}
         <UIButton
-          disabled={finalItems.length === 0}
+          className={classes.requestButton}
+          disabled={finalItems.length === 0 || costIsOverBudget}
           onClick={handleRequestClick}
-          style={{ margin: '2rem 0' }}
           title="Request selected analyses and spend privacy budget"
         />
-        {csvItems.length > 0 &&
+        {releasedItems.length > 0 &&
           (confidentialPatch.isLoading ? (
             <LoadingIndicator />
           ) : (
             <div>
               <ul>
-                {csvItems.map(i => (
+                {releasedItems.map(i => (
                   <li key={i.id}>
                     <ReleaseCsv item={i} />
                   </li>

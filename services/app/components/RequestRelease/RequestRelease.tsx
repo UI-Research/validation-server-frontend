@@ -70,7 +70,22 @@ function useReleaseItem(id: string): ReleaseItem | null {
 function useRequestReleaseData(queue: string[]) {
   const arr = queue.map(useReleaseItem);
   // Filter to non-null items.
-  const filtered = arr.filter(notEmpty);
+  const filtered = arr.filter(notEmpty).sort((a, b) => {
+    // Sort by command ID, then by cost (privacy_budget_used), with cost 1 as the first item.
+    if (a.command.command_id === b.command.command_id) {
+      const aCost = Number(a.confidentialDataResult.privacy_budget_used);
+      const bCost = Number(b.confidentialDataResult.privacy_budget_used);
+      if (aCost === 1) {
+        return -1;
+      } else if (bCost === 1) {
+        return 1;
+      } else {
+        return aCost - bCost;
+      }
+    } else {
+      return a.command.command_id - b.command.command_id;
+    }
+  });
 
   return {
     // If the original array length does not match that of the filtered array,

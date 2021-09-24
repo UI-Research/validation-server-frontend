@@ -133,7 +133,10 @@ function ReviewRefineAccordion({
           }
           onRenameClick={handleRenameClick}
           // onRemoveClick={handleRemoveClick}
-          text={command.command_name}
+          text={
+            command.command_name +
+            (cost !== 1 ? ` - Adjusted to ${cost.toLocaleString()}` : '')
+          }
         />
       }
       summaryRef={summaryRef}

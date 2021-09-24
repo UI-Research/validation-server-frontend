@@ -45,7 +45,7 @@ function PreliminarySummaryContent({
         </Grid>
         <Grid item={true} xs={4}>
           {/* Align these components to the right (flex-end) */}
-          <Grid container={true} justify="flex-end">
+          <Grid container={true} justifyContent="flex-end">
             {iconType === 'check' && (
               <Grid item={true}>
                 <IconButton

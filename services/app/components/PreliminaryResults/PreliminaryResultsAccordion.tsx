@@ -132,7 +132,7 @@ function PreliminaryResultsAccordion({
                 />
                 <Grid
                   container={true}
-                  justify="space-between"
+                  justifyContent="space-between"
                   alignItems="center"
                 >
                   <Grid item={true}>

@@ -4,7 +4,7 @@ import React from 'react';
 /** Display a centered loading/progress indicator. */
 function LoadingIndicator(): JSX.Element {
   return (
-    <Grid container={true} justify="center">
+    <Grid container={true} justifyContent="center">
       <Grid item={true}>
         <CircularProgress />
       </Grid>

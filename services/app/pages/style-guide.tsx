@@ -134,7 +134,7 @@ function StyleGuidePage(): JSX.Element {
                   3
                 </Grid>
                 <Grid item={true} xs={4} md={2}>
-                  <Grid container={true} justify="flex-end">
+                  <Grid container={true} justifyContent="flex-end">
                     <Grid item={true}>
                       <IconButton aria-label="Add">
                         <AddShoppingCart />

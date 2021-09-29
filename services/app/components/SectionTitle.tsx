@@ -1,4 +1,5 @@
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import { H4 } from './Headings';
 
 const useStyles = makeStyles(theme => ({
   sectionTitle: {
@@ -10,11 +11,7 @@ const useStyles = makeStyles(theme => ({
 
 const SectionTitle: React.FC = ({ children }) => {
   const classes = useStyles();
-  return (
-    <Typography className={classes.sectionTitle} variant="h4">
-      {children}
-    </Typography>
-  );
+  return <H4 className={classes.sectionTitle}>{children}</H4>;
 };
 
 export default SectionTitle;

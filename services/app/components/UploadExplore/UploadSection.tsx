@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState } from 'react';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
@@ -18,10 +19,10 @@ function UploadSection(): JSX.Element {
     <div>
       <SectionTitle>Upload Command File</SectionTitle>
       <Paragraph>
-        To start, upload one or more <a href="#">command files</a> below.
-        Remember that the system supports only a{' '}
-        <a href="#">limited number of commands</a> at this time. After you
-        select <strong>Open</strong>, the system will begin processing the
+        To start, upload one or more <Link href="/help">command files</Link>{' '}
+        below. Remember that the system supports only a{' '}
+        <Link href="/help">limited number of commands</Link> at this time. After
+        you select <strong>Open</strong>, the system will begin processing the
         commands, which may take a few minutes. Results for each command will
         appear below as the system completes the processing.
       </Paragraph>

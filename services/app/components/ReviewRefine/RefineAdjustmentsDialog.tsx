@@ -8,7 +8,6 @@ import {
   IconButton,
   makeStyles,
   Theme,
-  Typography,
   withStyles,
   WithStyles,
 } from '@material-ui/core';
@@ -17,6 +16,7 @@ import Alert from '@material-ui/lab/Alert';
 import { useState } from 'react';
 import { ConfidentialDataResult } from '../context/ApiContext/queries/confidentialData';
 import Divider from '../Divider';
+import { H6 } from '../Headings';
 import Table from '../Table';
 import UIButton from '../UIButton';
 import getAccuracyData, {
@@ -49,7 +49,7 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
+      <H6>{children}</H6>
       {onClose ? (
         <IconButton
           aria-label="close"

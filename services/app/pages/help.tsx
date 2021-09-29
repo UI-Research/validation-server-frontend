@@ -1,3 +1,6 @@
+import { Typography } from '@material-ui/core';
+import CodeBlock from '../components/CodeBlock';
+import { H1, H2, H3 } from '../components/Headings';
 import PageTemplate from '../components/PageTemplate';
 import Paragraph from '../components/Paragraph';
 import SectionTitle from '../components/SectionTitle';
@@ -9,116 +12,316 @@ function HelpPage(): JSX.Element {
     <PageTemplate title={title}>
       <SectionTitle>{title}</SectionTitle>
       <div>
+        <H1>
+          <a id="Validation_Server_Prototype__Version_01_Commands_Guide_0"></a>
+          Validation Server Prototype - Version 0.1 Commands Guide
+        </H1>
         <Paragraph>
-          Eleifend accusantium class vehicula, quis dapibus voluptatum hymenaeos
-          mus turpis. Perferendis saepe! Tincidunt? Ullam sem officiis?
-          Voluptatem saepe? Officia aut aspernatur! Dictumst provident? Felis
-          sollicitudin corporis consectetur dicta senectus ducimus illo montes!
-          Nonummy, cupidatat magna nobis perspiciatis tempora consectetuer
-          totam. Libero pharetra, doloribus voluptates molestias voluptate ac
-          curae, dolorem! Mollit, proident class. Torquent ultricies, ratione
-          pariatur? Ac orci? Sint odit.
+          This document is an explainer to the commands available in the initial
+          release, what we are calling version 0.1, of the validation server
+          prototype. We provide plenty of examples so that folks can easily copy
+          and paste and use this guide to construct initial example queries.
+        </Paragraph>
+
+        <H2>
+          <a id="Language_and_Commands_allowed_4"></a>Language and Commands
+          allowed
+        </H2>
+        <Paragraph>
+          We’ll get to the examples shortly. Commands at this stage, are
+          submitted in <strong>SQL</strong>. I know, you probably program in R,
+          Stata, Python, or SAS. But we haven’t yet had enough time to produce
+          libraries that will support those languages. We will, but in the
+          meantime, current libraries easily support SQL and it’s fairly simple
+          to learn and adapt examples, so we have started there.
         </Paragraph>
         <Paragraph>
-          Voluptates senectus natus vero! Nisl magna sint congue officia
-          feugiat, laboris facilisis. Lobortis adipisci vehicula iure nisi!
-          Aliqua quisque nisi incididunt, vel nobis animi. Fringilla perferendis
-          quibusdam accusamus vel praesent, etiam reiciendis etiam, metus, etiam
-          neque. Adipisci veritatis sociosqu, quae ipsum libero? Malesuada
-          soluta bibendum! Primis! Tempus numquam, pellentesque orci luctus,
-          nostrum dicta delectus nascetur earum, maecenas neque nam! Irure.
+          It’s also important to note there are{' '}
+          <strong>2 types of commands</strong> you can submit:
         </Paragraph>
+        <ol>
+          <Typography component="li">
+            <strong>Transformation commands [optional]:</strong> Commands that
+            transform the data before requesting the summary statistics, such as
+            creating a variable, taking the log of a variable, adding two
+            variables together, etc. It’s important to note that{' '}
+            <em>
+              you will not be able to view the data in it’s transformed state
+            </em>
+            , only call Summary commands using such data, in order to protect
+            privacy. As a result, however, you are only limited in this command
+            to the SQL commands that the Postgres database system supports,
+            allowing for some flexibility. You may opt not to submit a
+            Transformation command if you simply wish to perform a Summary
+            command on the data. The original dataset is named{' '}
+            <code>puf.puf</code> and you can execute queries against that data
+            directly without transformation commands.{' '}
+            <strong>
+              Transformation commands should use <code>CREATE TABLE</code>{' '}
+              syntax to create a temporary table that we will use as the basis
+              for the Summary commands
+            </strong>
+            . Transformation commands are also where data subsetting occurs.{' '}
+            <strong>
+              Note that the recid column must be included in all transformation
+              queries.
+            </strong>
+          </Typography>
+          <Typography component="li">
+            <strong>Summary command:</strong> Commands that take the Transformed
+            data (or the original data, if no Transformation command is
+            specified) and summarize it somehow. In this prototype, examples of
+            summarization include counts, sums, averages, variance, and standard
+            deviations, but also include group by statements. Summary commands
+            invoke the differentially private libraries used in the backend
+            infrastructure and return data to you as a sumamrized table (or
+            single number, if that’s what was requested). As a result, the
+            operations you can perform are limited.{' '}
+            <strong>
+              Summary commands should not have a <code>WHERE</code> clause, only
+              Transformation commands.
+            </strong>{' '}
+            We recommend always using an order by statement to make the
+            comparison of the tables generated from the synthetic data and the
+            confidential data easier.
+          </Typography>
+        </ol>
         <Paragraph>
-          Harum sint incidunt fugiat dis malesuada? Morbi reprehenderit hac rem,
-          quaerat eos? Taciti provident, itaque facilisis penatibus torquent
-          incididunt, eos, doloremque vehicula lobortis! Non repellendus congue?
-          Tincidunt recusandae per cumque? Eiusmod eum aliqua sagittis mollit
-          eligendi? Varius parturient habitasse, ullamco quidem orci. Risus
-          sint, sapiente. Congue eleifend adipisci, magnam delectus montes
-          adipisicing, optio libero. Vel. Temporibus facilisis, faucibus
-          hendrerit debitis.
+          <strong>
+            All commands should have a <code>SELECT</code> statement.
+          </strong>{' '}
+          (just to simplify things on our end and constrain the range of
+          potential errors).
         </Paragraph>
+
+        <H2>
+          <a id="Note_on_the_PUF__We_Modified_it_to_have_Equal_Weights_15"></a>
+          Note on the PUF - We Modified it to have Equal Weights
+        </H2>
         <Paragraph>
-          Recusandae anim sem do natus nullam dolores gravida vivamus saepe
-          proin adipisci consequuntur platea, platea eget. Pellentesque
-          temporibus! Dolore aliquip taciti venenatis minim ac, duis distinctio
-          magna orci! Eius at, dui dapibus euismod! Magnam aute voluptatibus?
-          Ante impedit dolores primis officia, fuga. Ut reiciendis risus eget!
-          Cubilia facilis! Dolore etiam ratione minus lacinia anim! Venenatis,
-          incididunt? Omnis alias a massa.
+          In this example, we use a modified version of the PUF to have equal
+          weights, given that current differentially private algorithms in
+          production do not adequately account for weights.
         </Paragraph>
+
+        <H2>
+          <a id="Transformation_Command_Examples_19"></a>Transformation Command
+          Examples
+        </H2>
         <Paragraph>
-          Omnis eiusmod luctus eu nobis iaculis hic ea consequatur, parturient,
-          ridiculus adipiscing aperiam, purus arcu, hendrerit suscipit proident
-          suscipit voluptatem? Dolore perspiciatis minim morbi inventore ante?
-          Eu, quas, diam iaculis itaque purus consequatur ullamcorper,
-          pellentesque dicta, mi reiciendis curae fugit! Dolorem quasi!
-          Accusamus soluta modi accusamus, rem id, interdum aliquid corrupti
-          ultrices dapibus odit, varius voluptas, itaque. Ligula lacus molestie.
+          Because Transformation commands do not invoke the differentially
+          private system and rely instead only on the Postgres SQL engine, you
+          are constrained only by the functions available to Postgres SQL. You
+          can find a list of available mathematical operators{' '}
+          <a href="https://www.postgresql.org/docs/current/functions-math.html">
+            here
+          </a>
+          , but of course other SQL operators may be relevant, and the full
+          Postgres SQL Select documentation can be found{' '}
+          <a href="https://www.postgresql.org/docs/current/sql-select.html">
+            here
+          </a>
+          .
         </Paragraph>
+
+        <H3>
+          <a id="Creating_a_Categorical_Variable_from_a_Continuous_Variable_Subsetting_data_23"></a>
+          Creating a Categorical Variable from a Continuous Variable, Subsetting
+          data
+        </H3>
         <Paragraph>
-          Massa sollicitudin impedit deleniti nascetur delectus sequi dolore
-          vestibulum? Vitae, ultricies eaque, tenetur! Elit blandit? Optio,
-          penatibus voluptatem sociosqu error voluptates lectus quia praesent
-          esse impedit sapien elementum, veniam hac, commodi porro, ante
-          senectus dignissim! Dictum, rem illo fames? Aliqua quo neque! Do eius
-          nullam dolorum habitasse. Eget? Tellus molestie, aliquam ad? Duis
-          sagittis dictumst quibusdam expedita penatibus dignissimos delectus.
+          In this example, we create a new variable,{' '}
+          <code>income_category</code>, from the income variable,{' '}
+          <code>e00100</code> into a new table that we will use for our Summary
+          Commands, and make sure we select the other variables we plan to
+          analyze in the Summary Command as well (<code>s006</code>,{' '}
+          <code>mars</code>, and <code>eic</code>). We also include{' '}
+          <code>recid</code> as it is required for the system to execute queries
+          successfully. We use a <code>WHERE</code> clause to subset the data
+          based on certain conditions.
         </Paragraph>
+        <CodeBlock
+          code={`CREATE TABLE puf.puf_gmacdonald AS
+SELECT e00200, mars, eic, e00100, e59720, recid, s006,
+  CASE WHEN (e00100 < 10000) THEN 0
+        WHEN (e00100 < 11000) THEN 10
+        WHEN (e00100 < 12000) THEN 11
+        WHEN (e00100 < 13000) THEN 12
+        WHEN (e00100 < 14000) THEN 13
+        WHEN (e00100 < 15000) THEN 14
+        WHEN (e00100 < 16000) THEN 15
+        WHEN (e00100 < 17000) THEN 16
+        WHEN (e00100 < 18000) THEN 17
+        WHEN (e00100 < 19000) THEN 18
+        WHEN (e00100 < 20000) THEN 19
+        WHEN (e00100 < 21000) THEN 20
+        WHEN (e00100 < 22000) THEN 21
+        WHEN (e00100 < 23000) THEN 22
+        WHEN (e00100 < 24000) THEN 23
+        WHEN (e00100 < 25000) THEN 24
+        WHEN (e00100 < 26000) THEN 25
+        WHEN (e00100 < 27000) THEN 26
+        WHEN (e00100 < 28000) THEN 27
+        WHEN (e00100 < 29000) THEN 28
+        WHEN (e00100 < 30000) THEN 29
+        ELSE 0
+  END AS income_category
+FROM puf.puf
+WHERE mars != 0 AND mars != 1 AND mars != 3 AND eic != 0 AND e00100 <= 30000 AND e00100 >= 10000 AND e59720 > 0`}
+        />
+
+        <H3>
+          <a id="Taking_a_Log_Transformation_Rounding_a_Variable_57"></a>Taking
+          a Log Transformation, Rounding a Variable
+        </H3>
         <Paragraph>
-          Cumque reiciendis cupiditate rerum suscipit? Fugiat rem alias ea
-          laudantium aliqua laoreet, minima reprehenderit, netus! Asperiores
-          aliquid ornare consequuntur accumsan, eu ullamcorper laboris
-          voluptates. Minima! Sem morbi quae! Dolores irure, dui suspendisse,
-          fuga habitasse quia, facere diam aliquip? Doloribus! Cubilia facere
-          eius pariatur euismod libero, quisquam repellendus facilisi tempor
-          placeat nec mollit, harum sem quam fames. Ultrices porta rutrum enim.
+          In this example, we create a new variable, <code>log_income</code>, by
+          using a log transformation and rounding the income to the nearest
+          $1,000. Remember to add <code>+1</code> to log transforms (or similar,
+          depending on the unit of your variable), in most cases, to avoid any
+          potential errors.
         </Paragraph>
+        <CodeBlock
+          code={`CREATE TABLE puf.puf_gmacdonald AS
+SELECT e00200, mars, eic, e00100, LOG(e00100 + 1) AS log_income, ROUND(e00100, -3) AS income_thousand, e59720, recid, s006
+FROM puf.puf`}
+        />
+
+        <H3 className="code-line" data-line-start="67" data-line-end="68">
+          <a id="Adding_Two_Columns_Together_Taking_a_Square_Root_67"></a>Adding
+          Two Columns Together, Taking a Square Root
+        </H3>
         <Paragraph>
-          Eum perspiciatis proin veniam natus, aenean quam inventore, ad,
-          provident saepe fugiat congue, asperiores diam! Sodales eros mi
-          dolores sit architecto sem parturient animi primis eligendi, culpa in
-          sodales iaculis volutpat voluptate ad architecto pede id. Officia cum,
-          recusandae laboris provident ridiculus, adipiscing quam, at risus
-          exercitationem ullam, sapiente ligula natoque porttitor autem quidem
-          temporibus lorem pede euismod iusto porta.
+          In this example, we create a new variable that adds two columns
+          together, and then takes their square root named{' '}
+          <code>income_combined_sqrt</code>.
         </Paragraph>
+        <CodeBlock
+          code={`CREATE TABLE puf.puf_gmacdonald AS
+SELECT e00200, mars, eic, e00100, SQRT(e00100 + e00200) AS income_combined_sqrt, e59720, recid, s006
+FROM puf.puf`}
+        />
+
+        <H2>
+          <a id="Summary_Command_Examples_77"></a>Summary Command Examples
+        </H2>
         <Paragraph>
-          Cillum massa aperiam aute, consectetur officiis taciti accusamus lacus
-          aliquet? Dolore? Quis? Quisque earum, necessitatibus accusamus tempora
-          nisi, possimus ridiculus voluptatem cras odio quod euismod lectus eum
-          quae, inceptos primis. Sed totam? Nemo eiusmod libero autem. Dolorem
-          provident felis pede, curae quia wisi taciti! Natoque volutpat,
-          pharetra anim? Mollit voluptas? Habitant cubilia porro nulla, quisque
-          fringilla? Harum accusamus, corrupti tempora.
+          Because summary commands are constrained by the Smartnoise library,
+          only the functions provided below are currently supported.
         </Paragraph>
+
+        <H3>
+          <a id="Count_by_Category_81"></a>Count by Category
+        </H3>
         <Paragraph>
-          Laboriosam. Nostrud occaecat duis velit integer. Natoque! Ipsam non a
-          ipsum voluptatem beatae aliqua quam viverra! Aptent, wisi nostra
-          aptent exercitation laudantium eget blanditiis, possimus, per iusto
-          magni totam, consequuntur? Senectus rerum, sollicitudin. Ultricies
-          metus anim ipsam facilis itaque wisi! Ipsam commodo imperdiet ligula!
-          Fusce, modi duis libero. Erat totam mi at doloribus metus maecenas
-          quasi. Ultrices, aenean pellentesque maiores.
+          Using the transformed table <code>puf.puf_gmacdonald</code> from{' '}
+          <code>
+            Creating a Categorical Variable from a Continuous Variable
+          </code>
+          , we count the number of records by income category, filing status,
+          and earned income tax credit.
         </Paragraph>
+        <CodeBlock
+          code={`SELECT COUNT(e00100) AS total, mars, eic, income_category
+FROM puf.puf_gmacdonald
+GROUP BY income_category, mars, eic
+ORDER BY income_category, mars, eic`}
+        />
         <Paragraph>
-          Praesent scelerisque harum fermentum aperiam fermentum! Libero
-          doloribus accusamus! Etiam, dolor quia lobortis irure velit posuere
-          interdum! Odio molestias commodo perspiciatis aperiam auctor habitant
-          enim, nullam! Saepe curae quia fusce! Possimus occaecat beatae,
-          quisquam mollitia ullamco, mi proident officia do itaque sem. Earum
-          gravida corporis, exercitationem posuere cupiditate autem consequatur.
-          Quo rem primis, ipsam! Tristique debitis, culpa vulputate quia tellus.
+          We can also just use the original <code>puf.puf</code> dataset, and
+          look at the untransformed count:
         </Paragraph>
+        <CodeBlock
+          code={`SELECT COUNT(e00100) AS total, mars, eic
+FROM puf.puf
+GROUP BY mars, eic
+ORDER BY mars, eic`}
+        />
+
+        <H3>
+          <a id="Sum_by_Category_101"></a>Sum by Category
+        </H3>
         <Paragraph>
-          Suspendisse taciti euismod ornare iaculis etiam ut lorem totam cubilia
-          morbi? Laborum, perferendis iure libero! Id sequi nostrum tempora
-          commodi aliquam imperdiet dolorum tenetur, integer! Magni? Quasi
-          aliquid incidunt inceptos, irure tellus duis quibusdam incidunt
-          doloribus incidunt dignissimos adipisci? Metus porta! Etiam. Corporis
-          facilisi vivamus ab. Auctor et similique non ex! Perferendis id
-          nullam, ullamco vestibulum odio augue tempus augue.
+          Using the transformed table <code>puf.puf_gmacdonald</code> from{' '}
+          <code>
+            Creating a Categorical Variable from a Continuous Variable
+          </code>
+          , we calculate the sum of income by income category, filing status,
+          and earned income tax credit.
         </Paragraph>
+        <CodeBlock
+          code={`SELECT SUM(e00100) AS total_income, mars, eic, income_category
+FROM puf.puf_gmacdonald
+GROUP BY income_category, mars, eic
+ORDER BY income_category, mars, eic`}
+        />
+        <Paragraph>
+          We can also take the sum of the weight, to get a true idea of the
+          weighted count of people by category using the weight variable{' '}
+          <code>s006</code> (which we will then have to divide by 100 later per
+          the documentation):
+        </Paragraph>
+        <CodeBlock
+          code={`SELECT SUM(s006) AS count_by_income, mars, eic, income_category
+FROM puf.puf_gmacdonald
+GROUP BY income_category, mars, eic
+ORDER BY income_category, mars, eic`}
+        />
+
+        <H3>
+          <a id="Average_by_Category_121"></a>Average by Category
+        </H3>
+        <Paragraph>
+          Using the transformed table <code>puf.puf_gmacdonald</code> from{' '}
+          <code>
+            Creating a Categorical Variable from a Continuous Variable
+          </code>
+          , we calculate the average of income by income category, filing
+          status, and earned income tax credit.
+        </Paragraph>
+        <CodeBlock
+          code={`SELECT AVG(e00100) AS average_income, mars, eic, income_category
+FROM puf.puf_gmacdonald
+GROUP BY income_category, mars, eic
+ORDER BY income_category, mars, eic`}
+        />
+
+        <H3>
+          <a id="Variance_by_Category_132"></a>Variance by Category
+        </H3>
+        <Paragraph>
+          Using the transformed table <code>puf.puf_gmacdonald</code> from{' '}
+          <code>
+            Creating a Categorical Variable from a Continuous Variable
+          </code>
+          , we calculate the variance of income by income category, filing
+          status, and earned income tax credit.
+        </Paragraph>
+        <CodeBlock
+          code={`SELECT VARIANCE(e00100) AS variance_income, mars, eic, income_category
+FROM puf.puf_gmacdonald
+GROUP BY income_category, mars, eic
+ORDER BY income_category, mars, eic`}
+        />
+
+        <H3>
+          <a id="Standard_Deviation_by_Category_143"></a>Standard Deviation by
+          Category
+        </H3>
+        <Paragraph>
+          Using the transformed table <code>puf.puf_gmacdonald</code> from{' '}
+          <code>
+            Creating a Categorical Variable from a Continuous Variable
+          </code>
+          , we calculate the standard deviation of income by income category,
+          filing status, and earned income tax credit.
+        </Paragraph>
+        <CodeBlock
+          code={`SELECT STDDEV(e00100) AS stddev_income, mars, eic, income_category
+FROM puf.puf_gmacdonald
+GROUP BY income_category, mars, eic
+ORDER BY income_category, mars, eic`}
+        />
       </div>
     </PageTemplate>
   );

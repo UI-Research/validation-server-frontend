@@ -41,7 +41,7 @@ const useStyles = makeStyles({
   },
 });
 
-const MAX_ROWS = 500;
+const MAX_ROWS = 50;
 
 function SpreadsheetTable({
   columns,

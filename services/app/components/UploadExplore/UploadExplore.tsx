@@ -1,9 +1,9 @@
 import BudgetView from '../BudgetView/BudgetView';
 import Divider from '../Divider';
-import NextStepSection from '../NextStepSection';
 import Paragraph from '../Paragraph';
 import PreliminaryResults from '../PreliminaryResults/PreliminaryResults';
 import SectionTitle from '../SectionTitle';
+import UploadExploreNextSection from './UploadExploreNextSection';
 import UploadSection from './UploadSection';
 
 interface UploadExploreProps {
@@ -58,18 +58,9 @@ function UploadExplore({
       />
       <Divider />
       <div>
-        <NextStepSection
-          buttonDisabled={refinementQueue.length === 0}
-          description={
-            <Paragraph>
-              Enter the secure environment and select the{' '}
-              <strong>Review &amp; Refinement</strong> tab to see your analyses
-              using the confidential data. Here, you will be able to refine the
-              level of privacy adjustment and select analyses to add to your
-              public-release request.
-            </Paragraph>
-          }
+        <UploadExploreNextSection
           onNextClick={onNextClick}
+          refinementQueue={refinementQueue}
         />
       </div>
     </div>

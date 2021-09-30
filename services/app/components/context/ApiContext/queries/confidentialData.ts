@@ -101,7 +101,18 @@ function useConfidentialDataResultByCommandId(
           }
           return null;
         }
-        return data;
+        // Sort by cost (privacy_budget_used), with cost 1 as the first item.
+        return data.sort((a, b) => {
+          const aCost = Number(a.privacy_budget_used);
+          const bCost = Number(b.privacy_budget_used);
+          if (aCost === 1) {
+            return -1;
+          } else if (bCost === 1) {
+            return 1;
+          } else {
+            return aCost - bCost;
+          }
+        });
       }),
     {
       onSuccess: data => {

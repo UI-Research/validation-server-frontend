@@ -1,7 +1,8 @@
-import { Grid, IconButton, Typography } from '@material-ui/core';
+import { Grid, IconButton } from '@material-ui/core';
 import { AddShoppingCart, MoreVert } from '@material-ui/icons';
 import Accordion from '../components/Accordion';
 import CodeBlock from '../components/CodeBlock';
+import { H1, H2, H3, H4, H5, H6 } from '../components/Headings';
 import PageTemplate from '../components/PageTemplate';
 import Paragraph from '../components/Paragraph';
 import SectionTitle from '../components/SectionTitle';
@@ -16,12 +17,12 @@ function StyleGuidePage(): JSX.Element {
     <PageTemplate title={title}>
       <SectionTitle>{title}</SectionTitle>
       <div>
-        <Typography variant="h1">Heading 1 (h1) example</Typography>
-        <Typography variant="h2">Heading 2 (h2) example</Typography>
-        <Typography variant="h3">Heading 3 (h3) example</Typography>
-        <Typography variant="h4">Heading 4 (h4) example</Typography>
-        <Typography variant="h5">Heading 5 (h5) example</Typography>
-        <Typography variant="h6">Heading 6 (h6) example</Typography>
+        <H1>Heading 1 (h1) example</H1>
+        <H2>Heading 2 (h2) example</H2>
+        <H3>Heading 3 (h3) example</H3>
+        <H4>Heading 4 (h4) example</H4>
+        <H5>Heading 5 (h5) example</H5>
+        <H6>Heading 6 (h6) example</H6>
         <Paragraph>
           Curabitur dignissim aliquid voluptates, quas, exercitation fuga iusto.
           Molestiae aptent atque quidem, cumque ut quibusdam, dictum dicta! Sint
@@ -74,14 +75,14 @@ function StyleGuidePage(): JSX.Element {
           <li>Ordered list item 3</li>
           <li>Ordered list item 4</li>
         </ol>
-        <Typography variant="h5">Table Example</Typography>
+        <H5>Table Example</H5>
         <TableExample />
-        <Typography variant="h5">Table Example with Radio inputs</Typography>
+        <H5>Table Example with Radio inputs</H5>
         <TableExample useRadio={true} />
-        <Typography variant="h5">Spreadsheet Table Example</Typography>
+        <H5>Spreadsheet Table Example</H5>
         <SpreadsheetTableExample />
         <div>
-          <Typography variant="h5">Code Block example</Typography>
+          <H5>Code Block example</H5>
           <CodeBlock
             code={`tabulation_private(
   transformations = c(
@@ -96,7 +97,7 @@ function StyleGuidePage(): JSX.Element {
           />
         </div>
         <div>
-          <Typography variant="h5">Simple Accordion example</Typography>
+          <H5>Simple Accordion example</H5>
           <Accordion
             id="simple-accordion-example"
             summaryContent="Accordion Summary Content"
@@ -122,7 +123,7 @@ function StyleGuidePage(): JSX.Element {
               posuere omnis cupiditate.
             </Paragraph>
           </Accordion>
-          <Typography variant="h5">Complex Accordion example</Typography>
+          <H5>Complex Accordion example</H5>
           <Accordion
             id="complex-accordion-example"
             summaryContent={
@@ -171,23 +172,23 @@ function StyleGuidePage(): JSX.Element {
             </div>
           </Accordion>
         </div>
-        <Typography variant="h5">Buttons</Typography>
-        <Typography variant="h6">Upload</Typography>
+        <H5>Buttons</H5>
+        <H6>Upload</H6>
         <UIButton title="Upload File" icon="Publish" />
-        <Typography variant="h6">Add to List</Typography>
+        <H6>Add to List</H6>
         <UIButton
           title="Add to Review &amp; Refinement Queue"
           icon="PlaylistAdd"
         />
-        <Typography variant="h6">More</Typography>
+        <H6>More</H6>
         <UIButton title="More Actions" icon="MoreVert" />
-        <Typography variant="h6">Add</Typography>
+        <H6>Add</H6>
         <UIButton title="Add New Version" icon="Add" />
-        <Typography variant="h6">Add to Final</Typography>
+        <H6>Add to Final</H6>
         <UIButton title="Add to Final Request Queue" icon="AddShoppingCart" />
-        <Typography variant="h6">Next (disabled)</Typography>
+        <H6>Next (disabled)</H6>
         <UIButton title="Next" icon="ChevronRight" disabled={true} />
-        <Typography variant="h6">Next</Typography>
+        <H6>Next</H6>
         <UIButton title="Next" icon="ChevronRight" />
       </div>
     </PageTemplate>

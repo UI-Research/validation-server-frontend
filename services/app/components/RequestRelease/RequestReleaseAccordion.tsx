@@ -56,7 +56,10 @@ function RequestReleaseAccordion({
             cost={cost}
             onCheckboxClick={onCheckboxClick}
             onRenameClick={handleRenameClick}
-            text={command.command_name}
+            text={
+              command.command_name +
+              (cost !== 1 ? ` - Adjusted to ${cost.toLocaleString()}` : '')
+            }
           />
         }
         summaryRef={summaryRef}

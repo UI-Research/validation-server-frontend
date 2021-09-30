@@ -1,4 +1,5 @@
 import { Grid } from '@material-ui/core';
+import Link from 'next/link';
 import { Fragment, useRef, useState } from 'react';
 import Accordion from '../Accordion';
 import AccordionContentTitle from '../Accordion/content/AccordionContentTitle';
@@ -21,7 +22,7 @@ function CommandNotAllowedMessage(): JSX.Element {
   return (
     <Fragment>
       Command not allowed in this system. Please see list of{' '}
-      <a href="#">available commands</a>.
+      <Link href="/help">available commands</Link>.
     </Fragment>
   );
 }

@@ -20,7 +20,7 @@ CASE WHEN e00100 < 10000 THEN 0
      WHEN e00100 < 28000 THEN 27
      WHEN e00100 < 29000 THEN 28
      WHEN e00100 < 30000 THEN 29
-     ELSE 0 
+     ELSE 0
 END AS income_category
 INTO TEMP TABLE temp_table_gmacdonald
 FROM puf

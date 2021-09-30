@@ -65,7 +65,7 @@ function BudgetFigureContainer({
 
   if (isError) {
     return (
-      <Grid container={true} spacing={2} justify="center">
+      <Grid container={true} spacing={2} justifyContent="center">
         <Grid item={true}>
           <ErrorIcon color="error" />
         </Grid>

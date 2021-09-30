@@ -31,7 +31,7 @@ function Welcome(): JSX.Element {
       <Grid
         container={true}
         spacing={3}
-        justify="center"
+        justifyContent="center"
         alignItems="flex-start"
       >
         <WelcomeItem>Access confidential tax data</WelcomeItem>
@@ -39,7 +39,12 @@ function Welcome(): JSX.Element {
         <WelcomeItem>Improve your research</WelcomeItem>
       </Grid>
       <Divider />
-      <Grid container={true} spacing={2} justify="center" alignItems="center">
+      <Grid
+        container={true}
+        spacing={2}
+        justifyContent="center"
+        alignItems="center"
+      >
         <Grid item={true} sm={6}>
           <Typography style={{ fontSize: '1.8rem' }}>
             Ready to start? Enter your credentials, or keep reading to learn

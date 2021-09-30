@@ -177,7 +177,11 @@ function ReviewRefineAccordion({
           cost.
         </Paragraph>
         <div>
-          <Grid container={true} justify="space-between" alignItems="center">
+          <Grid
+            container={true}
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Grid item={true}>
               <UIButton
                 title={`${
@@ -240,7 +244,7 @@ function ReviewRefineAccordionSummary({
           {cost.toLocaleString()}
         </Grid>
         <Grid item={true} xs={4} md={2}>
-          <Grid container={true} justify="flex-end">
+          <Grid container={true} justifyContent="flex-end">
             <Grid item={true}>
               <IconButton
                 aria-label={`${added ? 'Remove from' : 'Add to'} Queue`}

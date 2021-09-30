@@ -1,6 +1,6 @@
 import { Typography } from '@material-ui/core';
 import CodeBlock from '../components/CodeBlock';
-import { H1, H2, H3 } from '../components/Headings';
+import { H2, H3, H4 } from '../components/Headings';
 import PageTemplate from '../components/PageTemplate';
 import Paragraph from '../components/Paragraph';
 import SectionTitle from '../components/SectionTitle';
@@ -12,10 +12,10 @@ function HelpPage(): JSX.Element {
     <PageTemplate title={title}>
       <SectionTitle>{title}</SectionTitle>
       <div>
-        <H1>
+        <H2>
           <a id="Validation_Server_Prototype__Version_01_Commands_Guide_0"></a>
           Validation Server Prototype - Version 0.1 Commands Guide
-        </H1>
+        </H2>
         <Paragraph>
           This document is an explainer to the commands available in the initial
           release, what we are calling version 0.1, of the validation server
@@ -23,10 +23,10 @@ function HelpPage(): JSX.Element {
           and paste and use this guide to construct initial example queries.
         </Paragraph>
 
-        <H2>
+        <H3>
           <a id="Language_and_Commands_allowed_4"></a>Language and Commands
           allowed
-        </H2>
+        </H3>
         <Paragraph>
           We’ll get to the examples shortly. Commands at this stage, are
           submitted in <strong>SQL</strong>. I know, you probably program in R,
@@ -94,20 +94,20 @@ function HelpPage(): JSX.Element {
           potential errors).
         </Paragraph>
 
-        <H2>
+        <H3>
           <a id="Note_on_the_PUF__We_Modified_it_to_have_Equal_Weights_15"></a>
           Note on the PUF - We Modified it to have Equal Weights
-        </H2>
+        </H3>
         <Paragraph>
           In this example, we use a modified version of the PUF to have equal
           weights, given that current differentially private algorithms in
           production do not adequately account for weights.
         </Paragraph>
 
-        <H2>
+        <H3>
           <a id="Transformation_Command_Examples_19"></a>Transformation Command
           Examples
-        </H2>
+        </H3>
         <Paragraph>
           Because Transformation commands do not invoke the differentially
           private system and rely instead only on the Postgres SQL engine, you
@@ -124,11 +124,11 @@ function HelpPage(): JSX.Element {
           .
         </Paragraph>
 
-        <H3>
+        <H4>
           <a id="Creating_a_Categorical_Variable_from_a_Continuous_Variable_Subsetting_data_23"></a>
           Creating a Categorical Variable from a Continuous Variable, Subsetting
           data
-        </H3>
+        </H4>
         <Paragraph>
           In this example, we create a new variable,{' '}
           <code>income_category</code>, from the income variable,{' '}
@@ -170,10 +170,10 @@ FROM puf.puf
 WHERE mars != 0 AND mars != 1 AND mars != 3 AND eic != 0 AND e00100 <= 30000 AND e00100 >= 10000 AND e59720 > 0`}
         />
 
-        <H3>
+        <H4>
           <a id="Taking_a_Log_Transformation_Rounding_a_Variable_57"></a>Taking
           a Log Transformation, Rounding a Variable
-        </H3>
+        </H4>
         <Paragraph>
           In this example, we create a new variable, <code>log_income</code>, by
           using a log transformation and rounding the income to the nearest
@@ -187,10 +187,10 @@ SELECT e00200, mars, eic, e00100, LOG(e00100 + 1) AS log_income, ROUND(e00100, -
 FROM puf.puf`}
         />
 
-        <H3 className="code-line" data-line-start="67" data-line-end="68">
+        <H4 className="code-line" data-line-start="67" data-line-end="68">
           <a id="Adding_Two_Columns_Together_Taking_a_Square_Root_67"></a>Adding
           Two Columns Together, Taking a Square Root
-        </H3>
+        </H4>
         <Paragraph>
           In this example, we create a new variable that adds two columns
           together, and then takes their square root named{' '}
@@ -202,17 +202,17 @@ SELECT e00200, mars, eic, e00100, SQRT(e00100 + e00200) AS income_combined_sqrt,
 FROM puf.puf`}
         />
 
-        <H2>
+        <H3>
           <a id="Summary_Command_Examples_77"></a>Summary Command Examples
-        </H2>
+        </H3>
         <Paragraph>
           Because summary commands are constrained by the Smartnoise library,
           only the functions provided below are currently supported.
         </Paragraph>
 
-        <H3>
+        <H4>
           <a id="Count_by_Category_81"></a>Count by Category
-        </H3>
+        </H4>
         <Paragraph>
           Using the transformed table <code>puf.puf_gmacdonald</code> from{' '}
           <code>
@@ -238,9 +238,9 @@ GROUP BY mars, eic
 ORDER BY mars, eic`}
         />
 
-        <H3>
+        <H4>
           <a id="Sum_by_Category_101"></a>Sum by Category
-        </H3>
+        </H4>
         <Paragraph>
           Using the transformed table <code>puf.puf_gmacdonald</code> from{' '}
           <code>
@@ -268,9 +268,9 @@ GROUP BY income_category, mars, eic
 ORDER BY income_category, mars, eic`}
         />
 
-        <H3>
+        <H4>
           <a id="Average_by_Category_121"></a>Average by Category
-        </H3>
+        </H4>
         <Paragraph>
           Using the transformed table <code>puf.puf_gmacdonald</code> from{' '}
           <code>
@@ -286,9 +286,9 @@ GROUP BY income_category, mars, eic
 ORDER BY income_category, mars, eic`}
         />
 
-        <H3>
+        <H4>
           <a id="Variance_by_Category_132"></a>Variance by Category
-        </H3>
+        </H4>
         <Paragraph>
           Using the transformed table <code>puf.puf_gmacdonald</code> from{' '}
           <code>
@@ -304,10 +304,10 @@ GROUP BY income_category, mars, eic
 ORDER BY income_category, mars, eic`}
         />
 
-        <H3>
+        <H4>
           <a id="Standard_Deviation_by_Category_143"></a>Standard Deviation by
           Category
-        </H3>
+        </H4>
         <Paragraph>
           Using the transformed table <code>puf.puf_gmacdonald</code> from{' '}
           <code>

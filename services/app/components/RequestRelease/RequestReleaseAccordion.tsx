@@ -71,7 +71,11 @@ function RequestReleaseAccordion({
             confidentialDataResult={confidentialDataResult}
           />
           <div style={{ marginTop: '1rem' }}>
-            <Grid container={true} justify="space-between" alignItems="center">
+            <Grid
+              container={true}
+              justifyContent="space-between"
+              alignItems="center"
+            >
               <Grid item={true}>
                 {onCheckboxClick && (
                   <UIButton
@@ -151,7 +155,7 @@ function RequestAccordionSummary({
           {cost.toLocaleString()}
         </Grid>
         <Grid item={true} xs={3}>
-          <Grid container={true} justify="flex-end">
+          <Grid container={true} justifyContent="flex-end">
             <MoreMenuIcon
               onRemoveClick={onRemoveClick}
               onRenameClick={onRenameClick}

@@ -1,6 +1,7 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core';
 import { FC } from 'react';
 import Divider from '../Divider';
+import { H2, H3, H4 } from '../Headings';
 import Paragraph from '../Paragraph';
 import SignInForm from './SignInForm';
 
@@ -24,13 +25,13 @@ const WelcomeItem: FC = ({ children }) => {
 function Welcome(): JSX.Element {
   return (
     <div>
-      <Typography variant="h2" align="center" gutterBottom={true}>
+      <H2 align="center" gutterBottom={true}>
         Welcome to the Validation Server
-      </Typography>
+      </H2>
       <Grid
         container={true}
         spacing={3}
-        justify="center"
+        justifyContent="center"
         alignItems="flex-start"
       >
         <WelcomeItem>Access confidential tax data</WelcomeItem>
@@ -38,7 +39,12 @@ function Welcome(): JSX.Element {
         <WelcomeItem>Improve your research</WelcomeItem>
       </Grid>
       <Divider />
-      <Grid container={true} spacing={2} justify="center" alignItems="center">
+      <Grid
+        container={true}
+        spacing={2}
+        justifyContent="center"
+        alignItems="center"
+      >
         <Grid item={true} sm={6}>
           <Typography style={{ fontSize: '1.8rem' }}>
             Ready to start? Enter your credentials, or keep reading to learn
@@ -51,10 +57,8 @@ function Welcome(): JSX.Element {
       </Grid>
       <Divider />
       <div>
-        <Typography variant="h3" gutterBottom={true}>
-          How the Validation Server works
-        </Typography>
-        <Typography variant="h4">What it is</Typography>
+        <H3 gutterBottom={true}>How the Validation Server works</H3>
+        <H4>What it is</H4>
         <Paragraph>
           Proin repellat. Hac risus, eaque fugit fames numquam aliquip sed
           corporis nostrum, blanditiis placerat vestibulum, orci urna nostrum
@@ -62,7 +66,7 @@ function Welcome(): JSX.Element {
           Aptent cumque laoreet id repellat scelerisque feugiat platea? Mollitia
           cubilia aenean, urna.
         </Paragraph>
-        <Typography variant="h4">What you can do</Typography>
+        <H4>What you can do</H4>
         <Paragraph>
           Dolore nonummy at quo et dapibus viverra quis? Natus convallis netus
           metus, mollis elementum dictumst deserunt architecto accumsan placerat
@@ -70,7 +74,7 @@ function Welcome(): JSX.Element {
           auctor minus! Vivamus adipisicing hac. Fames, hic, a accusantium,
           deleniti tempor.
         </Paragraph>
-        <Typography variant="h4">How it works</Typography>
+        <H4>How it works</H4>
         <Paragraph>
           Nam rhoncus quasi placerat adipisci eleifend laoreet, integer cubilia
           dictum gravida mollit illum tortor? Nulla officiis pede etiam?

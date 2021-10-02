@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Fragment } from 'react';
 import { useBudgetQuery } from '../context/ApiContext/queries/budget';
 import { useCommandQuery } from '../context/ApiContext/queries/command';
@@ -43,10 +44,10 @@ function PreliminaryResults({
       <SectionTitle>Preliminary Results Using Synthetic Data</SectionTitle>
       <Paragraph>
         Here, you may review the results of each command using the{' '}
-        <a href="#">synthetic tax data</a>. For each successful command, you
-        will see the cost against your review &amp; refinement privacy budget to
-        view these results with the confidential tax data. For your reference,
-        the public use privacy cost is also displayed.
+        <Link href="/data">synthetic tax data</Link>. For each successful
+        command, you will see the cost against your review &amp; refinement
+        privacy budget to view these results with the confidential tax data. For
+        your reference, the public use privacy cost is also displayed.
       </Paragraph>
       <div>
         {/* Wait for everything to load. */}

@@ -29,7 +29,7 @@ function NextStepSection({
         <SectionTitle>Next Step:</SectionTitle>
         {description}
       </Grid>
-      <Grid item={true} container={true} xs={4} justify="flex-end">
+      <Grid item={true} container={true} xs={4} justifyContent="flex-end">
         <UIButton
           disabled={buttonDisabled}
           title="Next"

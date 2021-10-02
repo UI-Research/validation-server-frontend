@@ -4,6 +4,7 @@ import {
   BudgetType,
   useBudgetQuery,
 } from '../context/ApiContext/queries/budget';
+import { H5 } from '../Headings';
 import LoadingIndicator from '../LoadingIndicator';
 import Paragraph from '../Paragraph';
 import SectionTitle from '../SectionTitle';
@@ -31,9 +32,9 @@ function BudgetView(): JSX.Element {
       <div className={classes.root}>
         <Grid container={true} spacing={5}>
           <Grid item={true} sm={6}>
-            <Typography variant="h5" className={classes.budgetTitle}>
+            <H5 className={classes.budgetTitle}>
               Review &amp; Refinement Budget:
-            </Typography>
+            </H5>
             <Paragraph>
               The review &amp; refinement budget covers your own exploration of
               your requests with the confidential US tax data.
@@ -41,9 +42,7 @@ function BudgetView(): JSX.Element {
             <BudgetFigureContainer type="review-and-refinement-budget" />
           </Grid>
           <Grid item={true} sm={6}>
-            <Typography variant="h5" className={classes.budgetTitle}>
-              Public Release Budget:
-            </Typography>
+            <H5 className={classes.budgetTitle}>Public Release Budget:</H5>
             <Paragraph>
               The public release budget is for obtaining the confidential data
               for use in publications and other public-facing purposes.
@@ -66,7 +65,7 @@ function BudgetFigureContainer({
 
   if (isError) {
     return (
-      <Grid container={true} spacing={2} justify="center">
+      <Grid container={true} spacing={2} justifyContent="center">
         <Grid item={true}>
           <ErrorIcon color="error" />
         </Grid>

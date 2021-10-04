@@ -1,5 +1,10 @@
 # validation-server-frontend
 
+[Validation Server Whitepaper](https://www.urban.org/research/publication/privacy-preserving-validation-server-prototype)
+
+The validation server front-end user interface is built on the React.js JavaScript library. The front-end interface facilitates user authentication, visual display, 
+selection, refining, and release of data and privacy budgets via direct JavaScript calls to the API. 
+
 To run, you need the [forumone-cli library](https://github.com/forumone/forumone-cli#usage) installed. If not already installed, run:
 
 ```bash
